@@ -1,0 +1,33 @@
+{
+  "name": "formik-mui-components",
+  "version": "1.0.0",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@mui/material": "^6.4.8",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@tanstack/react-query": "^5.69.0",
+    "formik": "^2.4.6",
+    "react-easy-crop": "^5.4.1",
+    "rollup": "^4.36.0",
+    "styled-components": "^6.1.16",
+    "typescript": "^5.8.2",
+    "zustand": "^5.0.3"
+  }
+}
