@@ -1,6 +1,6 @@
 {
   "name": "formik-mui-components",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -13,10 +13,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^28.0.3",
@@ -31,6 +34,7 @@
     "zustand": "^5.0.3"
   },
   "peerDependencies": {
+    "formik": "^2.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }

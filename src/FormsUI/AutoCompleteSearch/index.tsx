@@ -1,9 +1,16 @@
 import React from "react";
 import { useField, useFormikContext } from "formik";
-import { Autocomplete, debounce, LinearProgress, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  debounce,
+  LinearProgress,
+  TextField,
+} from "@mui/material";
 import { UseQueryResult } from "@tanstack/react-query";
 
-export default function AutoCompleteSearchWrapper<Option extends { value: string | number; label: string }>(props: {
+export default function AutoCompleteSearchWrapper<
+  Option extends { value: string | number; label: string }
+>(props: {
   /**Formik field name*/
   name: string;
   label: string;
@@ -15,7 +22,13 @@ export default function AutoCompleteSearchWrapper<Option extends { value: string
   const [field, meta] = useField<Option>(props.name);
 
   function handleTextFieldBlur(e: React.SyntheticEvent) {
-    setFieldValue(field.name, props.useQueryResult.data?.find((option) => option.label === e.target.value) ?? { value: 0, label: "" });
+    const target = e.target as HTMLInputElement;
+    setFieldValue(
+      field.name,
+      props.useQueryResult.data?.find(
+        (option) => option.label === target.value
+      ) ?? { value: 0, label: "" }
+    );
   }
 
   const configTextField = {
@@ -40,7 +53,9 @@ export default function AutoCompleteSearchWrapper<Option extends { value: string
       loading={props.useQueryResult.isFetching}
       onChange={(_, newValue) => setFieldValue(field.name, newValue)}
       onInputChange={debounce((_, newInputValue) => {
-        props.setInputValue(newInputValue === "" ? undefined : newInputValue.slice(0, 10).trim());
+        props.setInputValue(
+          newInputValue === "" ? undefined : newInputValue.slice(0, 10).trim()
+        );
       }, 300)}
       renderInput={(params) => (
         <>

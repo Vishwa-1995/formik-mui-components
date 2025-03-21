@@ -59,7 +59,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     []
   );
 
-  const handleChange = (event, value) => {
+  const handleChange = (value: any) => {
     setFieldValue(name, value);
     customHandleChange && customHandleChange();
   };

@@ -16,7 +16,7 @@ export default {
       format: "esm"
     }
   ],
-  external: ["react", "react-dom"],
+  external: ["react", "react-dom", "formik"],
   plugins: [
     resolve(),
     commonjs(),

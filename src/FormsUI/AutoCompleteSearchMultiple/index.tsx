@@ -30,16 +30,18 @@ const AutoCompleteSearchMultipleWrapper: React.FC<
   disabled,
   ...otherProps // Capture unknown props
 }) => {
-  const { setFieldValue, values } = useFormikContext();
+  const { setFieldValue } = useFormikContext();
+  const values = useFormikContext().values as { [key: string]: any };
   const [field, meta] = useField<Option[]>(name);
   const [prevValues, setPrevValues] = React.useState<Option[]>([
     ...field.value,
   ]);
 
-  const configTextField = {
+  const { onChange, ...configTextField } = {
     ...field,
     ...otherProps,
     error: false,
+    color: "primary" as const,
     helperText: "",
   };
 
@@ -104,12 +106,13 @@ const AutoCompleteSearchMultipleWrapper: React.FC<
       //   }
       //   return options;
       // }}
-      renderInput={(params) => (
+      renderInput={(params: any) => (
         <TextField
           {...params}
           {...configTextField}
           label={label}
           placeholder="Select Batches"
+          onFocus={params.onFocus as React.FocusEventHandler<HTMLInputElement>}
           // onBlur={(e) => {
           //   const isValidSelection = useQueryResult.data?.some(
           //     (option) => option.label === e.target.value
