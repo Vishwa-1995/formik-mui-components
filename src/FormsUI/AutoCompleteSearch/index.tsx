@@ -10,14 +10,15 @@ import { UseQueryResult } from "@tanstack/react-query";
 
 export default function AutoCompleteSearchWrapper<
   Option extends { value: string | number; label: string }
->(props: {
-  /**Formik field name*/
-  name: string;
-  label: string;
-  useQueryResult: UseQueryResult<Option[], Error>;
-  setInputValue: React.Dispatch<React.SetStateAction<string | undefined>>;
-  disabled?: boolean;
-}) {
+>(
+  props: Readonly<{
+    name: string;
+    label: string;
+    useQueryResult: UseQueryResult<Option[], Error>;
+    setInputValue: React.Dispatch<React.SetStateAction<string | undefined>>;
+    disabled?: boolean;
+  }>
+) {
   const { setFieldValue } = useFormikContext();
   const [field, meta] = useField<Option>(props.name);
 
@@ -71,9 +72,11 @@ export default function AutoCompleteSearchWrapper<
             {...configTextField}
             label={props.label}
             disabled={props.disabled}
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: <>{params.InputProps.endAdornment}</>,
+            slotProps={{
+              input: {
+                ...params.InputProps,
+                endAdornment: <>{params.InputProps?.endAdornment}</>,
+              },
             }}
           />
           {props.useQueryResult.isLoading && <LinearProgress />}

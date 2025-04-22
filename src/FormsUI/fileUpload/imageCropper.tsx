@@ -64,7 +64,7 @@ const ImageCropper: React.FC = () => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedArea, setCroppedArea] = useState(null);
-  const [aspectRatio, setAspectRatio] = useState(1 / 1);
+  const [aspectRatio, setAspectRatio] = useState(1);
 
   const onCropComplete = (
     croppedAreaPercentage: any,
@@ -83,8 +83,10 @@ const ImageCropper: React.FC = () => {
       open={close}
       onClose={handleClose}
       fullWidth={true}
-      PaperProps={{
-        style: { borderRadius: 15 },
+      slotProps={{
+        paper: {
+          style: { borderRadius: 15 },
+        },
       }}
     >
       <DialogContent style={{ textAlign: "center" }}>
@@ -111,11 +113,11 @@ const ImageCropper: React.FC = () => {
         <RadioGroup
           row
           name="row-radio-buttons-group"
-          defaultValue={1 / 1}
+          defaultValue={1}
           onChange={onAspectRatioChange}
           style={{ display: "flex", justifyContent: "center" }}
         >
-          <FormControlLabel value={1 / 1} control={<Radio />} label="1:1" />
+          <FormControlLabel value={1} control={<Radio />} label="1:1" />
           <FormControlLabel value={5 / 4} control={<Radio />} label="5:4" />
           <FormControlLabel value={4 / 3} control={<Radio />} label="4:3" />
           <FormControlLabel value={3 / 2} control={<Radio />} label="3:2" />

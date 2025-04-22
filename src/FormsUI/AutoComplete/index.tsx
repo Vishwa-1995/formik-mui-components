@@ -96,9 +96,11 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
             {...configAutocomplete}
             disabled={disabled}
             margin="dense"
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: <>{params.InputProps.endAdornment}</>,
+            slotProps={{
+              input: {
+                ...params.InputProps,
+                endAdornment: <>{params.InputProps?.endAdornment}</>,
+              },
             }}
           />
           {loading && <LinearProgress />}

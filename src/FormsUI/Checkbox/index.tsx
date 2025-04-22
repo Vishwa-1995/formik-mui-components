@@ -5,12 +5,12 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useField, useFormikContext } from "formik";
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import { FormHelperText } from "@mui/material";
+import { FormHelperText, FormLabel } from "@mui/material";
 
 interface CheckboxWrapperProps {
   name: string;
-  legend: React.ReactNode;
+  legend?: React.ReactNode;
+  label: React.ReactNode;
   customHandleChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   [key: string]: any;
 }
@@ -18,6 +18,7 @@ interface CheckboxWrapperProps {
 const CheckboxWrapper: React.FC<CheckboxWrapperProps> = ({
   name,
   legend,
+  label,
   customHandleChange = () => {},
   ...otherProps
 }) => {
@@ -43,18 +44,18 @@ const CheckboxWrapper: React.FC<CheckboxWrapperProps> = ({
   }
 
   return (
-    <FormControl>
-      <FormGroup>
-        <Stack direction="row">
+    <Box sx={{ display: "flex" }}>
+      <FormControl component="fieldset" variant="standard">
+        <FormLabel component="legend">{legend}</FormLabel>
+        <FormGroup>
           <FormControlLabel
             control={<Checkbox {...configCheckbox} checked={field.value} />}
-            label=""
+            label={label}
           />
-          <Box mt={1.5}>{legend}</Box>
-        </Stack>
-      </FormGroup>
-      <FormHelperText {...configFormControl}></FormHelperText>
-    </FormControl>
+        </FormGroup>
+        <FormHelperText {...configFormControl}></FormHelperText>
+      </FormControl>
+    </Box>
   );
 };
 
