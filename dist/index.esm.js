@@ -1,7 +1,7 @@
 import * as React from 'react';
 import React__default, { useState, useEffect, useCallback, forwardRef, useContext, isValidElement, cloneElement, Children, useRef } from 'react';
 import { useFormikContext, useField } from 'formik';
-import { debounce, Autocomplete, TextField, LinearProgress as LinearProgress$1, FormLabel as FormLabel$1, FormHelperText, Grid2, Box as Box$1, DialogContent, FormControl as FormControl$1, RadioGroup as RadioGroup$1, FormControlLabel as FormControlLabel$1, Radio as Radio$1, Button, Grid, Typography as Typography$1, Badge, MenuItem, Avatar, Divider } from '@mui/material';
+import { debounce, Autocomplete, TextField, LinearProgress as LinearProgress$1, FormLabel as FormLabel$1, FormHelperText, Grid, Box as Box$1, DialogContent, FormControl as FormControl$1, RadioGroup as RadioGroup$1, FormControlLabel as FormControlLabel$1, Radio as Radio$1, Button, Typography as Typography$1, Badge, MenuItem, Avatar, Divider } from '@mui/material';
 import reactCSS from 'reactcss';
 import { SketchPicker } from 'react-color';
 import { LocalizationProvider, DatePicker, DateTimePicker, TimePicker } from '@mui/x-date-pickers';
@@ -12890,7 +12890,7 @@ const ColorPickerWrapper = ({ name, label, ...otherProps }) => {
             },
         },
     });
-    return (jsxRuntimeExports.jsxs(Grid2, { container: true, spacing: 1, direction: "column", children: [jsxRuntimeExports.jsx(Typography, { variant: "body2", children: label }), jsxRuntimeExports.jsxs(Grid2, { children: [jsxRuntimeExports.jsx(Box$1, { style: styles.swatch, onClick: handleClick, children: jsxRuntimeExports.jsx(Box$1, { style: styles.color }) }), pickerState ? (jsxRuntimeExports.jsxs(Box$1, { style: styles.popover, children: [jsxRuntimeExports.jsx(Box$1, { style: styles.cover, onClick: handleClose }), jsxRuntimeExports.jsx(SketchPicker, { color: field.value, onChange: handleChange })] })) : null] }), meta.touched && meta.error && (jsxRuntimeExports.jsx(Typography, { variant: "caption", color: "error", children: meta.error }))] }));
+    return (jsxRuntimeExports.jsxs(Grid, { container: true, spacing: 1, children: [jsxRuntimeExports.jsx(Typography, { variant: "body2", children: label }), jsxRuntimeExports.jsxs(Grid, { item: true, children: [jsxRuntimeExports.jsx(Box$1, { style: styles.swatch, onClick: handleClick, children: jsxRuntimeExports.jsx(Box$1, { style: styles.color }) }), pickerState ? (jsxRuntimeExports.jsxs(Box$1, { style: styles.popover, children: [jsxRuntimeExports.jsx(Box$1, { style: styles.cover, onClick: handleClose }), jsxRuntimeExports.jsx(SketchPicker, { color: field.value, onChange: handleChange })] })) : null] }), meta.touched && meta.error && (jsxRuntimeExports.jsx(Typography, { variant: "caption", color: "error", children: meta.error }))] }));
 };
 
 var dayjs_min$1 = {exports: {}};

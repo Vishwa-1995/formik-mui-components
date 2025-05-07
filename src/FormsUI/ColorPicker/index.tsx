@@ -3,7 +3,7 @@ import reactCSS from "reactcss";
 import { SketchPicker, ColorResult } from "react-color";
 import { useField, useFormikContext } from "formik";
 import Typography from "@mui/material/Typography";
-import { Box, Grid2 } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
 interface ColorPickerWrapperProps {
   name: string;
@@ -74,9 +74,9 @@ const ColorPickerWrapper: React.FC<ColorPickerWrapperProps> = ({
   });
 
   return (
-    <Grid2 container spacing={1} direction="column">
+    <Grid container spacing={1}>
       <Typography variant="body2">{label}</Typography>
-      <Grid2>
+      <Grid item>
         <Box style={styles.swatch} onClick={handleClick}>
           <Box style={styles.color} />
         </Box>
@@ -86,13 +86,13 @@ const ColorPickerWrapper: React.FC<ColorPickerWrapperProps> = ({
             <SketchPicker color={field.value} onChange={handleChange} />
           </Box>
         ) : null}
-      </Grid2>
+      </Grid>
       {meta.touched && meta.error && (
         <Typography variant="caption" color="error">
           {meta.error}
         </Typography>
       )}
-    </Grid2>
+    </Grid>
   );
 };
 

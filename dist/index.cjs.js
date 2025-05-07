@@ -12910,7 +12910,7 @@ const ColorPickerWrapper = ({ name, label, ...otherProps }) => {
             },
         },
     });
-    return (jsxRuntimeExports.jsxs(material.Grid2, { container: true, spacing: 1, direction: "column", children: [jsxRuntimeExports.jsx(Typography, { variant: "body2", children: label }), jsxRuntimeExports.jsxs(material.Grid2, { children: [jsxRuntimeExports.jsx(material.Box, { style: styles.swatch, onClick: handleClick, children: jsxRuntimeExports.jsx(material.Box, { style: styles.color }) }), pickerState ? (jsxRuntimeExports.jsxs(material.Box, { style: styles.popover, children: [jsxRuntimeExports.jsx(material.Box, { style: styles.cover, onClick: handleClose }), jsxRuntimeExports.jsx(reactColor.SketchPicker, { color: field.value, onChange: handleChange })] })) : null] }), meta.touched && meta.error && (jsxRuntimeExports.jsx(Typography, { variant: "caption", color: "error", children: meta.error }))] }));
+    return (jsxRuntimeExports.jsxs(material.Grid, { container: true, spacing: 1, children: [jsxRuntimeExports.jsx(Typography, { variant: "body2", children: label }), jsxRuntimeExports.jsxs(material.Grid, { item: true, children: [jsxRuntimeExports.jsx(material.Box, { style: styles.swatch, onClick: handleClick, children: jsxRuntimeExports.jsx(material.Box, { style: styles.color }) }), pickerState ? (jsxRuntimeExports.jsxs(material.Box, { style: styles.popover, children: [jsxRuntimeExports.jsx(material.Box, { style: styles.cover, onClick: handleClose }), jsxRuntimeExports.jsx(reactColor.SketchPicker, { color: field.value, onChange: handleChange })] })) : null] }), meta.touched && meta.error && (jsxRuntimeExports.jsx(Typography, { variant: "caption", color: "error", children: meta.error }))] }));
 };
 
 var dayjs_min$1 = {exports: {}};
