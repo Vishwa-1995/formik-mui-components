@@ -13278,17 +13278,17 @@ function requireDayjs_min() {
 var dayjs_minExports = requireDayjs_min();
 var defaultDayjs = /*@__PURE__*/getDefaultExportFromCjs(dayjs_minExports);
 
-var weekOfYear$1 = {exports: {}};
+var weekOfYear$2 = {exports: {}};
 
-var weekOfYear = weekOfYear$1.exports;
+var weekOfYear$1 = weekOfYear$2.exports;
 var hasRequiredWeekOfYear;
 function requireWeekOfYear() {
-  if (hasRequiredWeekOfYear) return weekOfYear$1.exports;
+  if (hasRequiredWeekOfYear) return weekOfYear$2.exports;
   hasRequiredWeekOfYear = 1;
   (function (module, exports) {
     !function (e, t) {
       module.exports = t() ;
-    }(weekOfYear, function () {
+    }(weekOfYear$1, function () {
 
       var e = "week",
         t = "year";
@@ -13310,12 +13310,12 @@ function requireWeekOfYear() {
         };
       };
     });
-  })(weekOfYear$1);
-  return weekOfYear$1.exports;
+  })(weekOfYear$2);
+  return weekOfYear$2.exports;
 }
 
 var weekOfYearExports = requireWeekOfYear();
-var weekOfYearPlugin = /*@__PURE__*/getDefaultExportFromCjs(weekOfYearExports);
+var weekOfYear = /*@__PURE__*/getDefaultExportFromCjs(weekOfYearExports);
 
 var customParseFormat$1 = {exports: {}};
 
@@ -13608,92 +13608,25 @@ function requireIsBetween() {
 var isBetweenExports = requireIsBetween();
 var isBetweenPlugin = /*@__PURE__*/getDefaultExportFromCjs(isBetweenExports);
 
-var advancedFormat$1 = {exports: {}};
-
-var advancedFormat = advancedFormat$1.exports;
-var hasRequiredAdvancedFormat;
-function requireAdvancedFormat() {
-  if (hasRequiredAdvancedFormat) return advancedFormat$1.exports;
-  hasRequiredAdvancedFormat = 1;
-  (function (module, exports) {
-    !function (e, t) {
-      module.exports = t() ;
-    }(advancedFormat, function () {
-
-      return function (e, t) {
-        var r = t.prototype,
-          n = r.format;
-        r.format = function (e) {
-          var t = this,
-            r = this.$locale();
-          if (!this.isValid()) return n.bind(this)(e);
-          var s = this.$utils(),
-            a = (e || "YYYY-MM-DDTHH:mm:ssZ").replace(/\[([^\]]+)]|Q|wo|ww|w|WW|W|zzz|z|gggg|GGGG|Do|X|x|k{1,2}|S/g, function (e) {
-              switch (e) {
-                case "Q":
-                  return Math.ceil((t.$M + 1) / 3);
-                case "Do":
-                  return r.ordinal(t.$D);
-                case "gggg":
-                  return t.weekYear();
-                case "GGGG":
-                  return t.isoWeekYear();
-                case "wo":
-                  return r.ordinal(t.week(), "W");
-                case "w":
-                case "ww":
-                  return s.s(t.week(), "w" === e ? 1 : 2, "0");
-                case "W":
-                case "WW":
-                  return s.s(t.isoWeek(), "W" === e ? 1 : 2, "0");
-                case "k":
-                case "kk":
-                  return s.s(String(0 === t.$H ? 24 : t.$H), "k" === e ? 1 : 2, "0");
-                case "X":
-                  return Math.floor(t.$d.getTime() / 1e3);
-                case "x":
-                  return t.$d.getTime();
-                case "z":
-                  return "[" + t.offsetName() + "]";
-                case "zzz":
-                  return "[" + t.offsetName("long") + "]";
-                default:
-                  return e;
-              }
-            });
-          return n.bind(this)(a);
-        };
-      };
-    });
-  })(advancedFormat$1);
-  return advancedFormat$1.exports;
-}
-
-var advancedFormatExports = requireAdvancedFormat();
-var advancedFormatPlugin = /*@__PURE__*/getDefaultExportFromCjs(advancedFormatExports);
-
-const warnedOnceCache = new Set();
-
-// TODO move to @base_ui/internals. Base UI, etc. need this helper.
-function warnOnce(message, gravity = 'warning') {
-  if (process.env.NODE_ENV === 'production') {
-    return;
-  }
+const buildWarning = (message, gravity = 'warning') => {
+  let alreadyWarned = false;
   const cleanMessage = Array.isArray(message) ? message.join('\n') : message;
-  if (!warnedOnceCache.has(cleanMessage)) {
-    warnedOnceCache.add(cleanMessage);
-    if (gravity === 'error') {
-      console.error(cleanMessage);
-    } else {
-      console.warn(cleanMessage);
+  return () => {
+    if (!alreadyWarned) {
+      alreadyWarned = true;
+      if (gravity === 'error') {
+        console.error(cleanMessage);
+      } else {
+        console.warn(cleanMessage);
+      }
     }
-  }
-}
+  };
+};
 
+defaultDayjs.extend(customParseFormatPlugin);
 defaultDayjs.extend(localizedFormatPlugin);
-defaultDayjs.extend(weekOfYearPlugin);
 defaultDayjs.extend(isBetweenPlugin);
-defaultDayjs.extend(advancedFormatPlugin);
+const localeNotFoundWarning = buildWarning(['Your locale has not been found.', 'Either the locale key is not a supported one. Locales supported by dayjs are available here: https://github.com/iamkun/dayjs/tree/dev/src/locale', "Or you forget to import the locale from 'dayjs/locale/{localeUsed}'", 'fallback on English locale']);
 const formatTokenMap = {
   // Year
   YY: 'year',
@@ -13782,22 +13715,27 @@ const defaultFormats = {
   month: 'MMMM',
   monthShort: 'MMM',
   dayOfMonth: 'D',
-  dayOfMonthFull: 'Do',
   weekday: 'dddd',
-  weekdayShort: 'dd',
+  weekdayShort: 'ddd',
   hours24h: 'HH',
   hours12h: 'hh',
   meridiem: 'A',
   minutes: 'mm',
   seconds: 'ss',
   fullDate: 'll',
+  fullDateWithWeekday: 'dddd, LL',
   keyboardDate: 'L',
   shortDate: 'MMM D',
   normalDate: 'D MMMM',
   normalDateWithWeekday: 'ddd, MMM D',
+  monthAndYear: 'MMMM YYYY',
+  monthAndDate: 'MMMM D',
   fullTime: 'LT',
   fullTime12h: 'hh:mm A',
   fullTime24h: 'HH:mm',
+  fullDateTime: 'lll',
+  fullDateTime12h: 'll hh:mm A',
+  fullDateTime24h: 'll HH:mm',
   keyboardDateTime: 'L LT',
   keyboardDateTime12h: 'L hh:mm A',
   keyboardDateTime24h: 'L HH:mm'
@@ -13805,6 +13743,7 @@ const defaultFormats = {
 const MISSING_UTC_PLUGIN = ['Missing UTC plugin', 'To be able to use UTC or timezones, you have to enable the `utc` plugin', 'Find more information on https://mui.com/x/react-date-pickers/timezone/#day-js-and-utc'].join('\n');
 const MISSING_TIMEZONE_PLUGIN = ['Missing timezone plugin', 'To be able to use timezones, you have to enable both the `utc` and the `timezone` plugin', 'Find more information on https://mui.com/x/react-date-pickers/timezone/#day-js-and-timezone'].join('\n');
 const withLocale = (dayjs, locale) => !locale ? dayjs : (...args) => dayjs(...args).locale(locale);
+
 /**
  * Based on `@date-io/dayjs`
  *
@@ -13833,11 +13772,14 @@ const withLocale = (dayjs, locale) => !locale ? dayjs : (...args) => dayjs(...ar
 class AdapterDayjs {
   constructor({
     locale: _locale,
-    formats
+    formats,
+    instance
   } = {}) {
+    var _this$rawDayJsInstanc;
     this.isMUIAdapter = true;
     this.isTimezoneCompatible = true;
     this.lib = 'dayjs';
+    this.rawDayJsInstance = void 0;
     this.dayjs = void 0;
     this.locale = void 0;
     this.formats = void 0;
@@ -13860,25 +13802,15 @@ class AdapterDayjs {
       return value.format(comparisonTemplate) === comparingInValueTimezone.format(comparisonTemplate);
     };
     /**
-     * Replaces "default" by undefined and "system" by the system timezone before passing it to `dayjs`.
+     * Replace "default" by undefined before passing it to `dayjs
      */
-    this.cleanTimezone = timezone => {
-      switch (timezone) {
-        case 'default':
-          {
-            return undefined;
-          }
-        case 'system':
-          {
-            return defaultDayjs.tz.guess();
-          }
-        default:
-          {
-            return timezone;
-          }
-      }
-    };
+    this.cleanTimezone = timezone => timezone === 'default' ? undefined : timezone;
     this.createSystemDate = value => {
+      // TODO v7: Stop using `this.rawDayJsInstance` (drop the `instance` param on the adapters)
+      /* istanbul ignore next */
+      if (this.rawDayJsInstance) {
+        return this.rawDayJsInstance(value);
+      }
       if (this.hasUTCPlugin() && this.hasTimezonePlugin()) {
         const timezone = defaultDayjs.tz.guess();
 
@@ -13916,42 +13848,18 @@ class AdapterDayjs {
       const locale = this.locale || 'en';
       let localeObject = locales[locale];
       if (localeObject === undefined) {
-        /* istanbul ignore next */
-        if (process.env.NODE_ENV !== 'production') {
-          warnOnce(['MUI X: Your locale has not been found.', 'Either the locale key is not a supported one. Locales supported by dayjs are available here: https://github.com/iamkun/dayjs/tree/dev/src/locale.', "Or you forget to import the locale from 'dayjs/locale/{localeUsed}'", 'fallback on English locale.']);
-        }
+        localeNotFoundWarning();
         localeObject = locales.en;
       }
       return localeObject.formats;
     };
-    /**
-     * If the new day does not have the same offset as the old one (when switching to summer day time for example),
-     * Then dayjs will not automatically adjust the offset (moment does).
-     * We have to parse again the value to make sure the `fixOffset` method is applied.
-     * See https://github.com/iamkun/dayjs/blob/b3624de619d6e734cd0ffdbbd3502185041c1b60/src/plugin/timezone/index.js#L72
-     */
-    this.adjustOffset = value => {
-      if (!this.hasTimezonePlugin()) {
-        return value;
+    this.date = value => {
+      if (value === null) {
+        return null;
       }
-      const timezone = this.getTimezone(value);
-      if (timezone !== 'UTC') {
-        const fixedValue = value.tz(this.cleanTimezone(timezone), true);
-        // TODO: Simplify the case when we raise the `dayjs` peer dep to 1.11.12 (https://github.com/iamkun/dayjs/releases/tag/v1.11.12)
-        /* istanbul ignore next */
-        // @ts-ignore
-        if (fixedValue.$offset === (value.$offset ?? 0)) {
-          return value;
-        }
-        // Change only what is needed to avoid creating a new object with unwanted data
-        // Especially important when used in an environment where utc or timezone dates are used only in some places
-        // Reference: https://github.com/mui/mui-x/issues/13290
-        // @ts-ignore
-        value.$offset = fixedValue.$offset;
-      }
-      return value;
+      return this.dayjs(value);
     };
-    this.date = (value, timezone = 'default') => {
+    this.dateWithTimezone = (value, timezone) => {
       if (value === null) {
         return null;
       }
@@ -13968,17 +13876,15 @@ class AdapterDayjs {
       }
       return parsedValue.locale(this.locale);
     };
-    this.getInvalidDate = () => defaultDayjs(new Date('Invalid date'));
     this.getTimezone = value => {
-      if (this.hasTimezonePlugin()) {
-        // @ts-ignore
-        const zone = value.$x?.$timezone;
-        if (zone) {
-          return zone;
-        }
-      }
       if (this.hasUTCPlugin() && value.isUTC()) {
         return 'UTC';
+      }
+      if (this.hasTimezonePlugin()) {
+        var _value$$x;
+        // @ts-ignore
+        const zone = (_value$$x = value.$x) == null ? void 0 : _value$$x.$timezone;
+        return zone != null ? zone : 'system';
       }
       return 'system';
     };
@@ -14013,6 +13919,12 @@ class AdapterDayjs {
     this.toJsDate = value => {
       return value.toDate();
     };
+    this.parseISO = isoString => {
+      return this.dayjs(isoString);
+    };
+    this.toISO = value => {
+      return value.toISOString();
+    };
     this.parse = (value, format) => {
       if (value === '') {
         return null;
@@ -14036,11 +13948,14 @@ class AdapterDayjs {
         return a || localeFormats[b] || t(localeFormats[B]);
       });
     };
+    this.getFormatHelperText = format => {
+      return this.expandFormat(format).replace(/a/gi, '(a|p)m').toLocaleLowerCase();
+    };
+    this.isNull = value => {
+      return value === null;
+    };
     this.isValid = value => {
-      if (value == null) {
-        return false;
-      }
-      return value.isValid();
+      return this.dayjs(value).isValid();
     };
     this.format = (value, formatKey) => {
       return this.formatByString(value, this.formats[formatKey]);
@@ -14051,14 +13966,14 @@ class AdapterDayjs {
     this.formatNumber = numberToFormat => {
       return numberToFormat;
     };
+    this.getDiff = (value, comparing, unit) => {
+      return value.diff(comparing, unit);
+    };
     this.isEqual = (value, comparing) => {
       if (value === null && comparing === null) {
         return true;
       }
-      if (value === null || comparing === null) {
-        return false;
-      }
-      return value.toDate().getTime() === comparing.toDate().getTime();
+      return this.dayjs(value).toDate().getTime() === this.dayjs(comparing).toDate().getTime();
     };
     this.isSameYear = (value, comparing) => {
       return this.isSame(value, comparing, 'YYYY');
@@ -14106,49 +14021,49 @@ class AdapterDayjs {
       return value >= start && value <= end;
     };
     this.startOfYear = value => {
-      return this.adjustOffset(value.startOf('year'));
+      return value.startOf('year');
     };
     this.startOfMonth = value => {
-      return this.adjustOffset(value.startOf('month'));
+      return value.startOf('month');
     };
     this.startOfWeek = value => {
-      return this.adjustOffset(this.setLocaleToValue(value).startOf('week'));
+      return value.startOf('week');
     };
     this.startOfDay = value => {
-      return this.adjustOffset(value.startOf('day'));
+      return value.startOf('day');
     };
     this.endOfYear = value => {
-      return this.adjustOffset(value.endOf('year'));
+      return value.endOf('year');
     };
     this.endOfMonth = value => {
-      return this.adjustOffset(value.endOf('month'));
+      return value.endOf('month');
     };
     this.endOfWeek = value => {
-      return this.adjustOffset(this.setLocaleToValue(value).endOf('week'));
+      return value.endOf('week');
     };
     this.endOfDay = value => {
-      return this.adjustOffset(value.endOf('day'));
+      return value.endOf('day');
     };
     this.addYears = (value, amount) => {
-      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'year') : value.add(amount, 'year'));
+      return amount < 0 ? value.subtract(Math.abs(amount), 'year') : value.add(amount, 'year');
     };
     this.addMonths = (value, amount) => {
-      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'month') : value.add(amount, 'month'));
+      return amount < 0 ? value.subtract(Math.abs(amount), 'month') : value.add(amount, 'month');
     };
     this.addWeeks = (value, amount) => {
-      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'week') : value.add(amount, 'week'));
+      return amount < 0 ? value.subtract(Math.abs(amount), 'week') : value.add(amount, 'week');
     };
     this.addDays = (value, amount) => {
-      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'day') : value.add(amount, 'day'));
+      return amount < 0 ? value.subtract(Math.abs(amount), 'day') : value.add(amount, 'day');
     };
     this.addHours = (value, amount) => {
-      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'hour') : value.add(amount, 'hour'));
+      return amount < 0 ? value.subtract(Math.abs(amount), 'hour') : value.add(amount, 'hour');
     };
     this.addMinutes = (value, amount) => {
-      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'minute') : value.add(amount, 'minute'));
+      return amount < 0 ? value.subtract(Math.abs(amount), 'minute') : value.add(amount, 'minute');
     };
     this.addSeconds = (value, amount) => {
-      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'second') : value.add(amount, 'second'));
+      return amount < 0 ? value.subtract(Math.abs(amount), 'second') : value.add(amount, 'second');
     };
     this.getYear = value => {
       return value.year();
@@ -14172,32 +14087,56 @@ class AdapterDayjs {
       return value.millisecond();
     };
     this.setYear = (value, year) => {
-      return this.adjustOffset(value.set('year', year));
+      return value.set('year', year);
     };
     this.setMonth = (value, month) => {
-      return this.adjustOffset(value.set('month', month));
+      return value.set('month', month);
     };
     this.setDate = (value, date) => {
-      return this.adjustOffset(value.set('date', date));
+      return value.set('date', date);
     };
     this.setHours = (value, hours) => {
-      return this.adjustOffset(value.set('hour', hours));
+      return value.set('hour', hours);
     };
     this.setMinutes = (value, minutes) => {
-      return this.adjustOffset(value.set('minute', minutes));
+      return value.set('minute', minutes);
     };
     this.setSeconds = (value, seconds) => {
-      return this.adjustOffset(value.set('second', seconds));
+      return value.set('second', seconds);
     };
     this.setMilliseconds = (value, milliseconds) => {
-      return this.adjustOffset(value.set('millisecond', milliseconds));
+      return value.set('millisecond', milliseconds);
     };
     this.getDaysInMonth = value => {
       return value.daysInMonth();
     };
+    this.getNextMonth = value => {
+      return value.add(1, 'month');
+    };
+    this.getPreviousMonth = value => {
+      return value.subtract(1, 'month');
+    };
+    this.getMonthArray = value => {
+      const firstMonth = value.startOf('year');
+      const monthArray = [firstMonth];
+      while (monthArray.length < 12) {
+        const prevMonth = monthArray[monthArray.length - 1];
+        monthArray.push(this.addMonths(prevMonth, 1));
+      }
+      return monthArray;
+    };
+    this.mergeDateAndTime = (dateParam, timeParam) => {
+      return dateParam.hour(timeParam.hour()).minute(timeParam.minute()).second(timeParam.second());
+    };
+    this.getWeekdays = () => {
+      const start = this.dayjs().startOf('week');
+      return [0, 1, 2, 3, 4, 5, 6].map(diff => this.formatByString(start.add(diff, 'day'), 'dd'));
+    };
     this.getWeekArray = value => {
-      const start = this.startOfWeek(this.startOfMonth(value));
-      const end = this.endOfWeek(this.endOfMonth(value));
+      const timezone = this.getTimezone(value);
+      const cleanValue = this.setLocaleToValue(value);
+      const start = cleanValue.startOf('month').startOf('week');
+      const end = cleanValue.endOf('month').endOf('week');
       let count = 0;
       let current = start;
       const nestedWeeks = [];
@@ -14205,7 +14144,15 @@ class AdapterDayjs {
         const weekNumber = Math.floor(count / 7);
         nestedWeeks[weekNumber] = nestedWeeks[weekNumber] || [];
         nestedWeeks[weekNumber].push(current);
-        current = this.addDays(current, 1);
+        current = current.add(1, 'day');
+
+        // If the new day does not have the same offset as the old one (when switching to summer day time for example),
+        // Then dayjs will not automatically adjust the offset (moment does)
+        // We have to parse again the value to make sure the `fixOffset` method is applied
+        // See https://github.com/iamkun/dayjs/blob/b3624de619d6e734cd0ffdbbd3502185041c1b60/src/plugin/timezone/index.js#L72
+        if (this.hasTimezonePlugin() && timezone !== 'UTC' && timezone !== 'system') {
+          current = current.tz(this.cleanTimezone(timezone), true);
+        }
         count += 1;
       }
       return nestedWeeks;
@@ -14213,27 +14160,25 @@ class AdapterDayjs {
     this.getWeekNumber = value => {
       return value.week();
     };
-    this.getYearRange = ([start, end]) => {
-      const startDate = this.startOfYear(start);
-      const endDate = this.endOfYear(end);
+    this.getYearRange = (start, end) => {
+      const startDate = start.startOf('year');
+      const endDate = end.endOf('year');
       const years = [];
       let current = startDate;
-      while (this.isBefore(current, endDate)) {
+      while (current < endDate) {
         years.push(current);
-        current = this.addYears(current, 1);
+        current = current.add(1, 'year');
       }
       return years;
     };
-    this.dayjs = withLocale(defaultDayjs, _locale);
+    this.getMeridiemText = ampm => {
+      return ampm === 'am' ? 'AM' : 'PM';
+    };
+    this.rawDayJsInstance = instance;
+    this.dayjs = withLocale((_this$rawDayJsInstanc = this.rawDayJsInstance) != null ? _this$rawDayJsInstanc : defaultDayjs, _locale);
     this.locale = _locale;
     this.formats = _extends({}, defaultFormats, formats);
-
-    // Moved plugins to the constructor to allow for users to use options on the library
-    // for reference: https://github.com/mui/mui-x/pull/11151
-    defaultDayjs.extend(customParseFormatPlugin);
-  }
-  getDayOfWeek(value) {
-    return value.day() + 1;
+    defaultDayjs.extend(weekOfYear);
   }
 }
 
