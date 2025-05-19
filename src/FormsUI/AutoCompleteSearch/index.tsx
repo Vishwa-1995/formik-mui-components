@@ -59,28 +59,28 @@ export default function AutoCompleteSearchWrapper<
         );
       }, 300)}
       renderInput={(params) => (
-        <>
-          <TextField
-            {...params}
-            variant="outlined"
-            fullWidth
-            name={field.name}
-            onBlur={(e) => {
-              field.onBlur(e);
-              handleTextFieldBlur(e);
-            }}
-            {...configTextField}
-            label={props.label}
-            disabled={props.disabled}
-            slotProps={{
-              input: {
-                ...params.InputProps,
-                endAdornment: <>{params.InputProps?.endAdornment}</>,
-              },
-            }}
-          />
-          {props.useQueryResult.isLoading && <LinearProgress />}
-        </>
+        <TextField
+          {...params}
+          variant="outlined"
+          fullWidth
+          name={field.name}
+          onBlur={(e) => {
+            field.onBlur(e);
+            handleTextFieldBlur(e);
+          }}
+          {...configTextField}
+          label={props.label}
+          disabled={props.disabled}
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <>
+                {params.InputProps.endAdornment}
+                {props.useQueryResult.isLoading && <LinearProgress />}
+              </>
+            ),
+          }}
+        />
       )}
     />
   );
