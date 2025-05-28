@@ -17910,15 +17910,15 @@ function FileViewer() {
             return () => URL.revokeObjectURL(url); // Cleanup URL on unmount
         }
     }, [file]);
-    if (!fileUrl) {
-        return jsxRuntimeExports.jsx("p", { children: "Loading File..." });
+    if (!fileUrl && close) {
+        return (jsxRuntimeExports.jsx(Box$1, { sx: { position: "fixed", top: 0, left: 0, zIndex: 1301, width: "100%" }, children: jsxRuntimeExports.jsx(LinearProgress$1, { color: "primary" }) }));
     }
     return (jsxRuntimeExports.jsxs(Dialog, { fullScreen: true, open: close, onClose: closeFileViewer, fullWidth: true, slotProps: {
             paper: {
                 style: { borderRadius: 15 },
             },
         }, children: [jsxRuntimeExports.jsx(AppBar, { sx: { position: "relative" }, children: jsxRuntimeExports.jsxs(Toolbar, { children: [jsxRuntimeExports.jsx(IconButton$1, { edge: "start", color: "inherit", onClick: closeFileViewer, children: jsxRuntimeExports.jsx(CancelIcon, {}) }), jsxRuntimeExports.jsx(Stack, { direction: "row", justifyContent: "flex-end", spacing: 2, sx: { width: "100%" }, children: (typeof file == "object" && file?.type !== "application/pdf") ||
-                                (typeof file == "string" && file?.split(".")?.pop() !== "pdf") ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(IconButton$1, { color: "inherit", children: jsxRuntimeExports.jsx(Link, { to: fileUrl, target: "_blank", style: { color: "white" }, children: jsxRuntimeExports.jsx(FullscreenIcon, {}) }) }), jsxRuntimeExports.jsx(IconButton$1, { color: "inherit", onClick: () => {
+                                (typeof file == "string" && file?.split(".")?.pop() !== "pdf") ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [fileUrl && (jsxRuntimeExports.jsx(IconButton$1, { color: "inherit", children: jsxRuntimeExports.jsx(Link, { to: fileUrl, target: "_blank", style: { color: "white" }, children: jsxRuntimeExports.jsx(FullscreenIcon, {}) }) })), jsxRuntimeExports.jsx(IconButton$1, { color: "inherit", onClick: () => {
                                             if (zoom < 2.0)
                                                 useFileViewerStore.setState({
                                                     ...useFileViewerStore,
@@ -17933,12 +17933,12 @@ function FileViewer() {
                                         }, children: jsxRuntimeExports.jsx(ZoomOutIcon, {}) })] })) : null })] }) }), jsxRuntimeExports.jsx(DialogContent, { style: { display: "flex", justifyContent: "center" }, children: (typeof file == "object" && file?.type === "application/pdf") ||
                     (typeof file == "string" &&
                         file &&
-                        file?.split(".")?.pop() === "pdf") ? (jsxRuntimeExports.jsx(Box$1, { style: { height: "100vh", width: "100%" }, children: jsxRuntimeExports.jsx(Worker, { workerUrl: "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js", children: jsxRuntimeExports.jsx(Viewer, { fileUrl: fileUrl }) }) })) : (jsxRuntimeExports.jsx("img", { style: {
+                        file?.split(".")?.pop() === "pdf") ? (jsxRuntimeExports.jsx(Box$1, { style: { height: "100vh", width: "100%" }, children: jsxRuntimeExports.jsx(Worker, { workerUrl: "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js", children: fileUrl && jsxRuntimeExports.jsx(Viewer, { fileUrl: fileUrl }) }) })) : (jsxRuntimeExports.jsx("img", { style: {
                         maxHeight: "100%",
                         maxWidth: "100%",
                         transformOrigin: "top left",
                         transform: `scale(${zoom})`,
-                    }, src: fileUrl, alt: "" })) })] }));
+                    }, src: fileUrl ?? undefined, alt: "" })) })] }));
 }
 
 const _setImage = async (src, filename) => {

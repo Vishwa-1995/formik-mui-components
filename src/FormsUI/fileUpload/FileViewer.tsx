@@ -3,6 +3,7 @@ import {
   Box,
   DialogContent,
   IconButton,
+  LinearProgress,
   Stack,
   Toolbar,
 } from "@mui/material";
@@ -57,8 +58,14 @@ function FileViewer() {
     }
   }, [file]);
 
-  if (!fileUrl) {
-    return <p>Loading File...</p>;
+  if (!fileUrl && close) {
+    return (
+      <Box
+        sx={{ position: "fixed", top: 0, left: 0, zIndex: 1301, width: "100%" }}
+      >
+        <LinearProgress color="primary" />
+      </Box>
+    );
   }
 
   return (
@@ -87,11 +94,17 @@ function FileViewer() {
             {(typeof file == "object" && file?.type !== "application/pdf") ||
             (typeof file == "string" && file?.split(".")?.pop() !== "pdf") ? (
               <>
-                <IconButton color="inherit">
-                  <Link to={fileUrl} target="_blank" style={{ color: "white" }}>
-                    <FullscreenIcon />
-                  </Link>
-                </IconButton>
+                {fileUrl && (
+                  <IconButton color="inherit">
+                    <Link
+                      to={fileUrl}
+                      target="_blank"
+                      style={{ color: "white" }}
+                    >
+                      <FullscreenIcon />
+                    </Link>
+                  </IconButton>
+                )}
                 <IconButton
                   color="inherit"
                   onClick={() => {
@@ -128,7 +141,7 @@ function FileViewer() {
           file?.split(".")?.pop() === "pdf") ? (
           <Box style={{ height: "100vh", width: "100%" }}>
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-              <Viewer fileUrl={fileUrl} />
+              {fileUrl && <Viewer fileUrl={fileUrl} />}
             </Worker>
           </Box>
         ) : (
@@ -139,7 +152,7 @@ function FileViewer() {
               transformOrigin: "top left",
               transform: `scale(${zoom})`,
             }}
-            src={fileUrl}
+            src={fileUrl ?? undefined}
             alt=""
           />
         )}
