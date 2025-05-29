@@ -19296,3 +19296,4 @@ exports.SelectWrapper = SelectWrapper;
 exports.SwitchWrapper = SwitchWrapper;
 exports.TextFieldWrapper = TextFieldWrapper;
 exports.TimePickerWrapper = TimePickerWrapper;
+exports.openFileViewer = openFileViewer;

@@ -16,4 +16,5 @@ export { default as TimePickerWrapper } from "./FormsUI/TimePicker";
 // export { IPAddressTextField } from "./FormsUI/IPaddresTextField";
 // export { SuffixTextarea } from "./FormsUI/SuffixTextarea";
 export { default as ItemImageUpload } from "./FormsUI/ItemImageUpload/item-image-upload.component";
+export { openFileViewer } from "./FormsUI/fileUpload/FileViewer";
 export { default as FileViewer } from "./FormsUI/fileUpload/FileViewer";

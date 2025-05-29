@@ -13,4 +13,5 @@ export { default as SwitchWrapper } from "./FormsUI/Switch";
 export { default as TextFieldWrapper } from "./FormsUI/TextField";
 export { default as TimePickerWrapper } from "./FormsUI/TimePicker";
 export { default as ItemImageUpload } from "./FormsUI/ItemImageUpload/item-image-upload.component";
+export { openFileViewer } from "./FormsUI/fileUpload/FileViewer";
 export { default as FileViewer } from "./FormsUI/fileUpload/FileViewer";
