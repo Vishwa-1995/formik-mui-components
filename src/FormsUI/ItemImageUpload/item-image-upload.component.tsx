@@ -51,7 +51,7 @@ const ItemImageUpload: React.FC<ItemImageUploadProps> = ({
     if (field.value && typeof field.value.name === "string") {
       setUrl(URL.createObjectURL(field.value));
     }
-  }, []);
+  }, [field.value]);
 
   return (
     <div className="row mb-4">
