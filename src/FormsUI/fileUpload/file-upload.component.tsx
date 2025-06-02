@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   FileUploadContainer,
   FormField,
@@ -121,6 +121,17 @@ const FileUpload = ({
 
     return [...field.value];
   };
+
+  useEffect(() => {
+    if (field.value && typeof field.value.name == "string") {
+      let updatedFiles = addNewFiles([field.value]);
+      setFieldValue(name, updatedFiles);
+
+      if (onUpload) {
+        onUpload(updatedFiles);
+      }
+    }
+  }, [field.value]);
 
   const handleNewFileUpload = (e: any) => {
     const { files: newFiles } = e.target;

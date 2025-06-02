@@ -17987,6 +17987,15 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
         }
         return [...field.value];
     };
+    useEffect(() => {
+        if (field.value && typeof field.value.name == "string") {
+            let updatedFiles = addNewFiles([field.value]);
+            setFieldValue(name, updatedFiles);
+            if (onUpload) {
+                onUpload(updatedFiles);
+            }
+        }
+    }, [field.value]);
     const handleNewFileUpload = (e) => {
         const { files: newFiles } = e.target;
         if (newFiles.length) {
