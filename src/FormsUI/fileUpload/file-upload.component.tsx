@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useRef } from "react";
 import {
   FileUploadContainer,
   FormField,
@@ -28,6 +28,18 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { openFileViewer } from "./FileViewer";
 import { useTheme } from "@mui/material/styles";
 import { JSX } from "react/jsx-runtime";
+
+interface FileUploadProps {
+  label: string;
+  name: string;
+  maxFileSizeInBytes?: number;
+  progress?: number;
+  onUpload?: (files: File[]) => void;
+  multiple?: boolean;
+  disabled?: boolean;
+  accept?: string;
+  // Add any other props you need
+}
 
 export const _setImage = async (
   src: string,
@@ -77,8 +89,9 @@ const FileUpload = ({
   name,
   maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
   progress,
+  onUpload,
   ...otherProps
-}: any) => {
+}: FileUploadProps) => {
   const theme = useTheme();
   const fileInputField: any = useRef(null);
   const { setFieldValue } = useFormikContext();
@@ -109,18 +122,15 @@ const FileUpload = ({
     return [...field.value];
   };
 
-  useEffect(() => {
-    if (field.value && typeof field.value.name == "string") {
-      let updatedFiles = addNewFiles([field.value]);
-      setFieldValue(name, updatedFiles);
-    }
-  }, [field.value]);
-
   const handleNewFileUpload = (e: any) => {
     const { files: newFiles } = e.target;
     if (newFiles.length) {
       let updatedFiles = addNewFiles(newFiles);
       setFieldValue(name, updatedFiles);
+
+      if (onUpload) {
+        onUpload(updatedFiles);
+      }
     }
   };
 
@@ -345,7 +355,7 @@ const FileUpload = ({
                             (file.name.length > 30 ? "..." : "")}
                         </Typography>
                         <Box sx={{ width: "100%" }}>
-                          {progress > 0 && (
+                          {progress !== undefined && progress > 0 && (
                             <LinearProgressWithLabel value={progress} />
                           )}
                         </Box>
@@ -401,7 +411,7 @@ const FileUpload = ({
           </FilePreviewContainer>
         </Grid>
         <Grid item xs={12}>
-          {meta && meta.error ? (
+          {meta?.error ? (
             <Typography variant="caption" color="error">
               {meta.error}
             </Typography>

@@ -13,12 +13,14 @@ interface ItemImageUploadProps
   label: string;
   name: string;
   maxFileSizeInBytes?: number;
+  onUpload?: (files: File) => void;
 }
 
 const ItemImageUpload: React.FC<ItemImageUploadProps> = ({
   label,
   name,
   maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
+  onUpload,
   ...otherProps
 }) => {
   const theme: any = useTheme();
@@ -38,6 +40,9 @@ const ItemImageUpload: React.FC<ItemImageUploadProps> = ({
       if (file.size <= maxFileSizeInBytes) {
         setFieldValue(name, file);
         setUrl(URL.createObjectURL(file));
+        if (onUpload) {
+          onUpload(file);
+        }
       }
     }
   };

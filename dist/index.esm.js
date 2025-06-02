@@ -17964,7 +17964,7 @@ const convertBytesToMB = (bytes) => Math.round(bytes / (KILO_BYTES_PER_BYTE * KI
 function LinearProgressWithLabel(props) {
     return (jsxRuntimeExports.jsxs(Box$1, { sx: { display: "flex", alignItems: "center" }, children: [jsxRuntimeExports.jsx(Box$1, { sx: { width: "100%", mr: 1 }, children: jsxRuntimeExports.jsx(LinearProgress, { variant: "determinate", ...props }) }), jsxRuntimeExports.jsx(Box$1, { sx: { minWidth: 35 }, children: jsxRuntimeExports.jsx(Typography$1, { variant: "body2", sx: { color: "text.secondary" }, children: `${Math.round(props?.value)}%` }) })] }));
 }
-const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES$1, progress, ...otherProps }) => {
+const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES$1, progress, onUpload, ...otherProps }) => {
     const theme = useTheme();
     const fileInputField = useRef(null);
     const { setFieldValue } = useFormikContext();
@@ -17987,17 +17987,14 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
         }
         return [...field.value];
     };
-    useEffect(() => {
-        if (field.value && typeof field.value.name == "string") {
-            let updatedFiles = addNewFiles([field.value]);
-            setFieldValue(name, updatedFiles);
-        }
-    }, [field.value]);
     const handleNewFileUpload = (e) => {
         const { files: newFiles } = e.target;
         if (newFiles.length) {
             let updatedFiles = addNewFiles(newFiles);
             setFieldValue(name, updatedFiles);
+            if (onUpload) {
+                onUpload(updatedFiles);
+            }
         }
     };
     const removeFile = (fileIndex) => {
@@ -18050,12 +18047,12 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
                                                                                             }, children: jsxRuntimeExports.jsx(VisibilityIcon, {}) }), isImageFile && (jsxRuntimeExports.jsx(RemoveFileIcon, { color: "secondary", size: "small", onClick: () => {
                                                                                                 openImageCropper(URL.createObjectURL(file), file.name, onCropDone, onCropCancel);
                                                                                             }, children: jsxRuntimeExports.jsx(CropIcon, {}) }))] })] })] })] }) })] }), jsxRuntimeExports.jsx(Grid, { item: true, xs: 9.5, display: "flex", justifyContent: "center", alignItems: "center", children: jsxRuntimeExports.jsxs(Grid, { container: true, children: [jsxRuntimeExports.jsx(Typography$1, { variant: "subtitle2", color: theme.palette.primary.dark, children: file.name.substring(0, 30) +
-                                                                (file.name.length > 30 ? "..." : "") }), jsxRuntimeExports.jsx(Box$1, { sx: { width: "100%" }, children: progress > 0 && (jsxRuntimeExports.jsx(LinearProgressWithLabel, { value: progress })) }), jsxRuntimeExports.jsx(Grid, { item: true, xs: 6, children: jsxRuntimeExports.jsxs(Typography$1, { variant: "h6", color: "grey", children: [convertBytesToKB(file.size), " kb of", " ", convertBytesToMB(maxFileSizeInBytes), " MB", " "] }) }), jsxRuntimeExports.jsxs(Grid, { item: true, xs: 6, display: "flex", justifyContent: "flex-end", alignItems: "flex-end", children: [isImageFile && (jsxRuntimeExports.jsx(Typography$1, { variant: "h6", color: "primary", sx: { cursor: "pointer", marginX: 1 }, onClick: () => {
+                                                                (file.name.length > 30 ? "..." : "") }), jsxRuntimeExports.jsx(Box$1, { sx: { width: "100%" }, children: progress !== undefined && progress > 0 && (jsxRuntimeExports.jsx(LinearProgressWithLabel, { value: progress })) }), jsxRuntimeExports.jsx(Grid, { item: true, xs: 6, children: jsxRuntimeExports.jsxs(Typography$1, { variant: "h6", color: "grey", children: [convertBytesToKB(file.size), " kb of", " ", convertBytesToMB(maxFileSizeInBytes), " MB", " "] }) }), jsxRuntimeExports.jsxs(Grid, { item: true, xs: 6, display: "flex", justifyContent: "flex-end", alignItems: "flex-end", children: [isImageFile && (jsxRuntimeExports.jsx(Typography$1, { variant: "h6", color: "primary", sx: { cursor: "pointer", marginX: 1 }, onClick: () => {
                                                                         openImageCropper(URL.createObjectURL(file), file.name, onCropDone, onCropCancel);
                                                                     }, children: "Crop" })), !isExcelFile && (jsxRuntimeExports.jsx(Typography$1, { variant: "h6", color: "primary", sx: { cursor: "pointer", marginX: 1 }, onClick: () => {
                                                                         openFileViewer(file);
                                                                     }, children: "View" }))] })] }) })] }, file.name));
-                                }) }) }) }), jsxRuntimeExports.jsx(Grid, { item: true, xs: 12, children: meta && meta.error ? (jsxRuntimeExports.jsx(Typography$1, { variant: "caption", color: "error", children: meta.error })) : null })] }), jsxRuntimeExports.jsx(ImageCropper, {})] }));
+                                }) }) }) }), jsxRuntimeExports.jsx(Grid, { item: true, xs: 12, children: meta?.error ? (jsxRuntimeExports.jsx(Typography$1, { variant: "caption", color: "error", children: meta.error })) : null })] }), jsxRuntimeExports.jsx(ImageCropper, {})] }));
 };
 
 const IconSelectWrapper = ({ name, options, ...otherProps }) => {
@@ -19209,7 +19206,7 @@ const FormField = styled$2.input `
 `;
 
 const DEFAULT_MAX_FILE_SIZE_IN_BYTES = 2097152;
-const ItemImageUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES, ...otherProps }) => {
+const ItemImageUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES, onUpload, ...otherProps }) => {
     const theme = useTheme();
     const fileInputField = useRef(null);
     const { setFieldValue } = useFormikContext();
@@ -19225,6 +19222,9 @@ const ItemImageUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SI
             if (file.size <= maxFileSizeInBytes) {
                 setFieldValue(name, file);
                 setUrl(URL.createObjectURL(file));
+                if (onUpload) {
+                    onUpload(file);
+                }
             }
         }
     };
@@ -19236,7 +19236,7 @@ const ItemImageUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SI
         if (field.value && typeof field.value.name === "string") {
             setUrl(URL.createObjectURL(field.value));
         }
-    }, []);
+    }, [field.value]);
     return (jsxRuntimeExports.jsxs("div", { className: "row mb-4", children: [jsxRuntimeExports.jsxs("div", { className: "col-md-12", children: [jsxRuntimeExports.jsx(Typography$1, { variant: "body1", color: "textSecondary", textAlign: "center", children: label }), jsxRuntimeExports.jsxs(Box$1, { sx: {
                             mt: 2,
                             alignItems: "center",
