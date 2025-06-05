@@ -14,6 +14,7 @@ interface ItemImageUploadProps
   name: string;
   maxFileSizeInBytes?: number;
   onUpload?: (files: File) => void;
+  onRemove?: () => void;
 }
 
 const ItemImageUpload: React.FC<ItemImageUploadProps> = ({
@@ -21,6 +22,7 @@ const ItemImageUpload: React.FC<ItemImageUploadProps> = ({
   name,
   maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
   onUpload,
+  onRemove,
   ...otherProps
 }) => {
   const theme: any = useTheme();
@@ -35,7 +37,7 @@ const ItemImageUpload: React.FC<ItemImageUploadProps> = ({
 
   const handleNewFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = e.target.files;
-    if (newFiles && newFiles.length) {
+    if (newFiles?.length) {
       const file = newFiles[0];
       if (file.size <= maxFileSizeInBytes) {
         setFieldValue(name, file);
@@ -48,6 +50,7 @@ const ItemImageUpload: React.FC<ItemImageUploadProps> = ({
   };
 
   const removeFile = () => {
+    if (onRemove) onRemove();
     setFieldValue(name, null);
     setUrl(null);
   };
@@ -55,6 +58,8 @@ const ItemImageUpload: React.FC<ItemImageUploadProps> = ({
   useEffect(() => {
     if (field.value && typeof field.value.name === "string") {
       setUrl(URL.createObjectURL(field.value));
+    } else {
+      setUrl(null);
     }
   }, [field.value]);
 
@@ -127,7 +132,7 @@ const ItemImageUpload: React.FC<ItemImageUploadProps> = ({
         />
       </div>
       <div className="col-md-12">
-        {meta && meta.error ? (
+        {meta?.error ? (
           <Typography variant="caption" color="error">
             {meta.error}
           </Typography>

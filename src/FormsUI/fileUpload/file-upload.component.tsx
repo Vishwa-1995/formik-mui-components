@@ -25,16 +25,18 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CropIcon from "@mui/icons-material/Crop";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { openFileViewer } from "./FileViewer";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { useTheme } from "@mui/material/styles";
 import { JSX } from "react/jsx-runtime";
+import { openFileViewer } from "./FileViewer";
 
 interface FileUploadProps {
   label: string;
   name: string;
   maxFileSizeInBytes?: number;
   progress?: number;
-  onUpload?: (files: File[]) => void;
+  onUpload?: (file: File) => void;
+  onRemove?: (index: number) => void;
   multiple?: boolean;
   disabled?: boolean;
   accept?: string;
@@ -44,7 +46,7 @@ interface FileUploadProps {
 export const _setImage = async (
   src: string,
   filename: string
-): Promise<File | {}> => {
+): Promise<File | object> => {
   try {
     if (src) {
       const response = await fetch(src);
@@ -90,6 +92,7 @@ const FileUpload = ({
   maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
   progress,
   onUpload,
+  onRemove,
   ...otherProps
 }: FileUploadProps) => {
   const theme = useTheme();
@@ -109,10 +112,13 @@ const FileUpload = ({
       0
     );
 
-    for (let file of newFiles) {
+    for (const file of newFiles) {
       totalFileSize += file.size;
       if (totalFileSize <= maxFileSizeInBytes) {
         if (!otherProps.multiple) {
+          if (onUpload) {
+            onUpload(file);
+          }
           return [file];
         }
         field.value = [...field.value, file];
@@ -124,29 +130,24 @@ const FileUpload = ({
 
   useEffect(() => {
     if (field.value && typeof field.value.name == "string") {
-      let updatedFiles = addNewFiles([field.value]);
+      const updatedFiles = addNewFiles([field.value]);
       setFieldValue(name, updatedFiles);
-
-      if (onUpload) {
-        onUpload(updatedFiles);
-      }
     }
   }, [field.value]);
 
   const handleNewFileUpload = (e: any) => {
     const { files: newFiles } = e.target;
     if (newFiles.length) {
-      let updatedFiles = addNewFiles(newFiles);
+      const updatedFiles = addNewFiles(newFiles);
       setFieldValue(name, updatedFiles);
-
-      if (onUpload) {
-        onUpload(updatedFiles);
-      }
     }
   };
 
   const removeFile = (fileIndex: number) => {
     field.value.splice(fileIndex, 1);
+    if (onRemove) {
+      onRemove(fileIndex);
+    }
     setFieldValue(name, field.value);
   };
 
@@ -158,7 +159,7 @@ const FileUpload = ({
 
     const context = canvasEle.getContext("2d");
 
-    let imageObj1 = new Image();
+    const imageObj1 = new Image();
     imageObj1.src = image;
     imageObj1.onload = function () {
       context?.drawImage(
@@ -176,9 +177,12 @@ const FileUpload = ({
       const dataURL = canvasEle.toDataURL();
 
       _setImage(dataURL, fileName).then((value) => {
-        let updatedField = field.value.map((obj: File) =>
+        const updatedField = field.value.map((obj: File) =>
           obj.name === fileName ? value : obj
         );
+        if (onUpload && value instanceof File) {
+          onUpload(value);
+        }
         setFieldValue(name, updatedField);
         closeImageCropper();
       });
@@ -228,10 +232,10 @@ const FileUpload = ({
                   "application/vnd.ms-excel", // Old Excel (.xls)
                   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // New Excel (.xlsx)
                 ];
-                let isPdfFile = file?.type === "application/pdf";
-                let isExcelFile = allowedTypes.includes(file.type);
-                let isImageFile = file?.type?.split("/")[0] === "image";
-                let isVideoFile = file?.type?.split("/")[0] === "video";
+                const isPdfFile = file?.type === "application/pdf";
+                const isExcelFile = allowedTypes.includes(file.type);
+                const isImageFile = file?.type?.split("/")[0] === "image";
+                const isVideoFile = file?.type?.split("/")[0] === "video";
                 return (
                   <Grid container key={file.name} spacing={2} marginTop={0.2}>
                     <Grid item>
@@ -366,8 +370,26 @@ const FileUpload = ({
                             (file.name.length > 30 ? "..." : "")}
                         </Typography>
                         <Box sx={{ width: "100%" }}>
+                          {progress !== undefined &&
+                            progress > 0 &&
+                            progress < 100 && (
+                              <LinearProgressWithLabel value={progress} />
+                            )}
                           {progress !== undefined && progress > 0 && (
-                            <LinearProgressWithLabel value={progress} />
+                            <Box
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="flex-end"
+                            >
+                              <DoneAllIcon color="success" fontSize="small" />
+                              <Typography
+                                variant="body2"
+                                color={theme.palette.success.main}
+                                fontSize="small"
+                              >
+                                Uploaded
+                              </Typography>
+                            </Box>
                           )}
                         </Box>
                         <Grid item xs={6}>
