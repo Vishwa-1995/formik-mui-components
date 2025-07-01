@@ -17,7 +17,7 @@ const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
     ...otherProps,
     fullWidth: true,
     variant: "outlined",
-    margin: "dense",
+    margin: "dense"
   };
 
   if (meta && meta.touched && meta.error) {
