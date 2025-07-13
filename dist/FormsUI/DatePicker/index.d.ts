@@ -1,6 +1,7 @@
 import React from "react";
 interface DatePickerWrapperProps {
     name: string;
+    label: string;
     [key: string]: any;
 }
 declare const DatePickerWrapper: React.FC<DatePickerWrapperProps>;
