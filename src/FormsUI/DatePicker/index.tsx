@@ -3,45 +3,46 @@ import { useField, useFormikContext } from "formik";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TextFieldProps } from "@mui/material/TextField";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
 interface DatePickerWrapperProps {
   name: string;
-  label: string;
   [key: string]: any;
 }
 
 const DatePickerWrapper: React.FC<DatePickerWrapperProps> = ({
   name,
-  label,
   ...otherProps
 }) => {
   const { setFieldValue } = useFormikContext();
   const [field, meta] = useField(name);
 
   const handleChange = (date: Dayjs | null) => {
-    // Convert to ISO string or null before saving to Formik
-    setFieldValue(name, date ? date.toISOString() : null);
+    setFieldValue(name, date);
   };
 
-  // Convert Formik value back to Dayjs object for the DatePicker
-  const value = field.value ? dayjs(field.value) : null;
-
-  const configTextField: TextFieldProps = {
+  const configDateTimePicker = {
+    ...field,
     ...otherProps,
+    onChange: handleChange,
+  };
+
+  const configTextField: Partial<TextFieldProps> = {
     variant: "outlined",
     fullWidth: true,
     margin: "dense",
-    error: meta.touched && !!meta.error,
-    helperText: meta.touched && meta.error,
   };
+
+  if (meta.touched && meta.error) {
+    configTextField.error = true;
+    configTextField.helperText = meta.error;
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
-        label={label}
-        value={value}
-        onChange={handleChange}
+        label="date picker template"
+        {...configDateTimePicker}
         slotProps={{ textField: configTextField }}
       />
     </LocalizationProvider>

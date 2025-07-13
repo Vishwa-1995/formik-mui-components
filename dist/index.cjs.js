@@ -13294,7 +13294,7 @@ function requireDayjs_min() {
 }
 
 var dayjs_minExports = requireDayjs_min();
-var dayjs = /*@__PURE__*/getDefaultExportFromCjs(dayjs_minExports);
+var defaultDayjs = /*@__PURE__*/getDefaultExportFromCjs(dayjs_minExports);
 
 var weekOfYear$2 = {exports: {}};
 
@@ -13641,9 +13641,9 @@ const buildWarning = (message, gravity = 'warning') => {
   };
 };
 
-dayjs.extend(customParseFormatPlugin);
-dayjs.extend(localizedFormatPlugin);
-dayjs.extend(isBetweenPlugin);
+defaultDayjs.extend(customParseFormatPlugin);
+defaultDayjs.extend(localizedFormatPlugin);
+defaultDayjs.extend(isBetweenPlugin);
 const localeNotFoundWarning = buildWarning(['Your locale has not been found.', 'Either the locale key is not a supported one. Locales supported by dayjs are available here: https://github.com/iamkun/dayjs/tree/dev/src/locale', "Or you forget to import the locale from 'dayjs/locale/{localeUsed}'", 'fallback on English locale']);
 const formatTokenMap = {
   // Year
@@ -13813,8 +13813,8 @@ class AdapterDayjs {
       }
       return value.locale(expectedLocale);
     };
-    this.hasUTCPlugin = () => typeof dayjs.utc !== 'undefined';
-    this.hasTimezonePlugin = () => typeof dayjs.tz !== 'undefined';
+    this.hasUTCPlugin = () => typeof defaultDayjs.utc !== 'undefined';
+    this.hasTimezonePlugin = () => typeof defaultDayjs.tz !== 'undefined';
     this.isSame = (value, comparing, comparisonTemplate) => {
       const comparingInValueTimezone = this.setTimezone(comparing, this.getTimezone(value));
       return value.format(comparisonTemplate) === comparingInValueTimezone.format(comparisonTemplate);
@@ -13830,23 +13830,23 @@ class AdapterDayjs {
         return this.rawDayJsInstance(value);
       }
       if (this.hasUTCPlugin() && this.hasTimezonePlugin()) {
-        const timezone = dayjs.tz.guess();
+        const timezone = defaultDayjs.tz.guess();
 
         // We can't change the system timezone in the tests
         /* istanbul ignore next */
         if (timezone !== 'UTC') {
-          return dayjs.tz(value, timezone);
+          return defaultDayjs.tz(value, timezone);
         }
-        return dayjs(value);
+        return defaultDayjs(value);
       }
-      return dayjs(value);
+      return defaultDayjs(value);
     };
     this.createUTCDate = value => {
       /* istanbul ignore next */
       if (!this.hasUTCPlugin()) {
         throw new Error(MISSING_UTC_PLUGIN);
       }
-      return dayjs.utc(value);
+      return defaultDayjs.utc(value);
     };
     this.createTZDate = (value, timezone) => {
       /* istanbul ignore next */
@@ -13859,10 +13859,10 @@ class AdapterDayjs {
         throw new Error(MISSING_TIMEZONE_PLUGIN);
       }
       const keepLocalTime = value !== undefined && !value.endsWith('Z');
-      return dayjs(value).tz(this.cleanTimezone(timezone), keepLocalTime);
+      return defaultDayjs(value).tz(this.cleanTimezone(timezone), keepLocalTime);
     };
     this.getLocaleFormats = () => {
-      const locales = dayjs.Ls;
+      const locales = defaultDayjs.Ls;
       const locale = this.locale || 'en';
       let localeObject = locales[locale];
       if (localeObject === undefined) {
@@ -13932,7 +13932,7 @@ class AdapterDayjs {
         /* istanbul ignore next */
         throw new Error(MISSING_TIMEZONE_PLUGIN);
       }
-      return dayjs.tz(value, this.cleanTimezone(timezone));
+      return defaultDayjs.tz(value, this.cleanTimezone(timezone));
     };
     this.toJsDate = value => {
       return value.toDate();
@@ -14193,31 +14193,34 @@ class AdapterDayjs {
       return ampm === 'am' ? 'AM' : 'PM';
     };
     this.rawDayJsInstance = instance;
-    this.dayjs = withLocale((_this$rawDayJsInstanc = this.rawDayJsInstance) != null ? _this$rawDayJsInstanc : dayjs, _locale);
+    this.dayjs = withLocale((_this$rawDayJsInstanc = this.rawDayJsInstance) != null ? _this$rawDayJsInstanc : defaultDayjs, _locale);
     this.locale = _locale;
     this.formats = _extends({}, defaultFormats, formats);
-    dayjs.extend(weekOfYear);
+    defaultDayjs.extend(weekOfYear);
   }
 }
 
-const DatePickerWrapper = ({ name, label, ...otherProps }) => {
+const DatePickerWrapper = ({ name, ...otherProps }) => {
     const { setFieldValue } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
     const handleChange = (date) => {
-        // Convert to ISO string or null before saving to Formik
-        setFieldValue(name, date ? date.toISOString() : null);
+        setFieldValue(name, date);
     };
-    // Convert Formik value back to Dayjs object for the DatePicker
-    const value = field.value ? dayjs(field.value) : null;
-    const configTextField = {
+    const configDateTimePicker = {
+        ...field,
         ...otherProps,
+        onChange: handleChange,
+    };
+    const configTextField = {
         variant: "outlined",
         fullWidth: true,
         margin: "dense",
-        error: meta.touched && !!meta.error,
-        helperText: meta.touched && meta.error,
     };
-    return (jsxRuntimeExports.jsx(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs, children: jsxRuntimeExports.jsx(xDatePickers.DatePicker, { label: label, value: value, onChange: handleChange, slotProps: { textField: configTextField } }) }));
+    if (meta.touched && meta.error) {
+        configTextField.error = true;
+        configTextField.helperText = meta.error;
+    }
+    return (jsxRuntimeExports.jsx(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs, children: jsxRuntimeExports.jsx(xDatePickers.DatePicker, { label: "date picker template", ...configDateTimePicker, slotProps: { textField: configTextField } }) }));
 };
 
 const DateTimePickerWrapper = ({ name, ...otherProps }) => {
