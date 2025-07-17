@@ -538,10 +538,7 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
         setLoading(true);
         try {
             const response = await getOptions(query);
-            const optionsData = response?.map((e) => ({
-                label: e.name,
-                value: e.id,
-            }));
+            const optionsData = response;
             setOptions(optionsData);
         }
         catch (error) {
@@ -552,7 +549,7 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
         }
     }, 500), // 500ms debounce delay
     []);
-    const handleChange = (value) => {
+    const handleChange = (_, value) => {
         setFieldValue(name, value);
         customHandleChange && customHandleChange();
     };

@@ -28,9 +28,9 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
   const { setFieldValue } = useFormikContext();
   const [field, mata] = useField(name);
 
-  const [options, setOptions] = useState<{ label: string; value: number }[]>(
-    []
-  );
+  const [options, setOptions] = useState<
+    { label: string; value: number | string }[]
+  >([]);
   const [loading, setLoading] = useState(false);
   const [searchOption, setSearchOption] = useState("");
 
@@ -43,12 +43,10 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
       setLoading(true);
       try {
         const response = await getOptions(query);
-        const optionsData = (response as { name: string; id: number }[])?.map(
-          (e) => ({
-            label: e.name,
-            value: e.id,
-          })
-        );
+        const optionsData = response as {
+          label: string;
+          value: number | string;
+        }[];
         setOptions(optionsData);
       } catch (error) {
         console.error("Error fetching options:", error);
@@ -59,7 +57,10 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     []
   );
 
-  const handleChange = (value: any) => {
+  const handleChange = (
+    _: React.SyntheticEvent,
+    value: { label: string; value: number | string } | string | null
+  ) => {
     setFieldValue(name, value);
     customHandleChange && customHandleChange();
   };
