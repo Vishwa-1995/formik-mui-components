@@ -1,7 +1,7 @@
 import * as React from 'react';
 import React__default, { useState, useEffect, useCallback, forwardRef, useContext, isValidElement, cloneElement, Children, useRef } from 'react';
 import { useFormikContext, useField } from 'formik';
-import { debounce, Autocomplete, TextField, LinearProgress as LinearProgress$1, FormLabel as FormLabel$1, FormHelperText, Grid, Box as Box$1, DialogContent, FormControl as FormControl$1, RadioGroup as RadioGroup$1, FormControlLabel as FormControlLabel$1, Radio as Radio$1, Button, AppBar, Toolbar, IconButton as IconButton$1, Stack, Typography as Typography$1, Badge, MenuItem, Avatar, Divider } from '@mui/material';
+import { debounce, Autocomplete, TextField, LinearProgress as LinearProgress$1, Typography as Typography$1, FormHelperText, Grid, Box as Box$1, DialogContent, FormControl as FormControl$1, RadioGroup as RadioGroup$1, FormControlLabel as FormControlLabel$1, Radio as Radio$1, Button, AppBar, Toolbar, IconButton as IconButton$1, Stack, Badge, MenuItem, Avatar, Divider } from '@mui/material';
 import reactCSS from 'reactcss';
 import { SketchPicker } from 'react-color';
 import { LocalizationProvider, DatePicker, DateTimePicker, TimePicker } from '@mui/x-date-pickers';
@@ -12817,7 +12817,7 @@ process.env.NODE_ENV !== "production" ? Box.propTypes /* remove-proptypes */ = {
   sx: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])), PropTypes.func, PropTypes.object])
 } : void 0;
 
-const CheckboxWrapper = ({ name, legend, label, customHandleChange = () => { }, ...otherProps }) => {
+const CheckboxWrapper = ({ name, legend, label, labelStyle, customHandleChange = () => { }, ...otherProps }) => {
     const { setFieldValue } = useFormikContext();
     const [field, meta] = useField(name);
     const handleChange = (evt) => {
@@ -12835,7 +12835,7 @@ const CheckboxWrapper = ({ name, legend, label, customHandleChange = () => { }, 
         configFormControl.error = true;
         configFormControl.children = meta.error;
     }
-    return (jsxRuntimeExports.jsx(Box, { sx: { display: "flex" }, children: jsxRuntimeExports.jsxs(FormControl, { component: "fieldset", variant: "standard", children: [jsxRuntimeExports.jsx(FormLabel$1, { component: "legend", children: legend }), jsxRuntimeExports.jsx(FormGroup, { children: jsxRuntimeExports.jsx(FormControlLabel, { control: jsxRuntimeExports.jsx(Checkbox, { ...configCheckbox, checked: field.value }), label: label }) }), jsxRuntimeExports.jsx(FormHelperText, { ...configFormControl })] }) }));
+    return (jsxRuntimeExports.jsx(Box, { sx: { display: "flex" }, children: jsxRuntimeExports.jsxs(FormControl, { component: "fieldset", variant: "standard", children: [jsxRuntimeExports.jsx(FormGroup, { children: jsxRuntimeExports.jsx(FormControlLabel, { control: jsxRuntimeExports.jsx(Checkbox, { ...configCheckbox, checked: field.value }), label: jsxRuntimeExports.jsx(Typography$1, { sx: labelStyle, children: label }) }) }), jsxRuntimeExports.jsx(FormHelperText, { ...configFormControl })] }) }));
 };
 
 const ColorPickerWrapper = ({ name, label, ...otherProps }) => {

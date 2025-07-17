@@ -12837,7 +12837,7 @@ process.env.NODE_ENV !== "production" ? Box.propTypes /* remove-proptypes */ = {
   sx: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])), PropTypes.func, PropTypes.object])
 } : void 0;
 
-const CheckboxWrapper = ({ name, legend, label, customHandleChange = () => { }, ...otherProps }) => {
+const CheckboxWrapper = ({ name, legend, label, labelStyle, customHandleChange = () => { }, ...otherProps }) => {
     const { setFieldValue } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
     const handleChange = (evt) => {
@@ -12855,7 +12855,7 @@ const CheckboxWrapper = ({ name, legend, label, customHandleChange = () => { }, 
         configFormControl.error = true;
         configFormControl.children = meta.error;
     }
-    return (jsxRuntimeExports.jsx(Box, { sx: { display: "flex" }, children: jsxRuntimeExports.jsxs(FormControl, { component: "fieldset", variant: "standard", children: [jsxRuntimeExports.jsx(material.FormLabel, { component: "legend", children: legend }), jsxRuntimeExports.jsx(FormGroup, { children: jsxRuntimeExports.jsx(FormControlLabel, { control: jsxRuntimeExports.jsx(Checkbox, { ...configCheckbox, checked: field.value }), label: label }) }), jsxRuntimeExports.jsx(material.FormHelperText, { ...configFormControl })] }) }));
+    return (jsxRuntimeExports.jsx(Box, { sx: { display: "flex" }, children: jsxRuntimeExports.jsxs(FormControl, { component: "fieldset", variant: "standard", children: [jsxRuntimeExports.jsx(FormGroup, { children: jsxRuntimeExports.jsx(FormControlLabel, { control: jsxRuntimeExports.jsx(Checkbox, { ...configCheckbox, checked: field.value }), label: jsxRuntimeExports.jsx(material.Typography, { sx: labelStyle, children: label }) }) }), jsxRuntimeExports.jsx(material.FormHelperText, { ...configFormControl })] }) }));
 };
 
 const ColorPickerWrapper = ({ name, label, ...otherProps }) => {
