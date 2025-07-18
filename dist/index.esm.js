@@ -504,8 +504,7 @@ function requireJsxRuntime() {
 
 var jsxRuntimeExports = requireJsxRuntime();
 
-const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandleChange, ...otherProps // Capture unknown props
- }) => {
+const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandleChange, ...otherProps }) => {
     const { setFieldValue } = useFormikContext();
     const [field, mata] = useField(name);
     const [options, setOptions] = useState([]);
@@ -527,8 +526,7 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
         finally {
             setLoading(false);
         }
-    }, 500), // 500ms debounce delay
-    []);
+    }, 500), [getOptions]);
     const handleChange = (_, value) => {
         setFieldValue(name, value);
         customHandleChange && customHandleChange();
@@ -544,11 +542,24 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
         configAutocomplete.helperText = mata.error;
     }
     return (jsxRuntimeExports.jsx(Autocomplete, { freeSolo: freeSolo, disabled: disabled, onChange: handleChange, onInputChange: (event, value) => {
-            setSearchOption(value);
-        }, options: options, noOptionsText: "No options", getOptionLabel: (option) => option?.label || option, isOptionEqualToValue: () => true, value: field.value || null, renderInput: (params) => (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(TextField, { ...params, ...configAutocomplete, disabled: disabled, margin: "dense", slotProps: {
+            setSearchOption(value.trim());
+        }, options: options, noOptionsText: "No options", getOptionLabel: (option) => {
+            if (typeof option === "string") {
+                return option;
+            }
+            if (option?.label) {
+                return option.label;
+            }
+            return "";
+        }, isOptionEqualToValue: (option, value) => {
+            if (typeof option === "string" || typeof value === "string") {
+                return option === value;
+            }
+            return option?.value === value?.value;
+        }, value: field.value || null, renderInput: (params) => (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(TextField, { ...params, ...configAutocomplete, disabled: disabled, margin: "dense", slotProps: {
                         input: {
                             ...params.InputProps,
-                            endAdornment: jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: params.InputProps?.endAdornment }),
+                            endAdornment: params.InputProps.endAdornment,
                         },
                     } }), loading && jsxRuntimeExports.jsx(LinearProgress$1, {})] })) }));
 };

@@ -23,7 +23,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
   name,
   getOptions,
   customHandleChange,
-  ...otherProps // Capture unknown props
+  ...otherProps
 }) => {
   const { setFieldValue } = useFormikContext();
   const [field, mata] = useField(name);
@@ -53,8 +53,8 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
       } finally {
         setLoading(false);
       }
-    }, 500), // 500ms debounce delay
-    []
+    }, 500),
+    [getOptions]
   );
 
   const handleChange = (
@@ -83,12 +83,25 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
       disabled={disabled}
       onChange={handleChange}
       onInputChange={(event, value) => {
-        setSearchOption(value);
+        setSearchOption(value.trim());
       }}
       options={options}
       noOptionsText="No options"
-      getOptionLabel={(option: any) => option?.label || option}
-      isOptionEqualToValue={() => true}
+      getOptionLabel={(option) => {
+        if (typeof option === "string") {
+          return option;
+        }
+        if (option?.label) {
+          return option.label;
+        }
+        return "";
+      }}
+      isOptionEqualToValue={(option, value) => {
+        if (typeof option === "string" || typeof value === "string") {
+          return option === value;
+        }
+        return option?.value === value?.value;
+      }}
       value={field.value || null}
       renderInput={(params) => (
         <>
@@ -100,7 +113,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
             slotProps={{
               input: {
                 ...params.InputProps,
-                endAdornment: <>{params.InputProps?.endAdornment}</>,
+                endAdornment: params.InputProps.endAdornment,
               },
             }}
           />
