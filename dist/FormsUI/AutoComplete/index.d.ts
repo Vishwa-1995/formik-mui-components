@@ -6,7 +6,7 @@ type AutoCompleteWrapperProps = {
     name: string;
     getOptions: (query: string) => Promise<any>;
     label: string;
-    customHandleChange?: () => void;
+    customHandleChange?: (data: any) => void;
 } & Partial<AutocompleteProps<any, any, any, any>>;
 declare const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps>;
 export default AutoCompleteWrapper;

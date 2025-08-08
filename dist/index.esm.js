@@ -529,7 +529,7 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
     }, 500), [getOptions]);
     const handleChange = (_, value) => {
         setFieldValue(name, value);
-        customHandleChange && customHandleChange();
+        customHandleChange && customHandleChange(value);
     };
     const configAutocomplete = {
         ...field,
