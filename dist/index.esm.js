@@ -533,7 +533,6 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
     };
     const handleInputChange = (_, value, reason) => {
         setSearchOption(value.trim());
-        // If freeSolo is enabled and user is typing (not selecting an option)
         if (!freeSolo && reason === "input") {
             setFieldValue(name, value);
             customHandleChange && customHandleChange(value);
