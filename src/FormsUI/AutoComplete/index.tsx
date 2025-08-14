@@ -75,7 +75,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     console.log(value, reason, freeSolo);
     // If freeSolo is enabled and user is typing (not selecting an option)
     if (!freeSolo && reason === "input") {
-      console.log("fire");
+      console.log('fire');
       setFieldValue(name, value);
       customHandleChange?.(value);
     }
