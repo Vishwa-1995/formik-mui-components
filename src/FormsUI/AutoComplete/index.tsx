@@ -62,7 +62,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     value: { label: string; value: number | string } | string | null
   ) => {
     setFieldValue(name, value);
-    customHandleChange?.(value);
+    customHandleChange && customHandleChange(value);
   };
 
   const handleInputChange = (
@@ -72,12 +72,10 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
   ) => {
     setSearchOption(value.trim());
 
-    console.log(value, reason, freeSolo);
     // If freeSolo is enabled and user is typing (not selecting an option)
     if (!freeSolo && reason === "input") {
-      console.log('fire');
       setFieldValue(name, value);
-      customHandleChange?.(value);
+      customHandleChange && customHandleChange(value);
     }
   };
 
