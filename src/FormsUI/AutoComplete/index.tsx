@@ -62,7 +62,21 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     value: { label: string; value: number | string } | string | null
   ) => {
     setFieldValue(name, value);
-    customHandleChange && customHandleChange(value);
+    customHandleChange?.(value);
+  };
+
+  const handleInputChange = (
+    _: React.SyntheticEvent,
+    value: string,
+    reason: string
+  ) => {
+    setSearchOption(value.trim());
+
+    // If freeSolo is enabled and user is typing (not selecting an option)
+    if (!freeSolo && reason === "input") {
+      setFieldValue(name, value);
+      customHandleChange?.(value);
+    }
   };
 
   const configAutocomplete: any = {
@@ -82,9 +96,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
       freeSolo={freeSolo}
       disabled={disabled}
       onChange={handleChange}
-      onInputChange={(event, value) => {
-        setSearchOption(value.trim());
-      }}
+      onInputChange={handleInputChange}
       options={options}
       noOptionsText="No options"
       getOptionLabel={(option) => {

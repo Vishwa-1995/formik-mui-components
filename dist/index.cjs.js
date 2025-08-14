@@ -549,7 +549,15 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
     }, 500), [getOptions]);
     const handleChange = (_, value) => {
         setFieldValue(name, value);
-        customHandleChange && customHandleChange(value);
+        customHandleChange?.(value);
+    };
+    const handleInputChange = (_, value, reason) => {
+        setSearchOption(value.trim());
+        // If freeSolo is enabled and user is typing (not selecting an option)
+        if (!freeSolo && reason === "input") {
+            setFieldValue(name, value);
+            customHandleChange?.(value);
+        }
     };
     const configAutocomplete = {
         ...field,
@@ -561,9 +569,7 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
         configAutocomplete.error = true;
         configAutocomplete.helperText = mata.error;
     }
-    return (jsxRuntimeExports.jsx(material.Autocomplete, { freeSolo: freeSolo, disabled: disabled, onChange: handleChange, onInputChange: (event, value) => {
-            setSearchOption(value.trim());
-        }, options: options, noOptionsText: "No options", getOptionLabel: (option) => {
+    return (jsxRuntimeExports.jsx(material.Autocomplete, { freeSolo: freeSolo, disabled: disabled, onChange: handleChange, onInputChange: handleInputChange, options: options, noOptionsText: "No options", getOptionLabel: (option) => {
             if (typeof option === "string") {
                 return option;
             }
