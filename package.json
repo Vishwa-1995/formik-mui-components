@@ -1,6 +1,6 @@
 {
-  "name": "formik-mui-components",
-  "version": "1.0.2",
+  "name": "@vishwa95/formik-mui-components",
+  "version": "1.0.0",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -9,16 +9,19 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vishwa Mahanama Muthukumarana",
   "license": "ISC",
   "description": "",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "@emotion/styled": "^11.14.0"
   },
   "devDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
     "@mui/x-date-pickers": "^6.10.1",
