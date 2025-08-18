@@ -528,7 +528,12 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
         }
     }, 500), [getOptions]);
     const handleChange = (_, value) => {
-        setFieldValue(name, value);
+        if (typeof value === "string") {
+            setFieldValue(name, { label: value, value: "" });
+        }
+        else {
+            setFieldValue(name, value);
+        }
         customHandleChange && customHandleChange(value);
     };
     const handleInputChange = (_, value, reason) => {
@@ -539,7 +544,7 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
         }
     };
     const configAutocomplete = {
-        ...field,
+        // ...field,
         ...otherProps,
         variant: "outlined",
         fullWidth: true,

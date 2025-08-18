@@ -61,7 +61,11 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     _: React.SyntheticEvent,
     value: { label: string; value: number | string } | string | null
   ) => {
-    setFieldValue(name, value);
+    if (typeof value === "string") {
+      setFieldValue(name, { label: value, value: "" });
+    } else {
+      setFieldValue(name, value);
+    }
     customHandleChange && customHandleChange(value);
   };
 
@@ -78,7 +82,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
   };
 
   const configAutocomplete: any = {
-    ...field,
+    // ...field,
     ...otherProps,
     variant: "outlined",
     fullWidth: true,
