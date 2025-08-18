@@ -72,7 +72,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
   ) => {
     setSearchOption(value.trim());
     if (!freeSolo && reason === "input") {
-      setFieldValue(name, value);
+      setFieldValue(name, { label: value, value: "" });
       customHandleChange && customHandleChange(value);
     }
   };

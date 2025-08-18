@@ -534,7 +534,7 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
     const handleInputChange = (_, value, reason) => {
         setSearchOption(value.trim());
         if (!freeSolo && reason === "input") {
-            setFieldValue(name, value);
+            setFieldValue(name, { label: value, value: "" });
             customHandleChange && customHandleChange(value);
         }
     };
