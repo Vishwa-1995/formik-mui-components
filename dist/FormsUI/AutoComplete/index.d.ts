@@ -1,6 +1,7 @@
 import React from "react";
 import { AutocompleteProps } from "@mui/material";
 type AutoCompleteWrapperProps = {
+    required?: boolean;
     freeSolo: boolean;
     disabled: boolean;
     name: string;

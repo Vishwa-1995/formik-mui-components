@@ -1,4 +1,5 @@
 interface DateTimePickerWrapperProps {
+    required?: boolean;
     name: string;
     [key: string]: any;
 }

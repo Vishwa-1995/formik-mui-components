@@ -524,9 +524,10 @@ function requireJsxRuntime() {
 
 var jsxRuntimeExports = requireJsxRuntime();
 
-const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandleChange, ...otherProps }) => {
-    const { setFieldValue } = formik.useFormikContext();
+const AutoCompleteWrapper = ({ required, freeSolo, disabled, name, getOptions, customHandleChange, ...otherProps }) => {
+    const { setFieldValue, setFieldTouched } = formik.useFormikContext();
     const [field, mata] = formik.useField(name);
+    const [showOptions, setShowOptions] = React.useState(true);
     const [options, setOptions] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [searchOption, setSearchOption] = React.useState("");
@@ -549,17 +550,19 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
     }, 500), [getOptions]);
     const handleChange = (_, value) => {
         if (typeof value === "string") {
-            setFieldValue(name, { label: value, value: "" });
+            setFieldValue(name, { label: value.toString(), value: "" });
         }
         else {
             setFieldValue(name, value);
         }
+        setShowOptions(false);
         customHandleChange && customHandleChange(value);
     };
     const handleInputChange = (_, value, reason) => {
         setSearchOption(value.trim());
+        setShowOptions(true);
         if (!freeSolo && reason === "input") {
-            setFieldValue(name, { label: value, value: "" });
+            setFieldValue(name, { label: value.toString(), value: "" });
             customHandleChange && customHandleChange(value);
         }
     };
@@ -569,11 +572,23 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
         variant: "outlined",
         fullWidth: true,
     };
-    if (mata && mata.touched && mata.error) {
-        configAutocomplete.error = true;
-        configAutocomplete.helperText = mata.error;
-    }
-    return (jsxRuntimeExports.jsx(material.Autocomplete, { freeSolo: freeSolo, disabled: disabled, onChange: handleChange, onInputChange: handleInputChange, options: options, noOptionsText: freeSolo ? "No options" : "", open: freeSolo ? undefined : options.length > 0, getOptionLabel: (option) => {
+    const handleBlur = (event) => {
+        setFieldTouched(name, true);
+        setShowOptions(false);
+    };
+    // Handle error message extraction with proper null checking
+    const getErrorMessage = () => {
+        if (!mata.error)
+            return "";
+        if (typeof mata.error === "object") {
+            // Check if it's an object with a value property
+            return mata.error?.value || "Invalid value";
+        }
+        return mata.error;
+    };
+    const hasError = Boolean(mata.touched && mata.error);
+    const errorMessage = hasError ? getErrorMessage() : "";
+    return (jsxRuntimeExports.jsx(material.Autocomplete, { freeSolo: freeSolo, disabled: disabled, onChange: handleChange, onInputChange: handleInputChange, onBlur: handleBlur, options: options, noOptionsText: freeSolo ? "No options" : "", open: freeSolo ? undefined : options.length > 0 && showOptions, getOptionLabel: (option) => {
             if (typeof option === "string") {
                 return option;
             }
@@ -586,7 +601,7 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
                 return option === value;
             }
             return option?.value === value?.value;
-        }, value: field.value || null, renderInput: (params) => (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(material.TextField, { ...params, ...configAutocomplete, disabled: disabled, margin: "dense", slotProps: {
+        }, value: field.value || null, renderInput: (params) => (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(material.TextField, { required: required, ...params, ...configAutocomplete, disabled: disabled, margin: "dense", error: hasError, helperText: errorMessage, slotProps: {
                         input: {
                             ...params.InputProps,
                             endAdornment: params.InputProps.endAdornment,
@@ -14218,8 +14233,8 @@ class AdapterDayjs {
   }
 }
 
-const DatePickerWrapper = ({ name, ...otherProps }) => {
-    const { setFieldValue } = formik.useFormikContext();
+const DatePickerWrapper = ({ required, name, ...otherProps }) => {
+    const { setFieldValue, setFieldTouched } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
     const handleChange = (date) => {
         setFieldValue(name, date);
@@ -14229,10 +14244,15 @@ const DatePickerWrapper = ({ name, ...otherProps }) => {
         ...otherProps,
         onChange: handleChange,
     };
+    const handleBlur = (event) => {
+        setFieldTouched(name, true);
+    };
     const configTextField = {
+        required: required,
         variant: "outlined",
         fullWidth: true,
         margin: "dense",
+        onBlur: handleBlur,
     };
     if (meta.touched && meta.error) {
         configTextField.error = true;
@@ -14241,8 +14261,8 @@ const DatePickerWrapper = ({ name, ...otherProps }) => {
     return (jsxRuntimeExports.jsx(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs, children: jsxRuntimeExports.jsx(xDatePickers.DatePicker, { label: "date picker template", ...configDateTimePicker, slotProps: { textField: configTextField } }) }));
 };
 
-const DateTimePickerWrapper = ({ name, ...otherProps }) => {
-    const { setFieldValue } = formik.useFormikContext();
+const DateTimePickerWrapper = ({ required, name, ...otherProps }) => {
+    const { setFieldValue, setFieldTouched } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
     const handleChange = (date) => {
         setFieldValue(name, date);
@@ -14252,10 +14272,15 @@ const DateTimePickerWrapper = ({ name, ...otherProps }) => {
         ...otherProps,
         onChange: handleChange,
     };
+    const handleBlur = (event) => {
+        setFieldTouched(name, true);
+    };
     const configTextField = {
+        required: required,
         variant: "outlined",
         fullWidth: true,
         margin: "dense",
+        onBlur: handleBlur,
     };
     if (meta.touched && meta.error) {
         configTextField.error = true;

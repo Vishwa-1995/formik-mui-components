@@ -1,19 +1,21 @@
 import { useField, useFormikContext } from "formik";
-import {
-  DateTimePicker,
-  LocalizationProvider,
-} from "@mui/x-date-pickers";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TextFieldProps } from "@mui/material/TextField";
 import { Dayjs } from "dayjs";
 
 interface DateTimePickerWrapperProps {
+  required?: boolean;
   name: string;
   [key: string]: any;
 }
 
-const DateTimePickerWrapper: React.FC<DateTimePickerWrapperProps> = ({ name, ...otherProps }) => {
-  const { setFieldValue } = useFormikContext();
+const DateTimePickerWrapper: React.FC<DateTimePickerWrapperProps> = ({
+  required,
+  name,
+  ...otherProps
+}) => {
+  const { setFieldValue, setFieldTouched } = useFormikContext();
   const [field, meta] = useField(name);
 
   const handleChange = (date: Dayjs | null) => {
@@ -26,10 +28,16 @@ const DateTimePickerWrapper: React.FC<DateTimePickerWrapperProps> = ({ name, ...
     onChange: handleChange,
   };
 
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    setFieldTouched(name, true);
+  };
+
   const configTextField: Partial<TextFieldProps> = {
+    required: required,
     variant: "outlined",
     fullWidth: true,
     margin: "dense",
+    onBlur: handleBlur,
   };
 
   if (meta.touched && meta.error) {

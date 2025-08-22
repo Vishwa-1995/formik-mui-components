@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 
 type AutoCompleteWrapperProps = {
+  required?: boolean;
   freeSolo: boolean;
   disabled: boolean;
   name: string;
@@ -18,6 +19,7 @@ type AutoCompleteWrapperProps = {
 } & Partial<AutocompleteProps<any, any, any, any>>;
 
 const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
+  required,
   freeSolo,
   disabled,
   name,
@@ -25,8 +27,9 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
   customHandleChange,
   ...otherProps
 }) => {
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, setFieldTouched } = useFormikContext();
   const [field, mata] = useField(name);
+  const [showOptions, setShowOptions] = useState(true);
 
   const [options, setOptions] = useState<
     { label: string; value: number | string }[]
@@ -62,10 +65,11 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     value: { label: string; value: number | string } | string | null
   ) => {
     if (typeof value === "string") {
-      setFieldValue(name, { label: value, value: "" });
+      setFieldValue(name, { label: value.toString(), value: "" });
     } else {
       setFieldValue(name, value);
     }
+    setShowOptions(false);
     customHandleChange && customHandleChange(value);
   };
 
@@ -75,8 +79,9 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     reason: string
   ) => {
     setSearchOption(value.trim());
+    setShowOptions(true);
     if (!freeSolo && reason === "input") {
-      setFieldValue(name, { label: value, value: "" });
+      setFieldValue(name, { label: value.toString(), value: "" });
       customHandleChange && customHandleChange(value);
     }
   };
@@ -88,10 +93,25 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     fullWidth: true,
   };
 
-  if (mata && mata.touched && mata.error) {
-    configAutocomplete.error = true;
-    configAutocomplete.helperText = mata.error;
-  }
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    setFieldTouched(name, true);
+    setShowOptions(false);
+  };
+
+  // Handle error message extraction with proper null checking
+  const getErrorMessage = (): string => {
+    if (!mata.error) return "";
+
+    if (typeof mata.error === "object") {
+      // Check if it's an object with a value property
+      return (mata.error as any)?.value || "Invalid value";
+    }
+
+    return mata.error;
+  };
+
+  const hasError = Boolean(mata.touched && mata.error);
+  const errorMessage = hasError ? getErrorMessage() : "";
 
   return (
     <Autocomplete
@@ -99,9 +119,10 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
       disabled={disabled}
       onChange={handleChange}
       onInputChange={handleInputChange}
+      onBlur={handleBlur}
       options={options}
       noOptionsText={freeSolo ? "No options" : ""}
-      open={freeSolo ? undefined : options.length > 0}
+      open={freeSolo ? undefined : options.length > 0 && showOptions}
       getOptionLabel={(option) => {
         if (typeof option === "string") {
           return option;
@@ -121,10 +142,13 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
       renderInput={(params) => (
         <>
           <TextField
+            required={required}
             {...params}
             {...configAutocomplete}
             disabled={disabled}
             margin="dense"
+            error={hasError}
+            helperText={errorMessage}
             slotProps={{
               input: {
                 ...params.InputProps,

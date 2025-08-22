@@ -6,15 +6,17 @@ import { TextFieldProps } from "@mui/material/TextField";
 import { Dayjs } from "dayjs";
 
 interface DatePickerWrapperProps {
+  required?: boolean;
   name: string;
   [key: string]: any;
 }
 
 const DatePickerWrapper: React.FC<DatePickerWrapperProps> = ({
+  required,
   name,
   ...otherProps
 }) => {
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, setFieldTouched } = useFormikContext();
   const [field, meta] = useField(name);
 
   const handleChange = (date: Dayjs | null) => {
@@ -27,10 +29,16 @@ const DatePickerWrapper: React.FC<DatePickerWrapperProps> = ({
     onChange: handleChange,
   };
 
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    setFieldTouched(name, true);
+  };
+
   const configTextField: Partial<TextFieldProps> = {
+    required: required,
     variant: "outlined",
     fullWidth: true,
     margin: "dense",
+    onBlur: handleBlur,
   };
 
   if (meta.touched && meta.error) {

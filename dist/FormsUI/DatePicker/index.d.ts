@@ -1,5 +1,6 @@
 import React from "react";
 interface DatePickerWrapperProps {
+    required?: boolean;
     name: string;
     [key: string]: any;
 }
