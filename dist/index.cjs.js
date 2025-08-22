@@ -573,7 +573,7 @@ const AutoCompleteWrapper = ({ freeSolo, disabled, name, getOptions, customHandl
         configAutocomplete.error = true;
         configAutocomplete.helperText = mata.error;
     }
-    return (jsxRuntimeExports.jsx(material.Autocomplete, { freeSolo: freeSolo, disabled: disabled, onChange: handleChange, onInputChange: handleInputChange, options: options, noOptionsText: "No options", getOptionLabel: (option) => {
+    return (jsxRuntimeExports.jsx(material.Autocomplete, { freeSolo: freeSolo, disabled: disabled, onChange: handleChange, onInputChange: handleInputChange, options: options, noOptionsText: freeSolo ? "No options" : "", open: freeSolo ? undefined : options.length > 0, getOptionLabel: (option) => {
             if (typeof option === "string") {
                 return option;
             }

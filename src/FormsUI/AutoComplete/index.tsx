@@ -100,7 +100,8 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
       onChange={handleChange}
       onInputChange={handleInputChange}
       options={options}
-      noOptionsText="No options"
+      noOptionsText={freeSolo ? "No options" : ""}
+      open={freeSolo ? undefined : options.length > 0}
       getOptionLabel={(option) => {
         if (typeof option === "string") {
           return option;
