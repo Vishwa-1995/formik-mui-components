@@ -12,6 +12,7 @@ export default function AutoCompleteSearchWrapper<
   Option extends { value: string | number; label: string }
 >(
   props: Readonly<{
+    required: boolean;
     name: string;
     label: string;
     useQueryResult: UseQueryResult<Option[], Error>;
@@ -61,6 +62,7 @@ export default function AutoCompleteSearchWrapper<
       renderInput={(params) => (
         <TextField
           {...params}
+          required={props.required}
           variant="outlined"
           fullWidth
           name={field.name}

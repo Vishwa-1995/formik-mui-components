@@ -602,7 +602,7 @@ function AutoCompleteSearchWrapper(props) {
     }
     return (jsxRuntimeExports.jsx(Autocomplete, { sx: { mt: 1 }, isOptionEqualToValue: () => true, disabled: props.disabled, noOptionsText: "Search not found", options: props.useQueryResult.data ?? [], value: field.value, getOptionLabel: (option) => option.label, loading: props.useQueryResult.isFetching, onChange: (_, newValue) => setFieldValue(field.name, newValue), onInputChange: debounce((_, newInputValue) => {
             props.setInputValue(newInputValue === "" ? undefined : newInputValue.slice(0, 10).trim());
-        }, 300), renderInput: (params) => (jsxRuntimeExports.jsx(TextField, { ...params, variant: "outlined", fullWidth: true, name: field.name, onBlur: (e) => {
+        }, 300), renderInput: (params) => (jsxRuntimeExports.jsx(TextField, { ...params, required: props.required, variant: "outlined", fullWidth: true, name: field.name, onBlur: (e) => {
                 field.onBlur(e);
                 // handleTextFieldBlur(e);
             }, ...configTextField, label: props.label, disabled: props.disabled, InputProps: {
