@@ -612,10 +612,6 @@ const AutoCompleteWrapper = ({ required, freeSolo, disabled, name, getOptions, c
 function AutoCompleteSearchWrapper(props) {
     const { setFieldValue } = formik.useFormikContext();
     const [field, meta] = formik.useField(props.name);
-    function handleTextFieldBlur(e) {
-        const target = e.target;
-        setFieldValue(field.name, props.useQueryResult.data?.find((option) => option.label === target.value) ?? { value: 0, label: "" });
-    }
     const configTextField = {
         error: false,
         helperText: "",
@@ -628,7 +624,7 @@ function AutoCompleteSearchWrapper(props) {
             props.setInputValue(newInputValue === "" ? undefined : newInputValue.slice(0, 10).trim());
         }, 300), renderInput: (params) => (jsxRuntimeExports.jsx(material.TextField, { ...params, variant: "outlined", fullWidth: true, name: field.name, onBlur: (e) => {
                 field.onBlur(e);
-                handleTextFieldBlur(e);
+                // handleTextFieldBlur(e);
             }, ...configTextField, label: props.label, disabled: props.disabled, InputProps: {
                 ...params.InputProps,
                 endAdornment: (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [params.InputProps.endAdornment, props.useQueryResult.isLoading && jsxRuntimeExports.jsx(material.LinearProgress, {})] })),

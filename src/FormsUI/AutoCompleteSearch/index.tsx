@@ -66,7 +66,7 @@ export default function AutoCompleteSearchWrapper<
           name={field.name}
           onBlur={(e) => {
             field.onBlur(e);
-            handleTextFieldBlur(e);
+            // handleTextFieldBlur(e);
           }}
           {...configTextField}
           label={props.label}
