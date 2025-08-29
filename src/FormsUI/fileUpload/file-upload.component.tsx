@@ -375,7 +375,7 @@ const FileUpload = ({
                             progress < 100 && (
                               <LinearProgressWithLabel value={progress} />
                             )}
-                          {progress !== undefined && progress > 0 && (
+                          {progress !== undefined && progress == 100 && (
                             <Box
                               display="flex"
                               alignItems="center"
