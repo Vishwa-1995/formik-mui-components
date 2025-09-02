@@ -14257,7 +14257,7 @@ const DatePickerWrapper = ({ required, name, ...otherProps }) => {
     return (jsxRuntimeExports.jsx(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs, children: jsxRuntimeExports.jsx(xDatePickers.DatePicker, { label: "date picker template", ...configDateTimePicker, slotProps: { textField: configTextField } }) }));
 };
 
-const DateTimePickerWrapper = ({ required, name, ...otherProps }) => {
+const DateTimePickerWrapper = ({ required, version = "responsive", name, ...otherProps }) => {
     const { setFieldValue, setFieldTouched } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
     const handleChange = (date) => {
@@ -14282,7 +14282,7 @@ const DateTimePickerWrapper = ({ required, name, ...otherProps }) => {
         configTextField.error = true;
         configTextField.helperText = meta.error;
     }
-    return (jsxRuntimeExports.jsx(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs, children: jsxRuntimeExports.jsx(xDatePickers.DateTimePicker, { orientation: "landscape", ...configTimePicker, ampmInClock: true, views: ["year", "day", "hours", "minutes", "seconds"], slotProps: { textField: configTextField } }) }));
+    return (jsxRuntimeExports.jsxs(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs, children: [version === "desktop" && (jsxRuntimeExports.jsx(xDatePickers.DesktopDateTimePicker, { ...configTimePicker, ampmInClock: true, views: ["year", "day", "hours", "minutes", "seconds"], slotProps: { textField: configTextField } })), version === "mobile" && (jsxRuntimeExports.jsx(xDatePickers.MobileDateTimePicker, { ...configTimePicker, ampmInClock: true, views: ["year", "day", "hours", "minutes", "seconds"], slotProps: { textField: configTextField } })), version === "responsive" && (jsxRuntimeExports.jsx(xDatePickers.DateTimePicker, { ...configTimePicker, ampmInClock: true, views: ["year", "day", "hours", "minutes", "seconds"], slotProps: { textField: configTextField } }))] }));
 };
 
 function getCircularProgressUtilityClass(slot) {

@@ -1,17 +1,24 @@
 import { useField, useFormikContext } from "formik";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  DateTimePicker,
+  DesktopDateTimePicker,
+  LocalizationProvider,
+  MobileDateTimePicker,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TextFieldProps } from "@mui/material/TextField";
 import { Dayjs } from "dayjs";
 
 interface DateTimePickerWrapperProps {
   required?: boolean;
+  version?: "desktop" | "mobile" | "responsive";
   name: string;
   [key: string]: any;
 }
 
 const DateTimePickerWrapper: React.FC<DateTimePickerWrapperProps> = ({
   required,
+  version = "responsive",
   name,
   ...otherProps
 }) => {
@@ -47,13 +54,30 @@ const DateTimePickerWrapper: React.FC<DateTimePickerWrapperProps> = ({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateTimePicker
-        orientation="landscape"
-        {...configTimePicker}
-        ampmInClock
-        views={["year", "day", "hours", "minutes", "seconds"]}
-        slotProps={{ textField: configTextField }}
-      />
+      {version === "desktop" && (
+        <DesktopDateTimePicker
+          {...configTimePicker}
+          ampmInClock
+          views={["year", "day", "hours", "minutes", "seconds"]}
+          slotProps={{ textField: configTextField }}
+        />
+      )}
+      {version === "mobile" && (
+        <MobileDateTimePicker
+          {...configTimePicker}
+          ampmInClock
+          views={["year", "day", "hours", "minutes", "seconds"]}
+          slotProps={{ textField: configTextField }}
+        />
+      )}
+      {version === "responsive" && (
+        <DateTimePicker
+          {...configTimePicker}
+          ampmInClock
+          views={["year", "day", "hours", "minutes", "seconds"]}
+          slotProps={{ textField: configTextField }}
+        />
+      )}
     </LocalizationProvider>
   );
 };

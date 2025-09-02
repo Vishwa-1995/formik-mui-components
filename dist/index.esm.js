@@ -4,7 +4,7 @@ import { useFormikContext, useField } from 'formik';
 import { debounce, Autocomplete, TextField, LinearProgress as LinearProgress$1, Typography as Typography$1, FormHelperText, Grid, Box as Box$1, DialogContent, FormControl as FormControl$1, RadioGroup as RadioGroup$1, FormControlLabel as FormControlLabel$1, Radio as Radio$1, Button, AppBar, Toolbar, IconButton as IconButton$1, Stack, Badge, MenuItem, Avatar, Divider } from '@mui/material';
 import reactCSS from 'reactcss';
 import { SketchPicker } from 'react-color';
-import { LocalizationProvider, DatePicker, DateTimePicker, TimePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, DatePicker, DesktopDateTimePicker, MobileDateTimePicker, DateTimePicker, TimePicker } from '@mui/x-date-pickers';
 import styled$2 from 'styled-components';
 import Cropper from 'react-easy-crop';
 import { create } from 'zustand';
@@ -14237,7 +14237,7 @@ const DatePickerWrapper = ({ required, name, ...otherProps }) => {
     return (jsxRuntimeExports.jsx(LocalizationProvider, { dateAdapter: AdapterDayjs, children: jsxRuntimeExports.jsx(DatePicker, { label: "date picker template", ...configDateTimePicker, slotProps: { textField: configTextField } }) }));
 };
 
-const DateTimePickerWrapper = ({ required, name, ...otherProps }) => {
+const DateTimePickerWrapper = ({ required, version = "responsive", name, ...otherProps }) => {
     const { setFieldValue, setFieldTouched } = useFormikContext();
     const [field, meta] = useField(name);
     const handleChange = (date) => {
@@ -14262,7 +14262,7 @@ const DateTimePickerWrapper = ({ required, name, ...otherProps }) => {
         configTextField.error = true;
         configTextField.helperText = meta.error;
     }
-    return (jsxRuntimeExports.jsx(LocalizationProvider, { dateAdapter: AdapterDayjs, children: jsxRuntimeExports.jsx(DateTimePicker, { orientation: "landscape", ...configTimePicker, ampmInClock: true, views: ["year", "day", "hours", "minutes", "seconds"], slotProps: { textField: configTextField } }) }));
+    return (jsxRuntimeExports.jsxs(LocalizationProvider, { dateAdapter: AdapterDayjs, children: [version === "desktop" && (jsxRuntimeExports.jsx(DesktopDateTimePicker, { ...configTimePicker, ampmInClock: true, views: ["year", "day", "hours", "minutes", "seconds"], slotProps: { textField: configTextField } })), version === "mobile" && (jsxRuntimeExports.jsx(MobileDateTimePicker, { ...configTimePicker, ampmInClock: true, views: ["year", "day", "hours", "minutes", "seconds"], slotProps: { textField: configTextField } })), version === "responsive" && (jsxRuntimeExports.jsx(DateTimePicker, { ...configTimePicker, ampmInClock: true, views: ["year", "day", "hours", "minutes", "seconds"], slotProps: { textField: configTextField } }))] }));
 };
 
 function getCircularProgressUtilityClass(slot) {
