@@ -29,7 +29,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
 }) => {
   const { setFieldValue, setFieldTouched } = useFormikContext();
   const [field, mata] = useField(name);
-  const [showOptions, setShowOptions] = useState(true);
+  const [showOptions, setShowOptions] = useState(false);
 
   const [options, setOptions] = useState<
     { label: string; value: number | string }[]
@@ -79,8 +79,8 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
     reason: string
   ) => {
     setSearchOption(value.trim());
-    setShowOptions(true);
     if (!freeSolo && reason === "input") {
+      setShowOptions(true);
       setFieldValue(name, { label: value.toString(), value: "" });
       customHandleChange && customHandleChange(value);
     }

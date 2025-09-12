@@ -527,7 +527,7 @@ var jsxRuntimeExports = requireJsxRuntime();
 const AutoCompleteWrapper = ({ required, freeSolo, disabled, name, getOptions, customHandleChange, ...otherProps }) => {
     const { setFieldValue, setFieldTouched } = formik.useFormikContext();
     const [field, mata] = formik.useField(name);
-    const [showOptions, setShowOptions] = React.useState(true);
+    const [showOptions, setShowOptions] = React.useState(false);
     const [options, setOptions] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [searchOption, setSearchOption] = React.useState("");
@@ -560,8 +560,8 @@ const AutoCompleteWrapper = ({ required, freeSolo, disabled, name, getOptions, c
     };
     const handleInputChange = (_, value, reason) => {
         setSearchOption(value.trim());
-        setShowOptions(true);
         if (!freeSolo && reason === "input") {
+            setShowOptions(true);
             setFieldValue(name, { label: value.toString(), value: "" });
             customHandleChange && customHandleChange(value);
         }
