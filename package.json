@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "npm:publish": "npm run build && npm publish --access public"
   },
   "keywords": [],
   "author": "Vishwa Mahanama Muthukumarana",
