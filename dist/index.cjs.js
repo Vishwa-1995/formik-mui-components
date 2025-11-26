@@ -14995,7 +14995,12 @@ const PreviewList = styled$2.section `
   margin-top: 10px;
 `;
 const FileMetaData = styled$2.div `
-  display: ${(props) => props.$isImageFile || props.$isVideoFile || props.$isPdfFile || props.$isExcelFile ? "none" : "flex"};
+  display: ${(props) => props.$isImageFile ||
+    props.$isVideoFile ||
+    props.$isPdfFile ||
+    props.$isExcelFile
+    ? "none"
+    : "flex"};
   flex-direction: column;
   position: absolute;
   top: 0;
@@ -17897,9 +17902,9 @@ const ImageCropper = () => {
     const onAspectRatioChange = (event) => {
         setAspectRatio(event.target.value);
     };
-    return (jsxRuntimeExports.jsxs(Dialog, { fullScreen: true, open: close, onClose: handleClose, fullWidth: true, slotProps: {
-            paper: {
-                style: { borderRadius: 15 },
+    return (jsxRuntimeExports.jsxs(Dialog, { fullScreen: true, open: close, onClose: handleClose, fullWidth: true, sx: {
+            "& .MuiPaper-root": {
+                borderRadius: 5,
             },
         }, children: [jsxRuntimeExports.jsx(material.DialogContent, { style: { textAlign: "center" }, children: jsxRuntimeExports.jsx(material.Box, { children: jsxRuntimeExports.jsx(Cropper, { image: image, aspect: aspectRatio, crop: crop, zoom: zoom, onCropChange: setCrop, onZoomChange: setZoom, onCropComplete: onCropComplete, style: {
                             containerStyle: {
@@ -17946,64 +17951,63 @@ var FullscreenIcon = createSvgIcon(/*#__PURE__*/jsxRuntimeExports.jsx("path", {
   d: "M7 14H5v5h5v-2H7zm-2-4h2V7h3V5H5zm12 7h-3v2h5v-5h-2zM14 5v2h3v3h2V5z"
 }), 'Fullscreen');
 
-const useFileViewerStore = zustand.create((set) => ({
+const useFileViewerStore$1 = zustand.create((set) => ({
     file: {},
     zoom: 1,
     close: false,
 }));
-const openFileViewer = (file) => {
-    useFileViewerStore.setState({
+const openFileViewer$1 = (file) => {
+    useFileViewerStore$1.setState({
         file: file,
         zoom: 1,
         close: true,
     });
 };
-const closeFileViewer = () => {
-    useFileViewerStore.setState({
-        close: false,
-    });
-};
-function FileViewer() {
-    const { file, zoom, close } = useFileViewerStore();
-    const [fileUrl, setFileUrl] = React.useState(null);
-    React.useEffect(() => {
-        if (file instanceof File) {
-            const url = URL.createObjectURL(file);
-            setFileUrl(url);
-            return () => URL.revokeObjectURL(url); // Cleanup URL on unmount
-        }
-    }, [file]);
-    if (!fileUrl && close) {
-        return (jsxRuntimeExports.jsx(material.Box, { sx: { position: "fixed", top: 0, left: 0, zIndex: 1301, width: "100%" }, children: jsxRuntimeExports.jsx(material.LinearProgress, { color: "primary" }) }));
-    }
-    return (jsxRuntimeExports.jsxs(Dialog, { fullScreen: true, open: close, onClose: closeFileViewer, fullWidth: true, slotProps: {
-            paper: {
-                style: { borderRadius: 15 },
-            },
-        }, children: [jsxRuntimeExports.jsx(material.AppBar, { sx: { position: "relative" }, children: jsxRuntimeExports.jsxs(material.Toolbar, { children: [jsxRuntimeExports.jsx(material.IconButton, { edge: "start", color: "inherit", onClick: closeFileViewer, children: jsxRuntimeExports.jsx(CancelIcon, {}) }), jsxRuntimeExports.jsx(material.Stack, { direction: "row", justifyContent: "flex-end", spacing: 2, sx: { width: "100%" }, children: (typeof file == "object" && file?.type !== "application/pdf") ||
-                                (typeof file == "string" && file?.split(".")?.pop() !== "pdf") ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [fileUrl && (jsxRuntimeExports.jsx(material.IconButton, { color: "inherit", children: jsxRuntimeExports.jsx(reactRouterDom.Link, { to: fileUrl, target: "_blank", style: { color: "white" }, children: jsxRuntimeExports.jsx(FullscreenIcon, {}) }) })), jsxRuntimeExports.jsx(material.IconButton, { color: "inherit", onClick: () => {
-                                            if (zoom < 2.0)
-                                                useFileViewerStore.setState({
-                                                    ...useFileViewerStore,
-                                                    zoom: zoom + 0.2,
-                                                });
-                                        }, children: jsxRuntimeExports.jsx(ZoomInIcon, {}) }), jsxRuntimeExports.jsx(material.IconButton, { color: "inherit", onClick: () => {
-                                            if (zoom > 1.0)
-                                                useFileViewerStore.setState({
-                                                    ...useFileViewerStore,
-                                                    zoom: zoom - 0.2,
-                                                });
-                                        }, children: jsxRuntimeExports.jsx(ZoomOutIcon, {}) })] })) : null })] }) }), jsxRuntimeExports.jsx(material.DialogContent, { style: { display: "flex", justifyContent: "center" }, children: (typeof file == "object" && file?.type === "application/pdf") ||
-                    (typeof file == "string" &&
-                        file &&
-                        file?.split(".")?.pop() === "pdf") ? (jsxRuntimeExports.jsx(material.Box, { style: { height: "100vh", width: "100%" }, children: jsxRuntimeExports.jsx(core.Worker, { workerUrl: "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js", children: fileUrl && jsxRuntimeExports.jsx(core.Viewer, { fileUrl: fileUrl }) }) })) : (jsxRuntimeExports.jsx("img", { style: {
-                        maxHeight: "100%",
-                        maxWidth: "100%",
-                        transformOrigin: "top left",
-                        transform: `scale(${zoom})`,
-                    }, src: fileUrl ?? undefined, alt: "" })) })] }));
-}
 
+// helper: check if file matches accept string
+function isAcceptedFileType(file, accept) {
+    if (!accept)
+        return true;
+    const accepts = accept
+        .split(",")
+        .map((s) => s.trim().toLowerCase())
+        .filter(Boolean);
+    const fileName = (file.name || "").toLowerCase();
+    const fileType = (file.type || "").toLowerCase();
+    for (const a of accepts) {
+        if (a.startsWith(".")) {
+            // extension-based, e.g. ".png"
+            if (fileName.endsWith(a))
+                return true;
+        }
+        else if (a.endsWith("/*")) {
+            // wildcard mime, e.g. "image/*"
+            const [acceptedMain] = a.split("/");
+            const [fileMain] = fileType.split("/");
+            if (acceptedMain && fileMain && acceptedMain === fileMain)
+                return true;
+        }
+        else {
+            // exact mime match, e.g. "image/png"
+            if (fileType === a)
+                return true;
+        }
+    }
+    return false;
+}
+// improved validateFile using the helper
+const validateFile = (file, maxFileSizeInBytes, accept) => {
+    const errors = [];
+    // file size
+    if (file.size > maxFileSizeInBytes) {
+        errors.push(`File "${file.name}" exceeds max size of ${convertBytesToMB(maxFileSizeInBytes)} MB`);
+    }
+    // file type using robust check
+    if (!isAcceptedFileType(file, accept)) {
+        errors.push(`File "${file.name}" is not an accepted type (${accept})`);
+    }
+    return errors;
+};
 const _setImage = async (src, filename) => {
     try {
         if (src) {
@@ -18027,31 +18031,43 @@ const convertBytesToMB = (bytes) => Math.round(bytes / (KILO_BYTES_PER_BYTE * KI
 function LinearProgressWithLabel(props) {
     return (jsxRuntimeExports.jsxs(material.Box, { sx: { display: "flex", alignItems: "center" }, children: [jsxRuntimeExports.jsx(material.Box, { sx: { width: "100%", mr: 1 }, children: jsxRuntimeExports.jsx(LinearProgress, { variant: "determinate", ...props }) }), jsxRuntimeExports.jsx(material.Box, { sx: { minWidth: 35 }, children: jsxRuntimeExports.jsx(material.Typography, { variant: "body2", sx: { color: "text.secondary" }, children: `${Math.round(props?.value)}%` }) })] }));
 }
-const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES$1, progress, onUpload, onRemove, ...otherProps }) => {
+const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES$1, progress, onUpload, onRemove, isCropperEnabled = true, ...otherProps }) => {
     const theme = useTheme();
     const fileInputField = React.useRef(null);
-    const { setFieldValue } = formik.useFormikContext();
+    const { setFieldValue, setFieldError } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
+    const [fileErrors, setFileErrors] = React.useState([]);
     const handleUploadBtnClick = () => {
         fileInputField?.current.click();
     };
     const addNewFiles = (newFiles) => {
-        let totalFileSize = field.value?.reduce((accumulator, curValue) => {
-            return accumulator + curValue.size;
-        }, 0);
-        for (const file of newFiles) {
-            totalFileSize += file.size;
-            if (totalFileSize <= maxFileSizeInBytes) {
-                if (!otherProps.multiple) {
-                    if (onUpload) {
-                        onUpload(file);
-                    }
-                    return [file];
-                }
-                field.value = [...field.value, file];
+        const validFiles = [];
+        const invalidFiles = [];
+        for (const file of Array.from(newFiles)) {
+            const errors = validateFile(file, maxFileSizeInBytes, otherProps.accept);
+            if (errors.length === 0) {
+                validFiles.push(file);
+            }
+            else {
+                invalidFiles.push({ file, errors });
             }
         }
-        return [...field.value];
+        // ✅ Set Formik error if any invalid files exist
+        if (invalidFiles.length > 0) {
+            const errorMessages = invalidFiles
+                .map((e) => e.errors.join(", "))
+                .join("; ");
+            setFieldError(name, errorMessages);
+        }
+        else {
+            setFieldError(name, undefined);
+        }
+        setFileErrors((prev) => [...prev, ...invalidFiles]);
+        // ✅ Only valid files should update the field value
+        const updatedFiles = otherProps.multiple
+            ? [...(field.value || []), ...validFiles]
+            : validFiles;
+        return updatedFiles;
     };
     React.useEffect(() => {
         if (field.value && typeof field.value.name == "string") {
@@ -18063,15 +18079,37 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
         const { files: newFiles } = e.target;
         if (newFiles.length) {
             const updatedFiles = addNewFiles(newFiles);
+            if (onUpload) {
+                onUpload(updatedFiles);
+            }
             setFieldValue(name, updatedFiles);
         }
     };
-    const removeFile = (fileIndex) => {
-        field.value.splice(fileIndex, 1);
-        if (onRemove) {
-            onRemove(fileIndex);
+    const removeFile = async (fileIndex) => {
+        try {
+            if (onRemove)
+                await onRemove(fileIndex);
+            const removedFile = field.value[fileIndex];
+            // Remove from local error list
+            const updatedErrors = fileErrors.filter((err) => err.file.name !== removedFile.name);
+            setFileErrors(updatedErrors);
+            // Remove from Formik value
+            const updatedFiles = field.value.filter((_, i) => i !== fileIndex);
+            setFieldValue(name, updatedFiles);
+            // ✅ Update Formik error text if no invalid files remain
+            if (updatedErrors.length === 0) {
+                setFieldError(name, undefined);
+            }
+            else {
+                const errorMessages = updatedErrors
+                    .map((e) => e.errors.join(", "))
+                    .join("; ");
+                setFieldError(name, errorMessages);
+            }
         }
-        setFieldValue(name, field.value);
+        catch (err) {
+            console.log("❌ Deletion canceled or failed", err);
+        }
     };
     // Generating Cropped Image When Done Button Clicked
     const onCropDone = (imgCroppedArea, image, fileName) => {
@@ -18086,8 +18124,10 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
             const dataURL = canvasEle.toDataURL();
             _setImage(dataURL, fileName).then((value) => {
                 const updatedField = field.value.map((obj) => obj.name === fileName ? value : obj);
-                if (onUpload && value instanceof File) {
-                    onUpload(value);
+                if (onUpload &&
+                    updatedField instanceof Array &&
+                    updatedField.every((item) => item instanceof File)) {
+                    onUpload(updatedField);
                 }
                 setFieldValue(name, updatedField);
                 closeImageCropper();
@@ -18106,7 +18146,14 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
                                     const isExcelFile = allowedTypes.includes(file.type);
                                     const isImageFile = file?.type?.split("/")[0] === "image";
                                     const isVideoFile = file?.type?.split("/")[0] === "video";
-                                    return (jsxRuntimeExports.jsxs(material.Grid, { container: true, spacing: 2, marginTop: 0.2, children: [jsxRuntimeExports.jsxs(material.Grid, { item: true, children: [URL.createObjectURL(file) && (jsxRuntimeExports.jsx(material.Badge, { overlap: "circular", anchorOrigin: {
+                                    const currentFileError = fileErrors.find((err) => err.file.name === file.name);
+                                    return (jsxRuntimeExports.jsxs(material.Grid, { container: true, alignItems: "center", justifyContent: "space-between", sx: {
+                                            borderBottom: "1px solid #eee",
+                                            py: 1,
+                                            px: 1,
+                                            gap: 1,
+                                            flexWrap: "nowrap",
+                                        }, children: [jsxRuntimeExports.jsxs(material.Grid, { item: true, children: [URL.createObjectURL(file) && (jsxRuntimeExports.jsx(material.Badge, { overlap: "circular", anchorOrigin: {
                                                             vertical: "top",
                                                             horizontal: "right",
                                                         }, badgeContent: jsxRuntimeExports.jsx(CancelIcon, { color: "primary", onClick: () => removeFile(index) }), sx: {
@@ -18118,18 +18165,25 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
                                                                                 fontWeight: "bold",
                                                                             }, children: file.name.substring(0, 30) +
                                                                                 (file.name.length > 30 ? "..." : "") }), jsxRuntimeExports.jsxs("aside", { children: [jsxRuntimeExports.jsxs(material.Typography, { width: 100, color: "white", variant: "subtitle2", children: [convertBytesToKB(file.size), " kb"] }), jsxRuntimeExports.jsxs("aside", { children: [jsxRuntimeExports.jsx(RemoveFileIcon, { color: "inherit", size: "small", onClick: () => {
-                                                                                                openFileViewer(file);
+                                                                                                openFileViewer$1(file);
                                                                                             }, children: jsxRuntimeExports.jsx(VisibilityIcon, {}) }), isImageFile && (jsxRuntimeExports.jsx(RemoveFileIcon, { color: "secondary", size: "small", onClick: () => {
                                                                                                 openImageCropper(URL.createObjectURL(file), file.name, onCropDone, onCropCancel);
-                                                                                            }, children: jsxRuntimeExports.jsx(CropIcon, {}) }))] })] })] })] }) })] }), jsxRuntimeExports.jsx(material.Grid, { item: true, xs: 9.5, display: "flex", justifyContent: "center", alignItems: "center", children: jsxRuntimeExports.jsxs(material.Grid, { container: true, children: [jsxRuntimeExports.jsx(material.Typography, { variant: "subtitle2", color: theme.palette.primary.dark, children: file.name.substring(0, 30) +
-                                                                (file.name.length > 30 ? "..." : "") }), jsxRuntimeExports.jsxs(material.Box, { sx: { width: "100%" }, children: [progress !== undefined &&
-                                                                    progress > 0 &&
-                                                                    progress < 100 && (jsxRuntimeExports.jsx(LinearProgressWithLabel, { value: progress })), progress !== undefined && progress == 100 && (jsxRuntimeExports.jsxs(material.Box, { display: "flex", alignItems: "center", justifyContent: "flex-end", children: [jsxRuntimeExports.jsx(DoneAllIcon, { color: "success", fontSize: "small" }), jsxRuntimeExports.jsx(material.Typography, { variant: "body2", color: theme.palette.success.main, fontSize: "small", children: "Uploaded" })] }))] }), jsxRuntimeExports.jsx(material.Grid, { item: true, xs: 6, children: jsxRuntimeExports.jsxs(material.Typography, { variant: "h6", color: "grey", children: [convertBytesToKB(file.size), " kb of", " ", convertBytesToMB(maxFileSizeInBytes), " MB", " "] }) }), jsxRuntimeExports.jsxs(material.Grid, { item: true, xs: 6, display: "flex", justifyContent: "flex-end", alignItems: "flex-end", children: [isImageFile && (jsxRuntimeExports.jsx(material.Typography, { variant: "h6", color: "primary", sx: { cursor: "pointer", marginX: 1 }, onClick: () => {
+                                                                                            }, children: jsxRuntimeExports.jsx(CropIcon, {}) }))] })] })] })] }) })] }), jsxRuntimeExports.jsx(material.Grid, { item: true, xs: 9, md: 12, display: "flex", justifyContent: "center", alignItems: "center", children: jsxRuntimeExports.jsxs(material.Grid, { container: true, alignItems: "center", justifyContent: "space-between", children: [jsxRuntimeExports.jsx(material.Typography, { variant: "subtitle2", color: theme.palette.primary.dark, noWrap: true, sx: {
+                                                                maxWidth: "100%",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",
+                                                            }, children: file.name }), jsxRuntimeExports.jsxs(material.Box, { sx: { width: "100%" }, children: [progress?.progress !== undefined &&
+                                                                    progress.progress > 0 &&
+                                                                    progress.progress < 100 &&
+                                                                    progress.files.includes(file) && (jsxRuntimeExports.jsx(LinearProgressWithLabel, { value: progress.progress })), progress?.progress !== undefined &&
+                                                                    progress.progress === 100 &&
+                                                                    progress.files.includes(file) && (jsxRuntimeExports.jsxs(material.Box, { display: "flex", alignItems: "center", justifyContent: "flex-end", children: [jsxRuntimeExports.jsx(DoneAllIcon, { color: "success", fontSize: "small" }), jsxRuntimeExports.jsx(material.Typography, { variant: "body2", color: theme.palette.success.main, fontSize: "small", children: "Uploaded" })] }))] }), jsxRuntimeExports.jsx(material.Grid, { item: true, xs: 6, children: jsxRuntimeExports.jsxs(material.Typography, { variant: "h6", color: "grey", children: [convertBytesToKB(file.size), " kb of", " ", convertBytesToMB(maxFileSizeInBytes), " MB", " "] }) }), jsxRuntimeExports.jsxs(material.Grid, { item: true, xs: 6, display: "flex", justifyContent: "flex-end", alignItems: "flex-end", children: [isImageFile && isCropperEnabled && (jsxRuntimeExports.jsx(material.Typography, { variant: "h6", color: "primary", sx: { cursor: "pointer", marginX: 1 }, onClick: () => {
                                                                         openImageCropper(URL.createObjectURL(file), file.name, onCropDone, onCropCancel);
                                                                     }, children: "Crop" })), !isExcelFile && (jsxRuntimeExports.jsx(material.Typography, { variant: "h6", color: "primary", sx: { cursor: "pointer", marginX: 1 }, onClick: () => {
-                                                                        openFileViewer(file);
-                                                                    }, children: "View" }))] })] }) })] }, file.name));
-                                }) }) }) }), jsxRuntimeExports.jsx(material.Grid, { item: true, xs: 12, children: meta?.error ? (jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "error", children: meta.error })) : null })] }), jsxRuntimeExports.jsx(ImageCropper, {})] }));
+                                                                        openFileViewer$1(file);
+                                                                    }, children: "View" }))] })] }) }), currentFileError && (jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "error", sx: { mt: 0.5 }, children: currentFileError.errors.join(", ") }))] }, file.name));
+                                }) }) }) }), jsxRuntimeExports.jsx(material.Grid, { item: true, xs: 12, children: meta?.error && (jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "error", sx: { mt: 0.5 }, children: meta.error })) })] }), jsxRuntimeExports.jsx(ImageCropper, {})] }));
 };
 
 const IconSelectWrapper = ({ name, options, ...otherProps }) => {
@@ -19342,6 +19396,64 @@ const ItemImageUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SI
                         } }), jsxRuntimeExports.jsx(material.Button, { color: "primary", fullWidth: true, variant: "outlined", type: "button", onClick: handleUploadBtnClick, disabled: otherProps.disabled, startIcon: jsxRuntimeExports.jsx(CloudUploadIcon, {}), children: "Upload picture" }), jsxRuntimeExports.jsx(FormField, { type: "file", ref: fileInputField, onChange: handleNewFileUpload, title: "", value: "", ...otherProps })] }), jsxRuntimeExports.jsx("div", { className: "col-md-12", children: meta?.error ? (jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "error", children: meta.error })) : null })] }));
 };
 
+const useFileViewerStore = zustand.create((set) => ({
+    file: {},
+    zoom: 1,
+    close: false,
+}));
+const openFileViewer = (file) => {
+    useFileViewerStore.setState({
+        file: file,
+        zoom: 1,
+        close: true,
+    });
+};
+const closeFileViewer = () => {
+    useFileViewerStore.setState({
+        close: false,
+    });
+};
+function FileViewer() {
+    const { file, zoom, close } = useFileViewerStore();
+    const [fileUrl, setFileUrl] = React.useState(null);
+    React.useEffect(() => {
+        if (file instanceof File) {
+            const url = URL.createObjectURL(file);
+            setFileUrl(url);
+            return () => URL.revokeObjectURL(url); // Cleanup URL on unmount
+        }
+    }, [file]);
+    if (!fileUrl && close) {
+        return (jsxRuntimeExports.jsx(material.Box, { sx: { position: "fixed", top: 0, left: 0, zIndex: 1301, width: "100%" }, children: jsxRuntimeExports.jsx(material.LinearProgress, { color: "primary" }) }));
+    }
+    return (jsxRuntimeExports.jsxs(Dialog, { fullScreen: true, open: close, onClose: closeFileViewer, fullWidth: true, slotProps: {
+            paper: {
+                style: { borderRadius: 15 },
+            },
+        }, children: [jsxRuntimeExports.jsx(material.AppBar, { sx: { position: "relative" }, children: jsxRuntimeExports.jsxs(material.Toolbar, { children: [jsxRuntimeExports.jsx(material.IconButton, { edge: "start", color: "inherit", onClick: closeFileViewer, children: jsxRuntimeExports.jsx(CancelIcon, {}) }), jsxRuntimeExports.jsx(material.Stack, { direction: "row", justifyContent: "flex-end", spacing: 2, sx: { width: "100%" }, children: (typeof file == "object" && file?.type !== "application/pdf") ||
+                                (typeof file == "string" && file?.split(".")?.pop() !== "pdf") ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [fileUrl && (jsxRuntimeExports.jsx(material.IconButton, { color: "inherit", children: jsxRuntimeExports.jsx(reactRouterDom.Link, { to: fileUrl, target: "_blank", style: { color: "white" }, children: jsxRuntimeExports.jsx(FullscreenIcon, {}) }) })), jsxRuntimeExports.jsx(material.IconButton, { color: "inherit", onClick: () => {
+                                            if (zoom < 2.0)
+                                                useFileViewerStore.setState({
+                                                    ...useFileViewerStore,
+                                                    zoom: zoom + 0.2,
+                                                });
+                                        }, children: jsxRuntimeExports.jsx(ZoomInIcon, {}) }), jsxRuntimeExports.jsx(material.IconButton, { color: "inherit", onClick: () => {
+                                            if (zoom > 1.0)
+                                                useFileViewerStore.setState({
+                                                    ...useFileViewerStore,
+                                                    zoom: zoom - 0.2,
+                                                });
+                                        }, children: jsxRuntimeExports.jsx(ZoomOutIcon, {}) })] })) : null })] }) }), jsxRuntimeExports.jsx(material.DialogContent, { style: { display: "flex", justifyContent: "center" }, children: (typeof file == "object" && file?.type === "application/pdf") ||
+                    (typeof file == "string" &&
+                        file &&
+                        file?.split(".")?.pop() === "pdf") ? (jsxRuntimeExports.jsx(material.Box, { style: { height: "100vh", width: "100%" }, children: jsxRuntimeExports.jsx(core.Worker, { workerUrl: "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js", children: fileUrl && jsxRuntimeExports.jsx(core.Viewer, { fileUrl: fileUrl }) }) })) : (jsxRuntimeExports.jsx("img", { style: {
+                        maxHeight: "100%",
+                        maxWidth: "100%",
+                        transformOrigin: "top left",
+                        transform: `scale(${zoom})`,
+                    }, src: fileUrl ?? undefined, alt: "" })) })] }));
+}
+
 exports.AutoCompleteSearchMultipleWrapper = AutoCompleteSearchMultipleWrapper;
 exports.AutoCompleteSearchWrapper = AutoCompleteSearchWrapper;
 exports.AutoCompleteWrapper = AutoCompleteWrapper;
@@ -19350,6 +19462,7 @@ exports.ColorPickerWrapper = ColorPickerWrapper;
 exports.DatePickerWrapper = DatePickerWrapper;
 exports.DateTimePickerWrapper = DateTimePickerWrapper;
 exports.FileUpload = FileUpload;
+exports.FileUploadNew = FileUpload;
 exports.FileViewer = FileViewer;
 exports.IconSelectWrapper = IconSelectWrapper;
 exports.ItemImageUpload = ItemImageUpload;
