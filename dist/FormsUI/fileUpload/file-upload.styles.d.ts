@@ -25,3 +25,4 @@ export declare const PreviewContainer: import("styled-components/dist/types").IS
 export declare const ImagePreview: import("styled-components/dist/types").IStyledComponentBase<"web", import("styled-components").FastOmit<import("react").DetailedHTMLProps<import("react").ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, never>> & string;
 export declare const VideoPreview: import("styled-components/dist/types").IStyledComponentBase<"web", import("styled-components").FastOmit<import("react").DetailedHTMLProps<import("react").VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>, never>> & string;
 export {};
+//# sourceMappingURL=file-upload.styles.d.ts.map

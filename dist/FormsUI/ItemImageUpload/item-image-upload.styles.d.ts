@@ -1,1 +1,2 @@
 export declare const FormField: import("styled-components/dist/types").IStyledComponentBase<"web", import("styled-components").FastOmit<import("react").DetailedHTMLProps<import("react").InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, never>> & string;
+//# sourceMappingURL=item-image-upload.styles.d.ts.map

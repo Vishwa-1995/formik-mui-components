@@ -15,3 +15,4 @@ export declare const convertBytesToKB: (bytes: number) => number;
 export declare const convertBytesToMB: (bytes: number) => number;
 declare const FileUpload: ({ label, name, maxFileSizeInBytes, progress, onUpload, onRemove, ...otherProps }: FileUploadProps) => JSX.Element;
 export default FileUpload;
+//# sourceMappingURL=file-upload.component.d.ts.map

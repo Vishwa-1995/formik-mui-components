@@ -76,7 +76,7 @@ const ColorPickerWrapper: React.FC<ColorPickerWrapperProps> = ({
   return (
     <Grid container spacing={1}>
       <Typography variant="body2">{label}</Typography>
-      <Grid item>
+      <Grid>
         <Box style={styles.swatch} onClick={handleClick}>
           <Box style={styles.color} />
         </Box>

@@ -3,3 +3,4 @@ export declare const openFileViewer: (file: any) => void;
 export declare const closeFileViewer: () => void;
 declare function FileViewer(): import("react/jsx-runtime").JSX.Element;
 export default FileViewer;
+//# sourceMappingURL=FileViewer.d.ts.map

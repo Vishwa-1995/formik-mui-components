@@ -6,3 +6,4 @@ interface SwitchWrapperProps extends Omit<SwitchProps, "name"> {
 }
 declare const SwitchWrapper: React.FC<SwitchWrapperProps>;
 export default SwitchWrapper;
+//# sourceMappingURL=index.d.ts.map

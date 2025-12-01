@@ -14,3 +14,4 @@ type AutoCompleteSearchMultipleWrapperProps = {
 } & Partial<AutocompleteProps<any, any, any, any>>;
 declare const AutoCompleteSearchMultipleWrapper: React.FC<AutoCompleteSearchMultipleWrapperProps>;
 export default AutoCompleteSearchMultipleWrapper;
+//# sourceMappingURL=index.d.ts.map

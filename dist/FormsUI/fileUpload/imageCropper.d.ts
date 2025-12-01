@@ -3,3 +3,4 @@ export declare const openImageCropper: (image: string, fileName: string, onCropD
 export declare const closeImageCropper: () => void;
 declare const ImageCropper: React.FC;
 export default ImageCropper;
+//# sourceMappingURL=imageCropper.d.ts.map

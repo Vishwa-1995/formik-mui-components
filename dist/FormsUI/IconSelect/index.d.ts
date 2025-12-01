@@ -12,3 +12,4 @@ type IconSelectWrapperProps = TextFieldProps & {
 };
 declare const IconSelectWrapper: React.FC<IconSelectWrapperProps>;
 export default IconSelectWrapper;
+//# sourceMappingURL=index.d.ts.map

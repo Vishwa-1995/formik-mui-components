@@ -6,3 +6,4 @@ interface ColorPickerWrapperProps {
 }
 declare const ColorPickerWrapper: React.FC<ColorPickerWrapperProps>;
 export default ColorPickerWrapper;
+//# sourceMappingURL=index.d.ts.map

@@ -5,7 +5,7 @@ export { default as CheckboxWrapper } from "./FormsUI/Checkbox";
 export { default as ColorPickerWrapper } from "./FormsUI/ColorPicker";
 export { default as DatePickerWrapper } from "./FormsUI/DatePicker";
 export { default as DateTimePickerWrapper } from "./FormsUI/DateTimePicker";
-export { default as FileUpload } from "./FormsUI/fileUploadNew/file-upload.component";
+export { default as FileUpload } from "./FormsUI/fileUpload/file-upload.component";
 export { default as FileUploadNew } from "./FormsUI/fileUploadNew/file-upload.component";
 export { default as IconSelectWrapper } from "./FormsUI/IconSelect";
 export { default as RadioGroupWrapper } from "./FormsUI/RadioGroup";
@@ -14,5 +14,6 @@ export { default as SwitchWrapper } from "./FormsUI/Switch";
 export { default as TextFieldWrapper } from "./FormsUI/TextField";
 export { default as TimePickerWrapper } from "./FormsUI/TimePicker";
 export { default as ItemImageUpload } from "./FormsUI/ItemImageUpload/item-image-upload.component";
-export { openFileViewer } from "./FormsUI/fileUpload/FileViewer";
-export { default as FileViewer } from "./FormsUI/fileUpload/FileViewer";
+export { openFileViewer } from "./FormsUI/fileUploadNew/FileViewer";
+export { default as FileViewer } from "./FormsUI/fileUploadNew/FileViewer";
+//# sourceMappingURL=index.d.ts.map

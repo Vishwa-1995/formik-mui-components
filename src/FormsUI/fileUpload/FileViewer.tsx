@@ -13,7 +13,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import { Link } from "react-router-dom";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { useEffect, useState } from "react";
@@ -74,9 +73,9 @@ function FileViewer() {
       open={close}
       onClose={closeFileViewer}
       fullWidth={true}
-      slotProps={{
-        paper: {
-          style: { borderRadius: 15 },
+      sx={{
+        "& .MuiPaper-root": {
+          borderRadius: 2,
         },
       }}
     >
@@ -92,17 +91,23 @@ function FileViewer() {
             sx={{ width: "100%" }}
           >
             {(typeof file == "object" && file?.type !== "application/pdf") ||
-            (typeof file == "string" && file?.split(".")?.pop() !== "pdf") ? (
+              (typeof file == "string" && file?.split(".")?.pop() !== "pdf") ? (
               <>
                 {fileUrl && (
                   <IconButton color="inherit">
-                    <Link
-                      to={fileUrl}
+                    <a
+                      href={fileUrl}
                       target="_blank"
-                      style={{ color: "white" }}
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "white",
+                        display: "flex",
+                        alignItems: "center",
+                        textDecoration: "none"
+                      }}
                     >
                       <FullscreenIcon />
-                    </Link>
+                    </a>
                   </IconButton>
                 )}
                 <IconButton
@@ -110,7 +115,7 @@ function FileViewer() {
                   onClick={() => {
                     if (zoom < 2.0)
                       useFileViewerStore.setState({
-                        ...useFileViewerStore,
+                        ...useFileViewerStore.getState(),
                         zoom: zoom + 0.2,
                       });
                   }}
@@ -122,7 +127,7 @@ function FileViewer() {
                   onClick={() => {
                     if (zoom > 1.0)
                       useFileViewerStore.setState({
-                        ...useFileViewerStore,
+                        ...useFileViewerStore.getState(),
                         zoom: zoom - 0.2,
                       });
                   }}
@@ -136,9 +141,9 @@ function FileViewer() {
       </AppBar>
       <DialogContent style={{ display: "flex", justifyContent: "center" }}>
         {(typeof file == "object" && file?.type === "application/pdf") ||
-        (typeof file == "string" &&
-          file &&
-          file?.split(".")?.pop() === "pdf") ? (
+          (typeof file == "string" &&
+            file &&
+            file?.split(".")?.pop() === "pdf") ? (
           <Box style={{ height: "100vh", width: "100%" }}>
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
               {fileUrl && <Viewer fileUrl={fileUrl} />}

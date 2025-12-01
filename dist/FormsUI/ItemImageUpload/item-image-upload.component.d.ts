@@ -8,3 +8,4 @@ interface ItemImageUploadProps extends React.InputHTMLAttributes<HTMLInputElemen
 }
 declare const ItemImageUpload: React.FC<ItemImageUploadProps>;
 export default ItemImageUpload;
+//# sourceMappingURL=item-image-upload.component.d.ts.map

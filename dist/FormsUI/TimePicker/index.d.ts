@@ -6,3 +6,4 @@ interface TimePickerWrapperProps extends Omit<TimePickerProps<Dayjs>, "value" | 
 }
 declare const TimePickerWrapper: React.FC<TimePickerWrapperProps>;
 export default TimePickerWrapper;
+//# sourceMappingURL=index.d.ts.map

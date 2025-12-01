@@ -11,3 +11,4 @@ export default function AutoCompleteSearchWrapper<Option extends {
     setInputValue: React.Dispatch<React.SetStateAction<string | undefined>>;
     disabled?: boolean;
 }>): import("react/jsx-runtime").JSX.Element;
+//# sourceMappingURL=index.d.ts.map

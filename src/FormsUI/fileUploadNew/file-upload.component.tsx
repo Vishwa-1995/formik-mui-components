@@ -13,7 +13,7 @@ import {
   VideoPreview,
 } from "./file-upload.styles";
 import { useField, useFormikContext } from "formik";
-import { Badge, Box, Grid, Typography } from "@mui/material";
+import { Badge, Box, Typography } from "@mui/material";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
@@ -46,6 +46,20 @@ interface FileUploadProps {
   isCropperEnabled?: boolean;
   // Add any other props you need
 }
+
+// Helper: Generate a unique identifier for a file
+const getFileIdentifier = (file: File): string => {
+  // Use name + size + lastModified as a unique identifier
+  return `${file.name}-${file.size}-${file.lastModified}`;
+};
+
+// Helper: Check if file already exists in the array
+const isDuplicateFile = (file: File, existingFiles: File[]): boolean => {
+  const fileId = getFileIdentifier(file);
+  return existingFiles.some(existingFile => 
+    getFileIdentifier(existingFile) === fileId
+  );
+};
 
 // helper: check if file matches accept string
 function isAcceptedFileType(file: File, accept?: string): boolean {
@@ -81,9 +95,15 @@ function isAcceptedFileType(file: File, accept?: string): boolean {
 const validateFile = (
   file: File,
   maxFileSizeInBytes: number,
-  accept?: string
+  accept?: string,
+  existingFiles: File[] = []
 ) => {
   const errors: string[] = [];
+
+  // Check for duplicates
+  if (isDuplicateFile(file, existingFiles)) {
+    errors.push(`File "${file.name}" is already uploaded`);
+  }
 
   // file size
   if (file.size > maxFileSizeInBytes) {
@@ -162,6 +182,7 @@ const FileUpload = ({
   const [fileErrors, setFileErrors] = useState<
     { file: File; errors: string[] }[]
   >([]);
+  const [duplicateFiles, setDuplicateFiles] = useState<File[]>([]);
 
   const handleUploadBtnClick = () => {
     fileInputField?.current.click();
@@ -170,11 +191,20 @@ const FileUpload = ({
   const addNewFiles = (newFiles: FileList | File[]) => {
     const validFiles: File[] = [];
     const invalidFiles: { file: File; errors: string[] }[] = [];
+    const duplicateFiles: File[] = [];
 
     for (const file of Array.from(newFiles as any) as File[]) {
-      const errors = validateFile(file, maxFileSizeInBytes, otherProps.accept);
+      const errors = validateFile(
+        file, 
+        maxFileSizeInBytes, 
+        otherProps.accept, 
+        field.value || []
+      );
+      
       if (errors.length === 0) {
         validFiles.push(file);
+      } else if (errors.includes(`File "${file.name}" is already uploaded`)) {
+        duplicateFiles.push(file);
       } else {
         invalidFiles.push({ file, errors });
       }
@@ -190,12 +220,21 @@ const FileUpload = ({
       setFieldError(name, undefined);
     }
 
+    // Show duplicate files warning
+    if (duplicateFiles.length > 0) {
+      setDuplicateFiles(duplicateFiles);
+      // Auto-clear duplicate warning after 5 seconds
+      setTimeout(() => {
+        setDuplicateFiles(prev => prev.filter(f => !duplicateFiles.includes(f)));
+      }, 5000);
+    }
+
     setFileErrors((prev) => [...prev, ...invalidFiles]);
 
     // ✅ Only valid files should update the field value
     const updatedFiles = otherProps.multiple
       ? [...(field.value || []), ...validFiles]
-      : validFiles;
+      : validFiles.length > 0 ? [validFiles[0]] : [];
 
     return updatedFiles;
   };
@@ -211,10 +250,15 @@ const FileUpload = ({
     const { files: newFiles } = e.target;
     if (newFiles.length) {
       const updatedFiles = addNewFiles(newFiles);
-      if (onUpload) {
+      if (onUpload && updatedFiles.length > 0) {
         onUpload(updatedFiles);
       }
       setFieldValue(name, updatedFiles);
+      
+      // Reset file input to allow selecting same file again after removal
+      if (fileInputField.current) {
+        fileInputField.current.value = "";
+      }
     }
   };
 
@@ -229,6 +273,9 @@ const FileUpload = ({
         (err) => err.file.name !== removedFile.name
       );
       setFileErrors(updatedErrors);
+
+      // Remove from duplicate files list
+      setDuplicateFiles(prev => prev.filter(f => getFileIdentifier(f) !== getFileIdentifier(removedFile)));
 
       // Remove from Formik value
       const updatedFiles = field.value.filter(
@@ -297,303 +344,225 @@ const FileUpload = ({
 
   return (
     <>
-      <Grid container direction="row">
-        <Grid item xs={12}>
-          <Typography variant="body2" color="textSecondary">
-            {label}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <FileUploadContainer>
-            <DragDropText>Drag and drop your files anywhere or</DragDropText>
-            <UploadFileBtn
-              type="button"
-              onClick={handleUploadBtnClick}
-              disabled={otherProps.disabled}
-              theme={theme}
-            >
-              <FileUploadIcon sx={{ fontSize: "20px" }} />
-              <span> Select {otherProps.multiple ? "files" : "a file"}</span>
-            </UploadFileBtn>
-            <FormField
-              type="file"
-              ref={fileInputField}
-              onChange={handleNewFileUpload}
-              title=""
-              value=""
-              {...otherProps}
-            />
-          </FileUploadContainer>
-        </Grid>
-        <Grid item xs={12}>
-          <FilePreviewContainer>
-            {/* <span>To Upload</span> */}
-            <PreviewList>
-              {field.value?.map((file: File, index: any) => {
-                const allowedTypes = [
-                  "text/csv", // CSV file
-                  "application/vnd.ms-excel", // Old Excel (.xls)
-                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // New Excel (.xlsx)
-                ];
-                const isPdfFile = file?.type === "application/pdf";
-                const isExcelFile = allowedTypes.includes(file.type);
-                const isImageFile = file?.type?.split("/")[0] === "image";
-                const isVideoFile = file?.type?.split("/")[0] === "video";
-                const currentFileError = fileErrors.find(
-                  (err) => err.file.name === file.name
-                );
-                return (
-                  <Grid
-                    container
-                    key={file.name}
-                    alignItems="center"
-                    justifyContent="space-between"
-                    sx={{
-                      borderBottom: "1px solid #eee",
-                      py: 1,
-                      px: 1,
-                      gap: 1,
-                      flexWrap: "nowrap",
-                    }}
-                  >
-                    <Grid item>
-                      {URL.createObjectURL(file) && (
-                        <Badge
-                          overlap="circular"
-                          anchorOrigin={{
-                            vertical: "top",
-                            horizontal: "right",
-                          }}
-                          badgeContent={
-                            <CancelIcon
-                              color="primary"
-                              onClick={() => removeFile(index)}
-                            />
-                          }
-                          sx={{
-                            cursor: "pointer",
-                            color: "var(--primary-color)",
-                            display: "flex",
-                          }}
-                        />
-                      )}
-                      <PreviewContainer>
-                        <Box>
-                          {isPdfFile && (
-                            <ImagePreview
-                              src="https://dsuabgmmtxmj1.cloudfront.net/common/pdf_file_icon.png"
-                              alt={`file preview ${index}`}
-                            />
-                          )}
-                          {isExcelFile && (
-                            <ImagePreview
-                              src="https://cdn.adeonatech.net/common/ms-excel.png"
-                              alt={`file preview ${index}`}
-                            />
-                          )}
-                          {isImageFile && (
-                            <ImagePreview
-                              src={URL.createObjectURL(file)}
-                              alt={`file preview ${index}`}
-                            />
-                          )}
-                          {isVideoFile && (
-                            <VideoPreview
-                              poster={`file preview ${index}`}
-                              autoPlay
-                              muted
-                            >
-                              <source
-                                src={URL.createObjectURL(file)}
-                                type={file?.type}
-                              ></source>
-                            </VideoPreview>
-                          )}
-                          <FileMetaData
-                            $isPdfFile={isPdfFile}
-                            $isImageFile={isImageFile}
-                            $isVideoFile={isVideoFile}
-                            $isExcelFile={isExcelFile}
-                          >
-                            <Typography
-                              width={100}
-                              color="white"
-                              variant="subtitle2"
-                              style={{
-                                wordWrap: "break-word",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              {file.name.substring(0, 30) +
-                                (file.name.length > 30 ? "..." : "")}
-                            </Typography>
-                            <aside>
-                              <Typography
-                                width={100}
-                                color="white"
-                                variant="subtitle2"
-                              >
-                                {convertBytesToKB(file.size)} kb
-                              </Typography>
-                              <aside>
-                                {/*<RemoveFileIcon*/}
-                                {/*    color='secondary'*/}
-                                {/*    size='small'*/}
-                                {/*    onClick={() => removeFile(fileName)}*/}
-                                {/*><DeleteIcon/></RemoveFileIcon>*/}
-                                <RemoveFileIcon
-                                  color="inherit"
-                                  size="small"
-                                  onClick={() => {
-                                    openFileViewer(file);
-                                  }}
-                                >
-                                  <VisibilityIcon />
-                                </RemoveFileIcon>
-                                {isImageFile && (
-                                  <RemoveFileIcon
-                                    color="secondary"
-                                    size="small"
-                                    onClick={() => {
-                                      openImageCropper(
-                                        URL.createObjectURL(file),
-                                        file.name,
-                                        onCropDone,
-                                        onCropCancel
-                                      );
-                                    }}
-                                  >
-                                    <CropIcon />
-                                  </RemoveFileIcon>
-                                )}
-                              </aside>
-                            </aside>
-                          </FileMetaData>
-                        </Box>
-                      </PreviewContainer>
-                    </Grid>
-                    <Grid
-                      item
-                      xs={9}
-                      md={12}
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <Grid
-                        container
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <Typography
-                          variant="subtitle2"
-                          color={theme.palette.primary.dark}
-                          noWrap
-                          sx={{
-                            maxWidth: "100%",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {file.name}
-                        </Typography>
-                        <Box sx={{ width: "100%" }}>
-                          {progress?.progress !== undefined &&
-                            progress.progress > 0 &&
-                            progress.progress < 100 &&
-                            progress.files.includes(file) && (
-                              <LinearProgressWithLabel
-                                value={progress.progress}
-                              />
-                            )}
-                          {progress?.progress !== undefined &&
-                            progress.progress === 100 &&
-                            progress.files.includes(file) && (
-                              <Box
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="flex-end"
-                              >
-                                <DoneAllIcon color="success" fontSize="small" />
-                                <Typography
-                                  variant="body2"
-                                  color={theme.palette.success.main}
-                                  fontSize="small"
-                                >
-                                  Uploaded
-                                </Typography>
-                              </Box>
-                            )}
-                        </Box>
-                        <Grid item xs={6}>
-                          <Typography variant="h6" color="grey">
-                            {convertBytesToKB(file.size)} kb of{" "}
-                            {convertBytesToMB(maxFileSizeInBytes)} MB{" "}
-                          </Typography>
-                        </Grid>
-                        <Grid
-                          item
-                          xs={6}
-                          display="flex"
-                          justifyContent="flex-end"
-                          alignItems="flex-end"
-                        >
-                          {isImageFile && isCropperEnabled && (
-                            <Typography
-                              variant="h6"
-                              color="primary"
-                              sx={{ cursor: "pointer", marginX: 1 }}
-                              onClick={() => {
-                                openImageCropper(
-                                  URL.createObjectURL(file),
-                                  file.name,
-                                  onCropDone,
-                                  onCropCancel
-                                );
-                              }}
-                            >
-                              Crop
-                            </Typography>
-                          )}
-                          {!isExcelFile && (
-                            <Typography
-                              variant="h6"
-                              color="primary"
-                              sx={{ cursor: "pointer", marginX: 1 }}
-                              onClick={() => {
-                                openFileViewer(file);
-                              }}
-                            >
-                              View
-                            </Typography>
-                          )}
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    {currentFileError && (
-                      <Typography
-                        variant="caption"
+      <Box sx={{ width: '100%' }}>
+        {/* Label */}
+        <Typography variant="body2" color="textPrimary" sx={{ mb: 1 }}>
+          {label}
+        </Typography>
+
+        {/* Upload Container */}
+        <FileUploadContainer>
+          <DragDropText>Drag and drop your files anywhere or</DragDropText>
+          <UploadFileBtn
+            type="button"
+            onClick={handleUploadBtnClick}
+            disabled={otherProps.disabled}
+          >
+            <FileUploadIcon />
+            <span>Select {otherProps.multiple ? "files" : "a file"}</span>
+          </UploadFileBtn>
+          <FormField
+            type="file"
+            ref={fileInputField}
+            onChange={handleNewFileUpload}
+            title=""
+            value=""
+            {...otherProps}
+          />
+        </FileUploadContainer>
+
+        {/* Duplicate Files Warning */}
+        {duplicateFiles.length > 0 && (
+          <Box sx={{ 
+            mt: 1, 
+            p: 1, 
+            backgroundColor: 'warning.light', 
+            borderRadius: 1,
+            border: '1px solid',
+            borderColor: 'warning.main'
+          }}>
+            <Typography variant="caption" color="warning.dark">
+              <strong>Duplicate files skipped:</strong>{" "}
+              {duplicateFiles.map(f => f.name).join(', ')}
+            </Typography>
+          </Box>
+        )}
+
+        {/* File Preview List */}
+        <FilePreviewContainer>
+          <PreviewList>
+            {field.value?.map((file: File, index: number) => {
+              const allowedTypes = [
+                "text/csv",
+                "application/vnd.ms-excel",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              ];
+              const isPdfFile = file?.type === "application/pdf";
+              const isExcelFile = allowedTypes.includes(file.type);
+              const isImageFile = file?.type?.split("/")[0] === "image";
+              const isVideoFile = file?.type?.split("/")[0] === "video";
+              const currentFileError = fileErrors.find(
+                (err) => err.file.name === file.name
+              );
+
+              return (
+                <Box
+                  key={`${getFileIdentifier(file)}-${index}`}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    p: 1.5,
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
+                    '&:last-child': {
+                      borderBottom: 'none',
+                    },
+                  }}
+                >
+                  {/* Thumbnail */}
+                  <Badge
+                    overlap="circular"
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    badgeContent={
+                      <CancelIcon
                         color="error"
-                        sx={{ mt: 0.5 }}
-                      >
+                        sx={{ 
+                          cursor: 'pointer',
+                          fontSize: 20,
+                          '&:hover': { transform: 'scale(1.1)' }
+                        }}
+                        onClick={() => removeFile(index)}
+                      />
+                    }
+                  >
+                    <PreviewContainer>
+                      <Box>
+                        {isPdfFile && (
+                          <ImagePreview
+                            src="https://dsuabgmmtxmj1.cloudfront.net/common/pdf_file_icon.png"
+                            alt={`file preview ${index}`}
+                          />
+                        )}
+                        {isExcelFile && (
+                          <ImagePreview
+                            src="https://cdn.adeonatech.net/common/ms-excel.png"
+                            alt={`file preview ${index}`}
+                          />
+                        )}
+                        {isImageFile && (
+                          <ImagePreview
+                            src={URL.createObjectURL(file)}
+                            alt={`file preview ${index}`}
+                          />
+                        )}
+                        {isVideoFile && (
+                          <VideoPreview poster={`file preview ${index}`} autoPlay muted>
+                            <source src={URL.createObjectURL(file)} type={file?.type} />
+                          </VideoPreview>
+                        )}
+                        <FileMetaData
+                          $isPdfFile={isPdfFile}
+                          $isImageFile={isImageFile}
+                          $isVideoFile={isVideoFile}
+                          $isExcelFile={isExcelFile}
+                        >
+                          <Typography variant="caption" color="white" sx={{ fontWeight: 'bold' }}>
+                            {file.name.substring(0, 15) + (file.name.length > 15 ? "..." : "")}
+                          </Typography>
+                        </FileMetaData>
+                      </Box>
+                    </PreviewContainer>
+                  </Badge>
+
+                  {/* File Info */}
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography
+                      variant="body2"
+                      color="grey.700"
+                      noWrap
+                      sx={{ fontWeight: 600 }}
+                    >
+                      {file.name}
+                    </Typography>
+
+                    <Typography variant="caption" color="grey.500">
+                      {convertBytesToKB(file.size)} KB of {convertBytesToMB(maxFileSizeInBytes)} MB
+                    </Typography>
+
+                    {/* Progress Bar */}
+                    {progress?.progress !== undefined &&
+                      progress.progress > 0 &&
+                      progress.progress < 100 &&
+                      progress.files.includes(file) && (
+                        <Box sx={{ mt: 1 }}>
+                          <LinearProgressWithLabel value={progress.progress} />
+                        </Box>
+                      )}
+
+                    {/* Upload Complete */}
+                    {progress?.progress === 100 && progress.files.includes(file) && (
+                      <Box display="flex" alignItems="center" gap={0.5} sx={{ mt: 1 }}>
+                        <DoneAllIcon color="success" fontSize="small" />
+                        <Typography variant="caption" color="success.main">
+                          Uploaded
+                        </Typography>
+                      </Box>
+                    )}
+
+                    {/* Error Message */}
+                    {currentFileError && (
+                      <Typography variant="caption" color="error" sx={{ mt: 0.5, display: 'block' }}>
                         {currentFileError.errors.join(", ")}
                       </Typography>
                     )}
-                  </Grid>
-                );
-              })}
-            </PreviewList>
-          </FilePreviewContainer>
-        </Grid>
-        <Grid item xs={12}>
-          {meta?.error && (
-            <Typography variant="caption" color="error" sx={{ mt: 0.5 }}>
-              {meta.error}
-            </Typography>
-          )}
-        </Grid>
-      </Grid>
+                  </Box>
+
+                  {/* Actions */}
+                  <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>
+                    {isImageFile && isCropperEnabled && (
+                      <RemoveFileIcon
+                        size="small"
+                        color="primary"
+                        onClick={() => {
+                          openImageCropper(
+                            URL.createObjectURL(file),
+                            file.name,
+                            onCropDone,
+                            onCropCancel
+                          );
+                        }}
+                        title="Crop"
+                      >
+                        <CropIcon fontSize="small" />
+                      </RemoveFileIcon>
+                    )}
+                    
+                    {!isExcelFile && (
+                      <RemoveFileIcon
+                        size="small"
+                        color="primary"
+                        onClick={() => openFileViewer(file)}
+                        title="View"
+                      >
+                        <VisibilityIcon fontSize="small" />
+                      </RemoveFileIcon>
+                    )}
+                  </Box>
+                </Box>
+              );
+            })}
+          </PreviewList>
+        </FilePreviewContainer>
+
+        {/* Formik Error */}
+        {meta?.touched && meta?.error && (
+          <Typography variant="caption" color="error" sx={{ mt: 1, display: 'block' }}>
+            {meta.error}
+          </Typography>
+        )}
+      </Box>
+      
       <ImageCropper />
     </>
   );

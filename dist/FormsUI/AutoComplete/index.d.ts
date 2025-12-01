@@ -11,3 +11,4 @@ type AutoCompleteWrapperProps = {
 } & Partial<AutocompleteProps<any, any, any, any>>;
 declare const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps>;
 export default AutoCompleteWrapper;
+//# sourceMappingURL=index.d.ts.map

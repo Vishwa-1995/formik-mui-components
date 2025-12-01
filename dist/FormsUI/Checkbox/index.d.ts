@@ -10,3 +10,4 @@ interface CheckboxWrapperProps {
 }
 declare const CheckboxWrapper: React.FC<CheckboxWrapperProps>;
 export default CheckboxWrapper;
+//# sourceMappingURL=index.d.ts.map

@@ -33,7 +33,11 @@ export default {
     "@react-pdf-viewer/core",
   ],
   plugins: [
-    resolve(),
+    resolve({
+      browser: true,
+      preferBuiltins: false,
+      dedupe: ['react', 'react-dom', 'formik'],
+    }),
     commonjs(),
     typescript(),
     postcss({

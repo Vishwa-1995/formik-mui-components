@@ -13,7 +13,7 @@ import {
   VideoPreview,
 } from "./file-upload.styles";
 import { useField, useFormikContext } from "formik";
-import { Badge, Box, Grid, Typography } from "@mui/material";
+import { Badge, Box, Typography, Grid } from "@mui/material";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
@@ -190,17 +190,19 @@ const FileUpload = ({
   };
 
   // Handle Cancel Button Click
-  const onCropCancel = () => {};
+  const onCropCancel = () => { };
+
+  console.log(theme.palette.primary.dark);
 
   return (
     <>
       <Grid container direction="row">
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Typography variant="body2" color="textSecondary">
             {label}
           </Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <FileUploadContainer>
             <DragDropText>Drag and drop your files anywhere or</DragDropText>
             <UploadFileBtn
@@ -222,7 +224,7 @@ const FileUpload = ({
             />
           </FileUploadContainer>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <FilePreviewContainer>
             {/* <span>To Upload</span> */}
             <PreviewList>
@@ -238,7 +240,7 @@ const FileUpload = ({
                 const isVideoFile = file?.type?.split("/")[0] === "video";
                 return (
                   <Grid container key={file.name} spacing={2} marginTop={0.2}>
-                    <Grid item>
+                    <Grid>
                       {URL.createObjectURL(file) && (
                         <Badge
                           overlap="circular"
@@ -254,7 +256,6 @@ const FileUpload = ({
                           }
                           sx={{
                             cursor: "pointer",
-                            color: "var(--primary-color)",
                             display: "flex",
                           }}
                         />
@@ -355,8 +356,7 @@ const FileUpload = ({
                       </PreviewContainer>
                     </Grid>
                     <Grid
-                      item
-                      xs={9.5}
+                      size={{ xs: 9.5 }}
                       display="flex"
                       justifyContent="center"
                       alignItems="center"
@@ -392,15 +392,14 @@ const FileUpload = ({
                             </Box>
                           )}
                         </Box>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                           <Typography variant="h6" color="grey">
                             {convertBytesToKB(file.size)} kb of{" "}
                             {convertBytesToMB(maxFileSizeInBytes)} MB{" "}
                           </Typography>
                         </Grid>
                         <Grid
-                          item
-                          xs={6}
+                          size={{ xs: 6 }}
                           display="flex"
                           justifyContent="flex-end"
                           alignItems="flex-end"
@@ -443,7 +442,7 @@ const FileUpload = ({
             </PreviewList>
           </FilePreviewContainer>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           {meta?.error ? (
             <Typography variant="caption" color="error">
               {meta.error}
