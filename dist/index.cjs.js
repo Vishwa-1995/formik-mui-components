@@ -6,7 +6,7 @@ var material = require('@mui/material');
 var reactCSS = require('reactcss');
 var reactColor = require('react-color');
 var xDatePickers = require('@mui/x-date-pickers');
-var styled$2 = require('styled-components');
+var styled$3 = require('styled-components');
 var Cropper = require('react-easy-crop');
 var zustand = require('zustand');
 var ReactDOM = require('react-dom');
@@ -96,13 +96,11 @@ function requireReactJsxRuntime_development() {
   "production" !== process.env.NODE_ENV && function () {
     function getComponentNameFromType(type) {
       if (null == type) return null;
-      if ("function" === typeof type) return type.$$typeof === REACT_CLIENT_REFERENCE$2 ? null : type.displayName || type.name || null;
+      if ("function" === typeof type) return type.$$typeof === REACT_CLIENT_REFERENCE ? null : type.displayName || type.name || null;
       if ("string" === typeof type) return type;
       switch (type) {
         case REACT_FRAGMENT_TYPE:
           return "Fragment";
-        case REACT_PORTAL_TYPE:
-          return "Portal";
         case REACT_PROFILER_TYPE:
           return "Profiler";
         case REACT_STRICT_MODE_TYPE:
@@ -111,10 +109,14 @@ function requireReactJsxRuntime_development() {
           return "Suspense";
         case REACT_SUSPENSE_LIST_TYPE:
           return "SuspenseList";
+        case REACT_ACTIVITY_TYPE:
+          return "Activity";
       }
       if ("object" === typeof type) switch ("number" === typeof type.tag && console.error("Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue."), type.$$typeof) {
+        case REACT_PORTAL_TYPE:
+          return "Portal";
         case REACT_CONTEXT_TYPE:
-          return (type.displayName || "Context") + ".Provider";
+          return type.displayName || "Context";
         case REACT_CONSUMER_TYPE:
           return (type._context.displayName || "Context") + ".Consumer";
         case REACT_FORWARD_REF_TYPE:
@@ -151,194 +153,22 @@ function requireReactJsxRuntime_development() {
         return testStringCoercion(value);
       }
     }
-    function disabledLog() {}
-    function disableLogs() {
-      if (0 === disabledDepth) {
-        prevLog = console.log;
-        prevInfo = console.info;
-        prevWarn = console.warn;
-        prevError = console.error;
-        prevGroup = console.group;
-        prevGroupCollapsed = console.groupCollapsed;
-        prevGroupEnd = console.groupEnd;
-        var props = {
-          configurable: true,
-          enumerable: true,
-          value: disabledLog,
-          writable: true
-        };
-        Object.defineProperties(console, {
-          info: props,
-          log: props,
-          warn: props,
-          error: props,
-          group: props,
-          groupCollapsed: props,
-          groupEnd: props
-        });
-      }
-      disabledDepth++;
-    }
-    function reenableLogs() {
-      disabledDepth--;
-      if (0 === disabledDepth) {
-        var props = {
-          configurable: true,
-          enumerable: true,
-          writable: true
-        };
-        Object.defineProperties(console, {
-          log: assign({}, props, {
-            value: prevLog
-          }),
-          info: assign({}, props, {
-            value: prevInfo
-          }),
-          warn: assign({}, props, {
-            value: prevWarn
-          }),
-          error: assign({}, props, {
-            value: prevError
-          }),
-          group: assign({}, props, {
-            value: prevGroup
-          }),
-          groupCollapsed: assign({}, props, {
-            value: prevGroupCollapsed
-          }),
-          groupEnd: assign({}, props, {
-            value: prevGroupEnd
-          })
-        });
-      }
-      0 > disabledDepth && console.error("disabledDepth fell below zero. This is a bug in React. Please file an issue.");
-    }
-    function describeBuiltInComponentFrame(name) {
-      if (void 0 === prefix) try {
-        throw Error();
-      } catch (x) {
-        var match = x.stack.trim().match(/\n( *(at )?)/);
-        prefix = match && match[1] || "";
-        suffix = -1 < x.stack.indexOf("\n    at") ? " (<anonymous>)" : -1 < x.stack.indexOf("@") ? "@unknown:0:0" : "";
-      }
-      return "\n" + prefix + name + suffix;
-    }
-    function describeNativeComponentFrame(fn, construct) {
-      if (!fn || reentry) return "";
-      var frame = componentFrameCache.get(fn);
-      if (void 0 !== frame) return frame;
-      reentry = true;
-      frame = Error.prepareStackTrace;
-      Error.prepareStackTrace = void 0;
-      var previousDispatcher = null;
-      previousDispatcher = ReactSharedInternals.H;
-      ReactSharedInternals.H = null;
-      disableLogs();
+    function getTaskName(type) {
+      if (type === REACT_FRAGMENT_TYPE) return "<>";
+      if ("object" === typeof type && null !== type && type.$$typeof === REACT_LAZY_TYPE) return "<...>";
       try {
-        var RunInRootFrame = {
-          DetermineComponentFrameRoot: function () {
-            try {
-              if (construct) {
-                var Fake = function () {
-                  throw Error();
-                };
-                Object.defineProperty(Fake.prototype, "props", {
-                  set: function () {
-                    throw Error();
-                  }
-                });
-                if ("object" === typeof Reflect && Reflect.construct) {
-                  try {
-                    Reflect.construct(Fake, []);
-                  } catch (x) {
-                    var control = x;
-                  }
-                  Reflect.construct(fn, [], Fake);
-                } else {
-                  try {
-                    Fake.call();
-                  } catch (x$0) {
-                    control = x$0;
-                  }
-                  fn.call(Fake.prototype);
-                }
-              } else {
-                try {
-                  throw Error();
-                } catch (x$1) {
-                  control = x$1;
-                }
-                (Fake = fn()) && "function" === typeof Fake.catch && Fake.catch(function () {});
-              }
-            } catch (sample) {
-              if (sample && control && "string" === typeof sample.stack) return [sample.stack, control.stack];
-            }
-            return [null, null];
-          }
-        };
-        RunInRootFrame.DetermineComponentFrameRoot.displayName = "DetermineComponentFrameRoot";
-        var namePropDescriptor = Object.getOwnPropertyDescriptor(RunInRootFrame.DetermineComponentFrameRoot, "name");
-        namePropDescriptor && namePropDescriptor.configurable && Object.defineProperty(RunInRootFrame.DetermineComponentFrameRoot, "name", {
-          value: "DetermineComponentFrameRoot"
-        });
-        var _RunInRootFrame$Deter = RunInRootFrame.DetermineComponentFrameRoot(),
-          sampleStack = _RunInRootFrame$Deter[0],
-          controlStack = _RunInRootFrame$Deter[1];
-        if (sampleStack && controlStack) {
-          var sampleLines = sampleStack.split("\n"),
-            controlLines = controlStack.split("\n");
-          for (_RunInRootFrame$Deter = namePropDescriptor = 0; namePropDescriptor < sampleLines.length && !sampleLines[namePropDescriptor].includes("DetermineComponentFrameRoot");) namePropDescriptor++;
-          for (; _RunInRootFrame$Deter < controlLines.length && !controlLines[_RunInRootFrame$Deter].includes("DetermineComponentFrameRoot");) _RunInRootFrame$Deter++;
-          if (namePropDescriptor === sampleLines.length || _RunInRootFrame$Deter === controlLines.length) for (namePropDescriptor = sampleLines.length - 1, _RunInRootFrame$Deter = controlLines.length - 1; 1 <= namePropDescriptor && 0 <= _RunInRootFrame$Deter && sampleLines[namePropDescriptor] !== controlLines[_RunInRootFrame$Deter];) _RunInRootFrame$Deter--;
-          for (; 1 <= namePropDescriptor && 0 <= _RunInRootFrame$Deter; namePropDescriptor--, _RunInRootFrame$Deter--) if (sampleLines[namePropDescriptor] !== controlLines[_RunInRootFrame$Deter]) {
-            if (1 !== namePropDescriptor || 1 !== _RunInRootFrame$Deter) {
-              do if (namePropDescriptor--, _RunInRootFrame$Deter--, 0 > _RunInRootFrame$Deter || sampleLines[namePropDescriptor] !== controlLines[_RunInRootFrame$Deter]) {
-                var _frame = "\n" + sampleLines[namePropDescriptor].replace(" at new ", " at ");
-                fn.displayName && _frame.includes("<anonymous>") && (_frame = _frame.replace("<anonymous>", fn.displayName));
-                "function" === typeof fn && componentFrameCache.set(fn, _frame);
-                return _frame;
-              } while (1 <= namePropDescriptor && 0 <= _RunInRootFrame$Deter);
-            }
-            break;
-          }
-        }
-      } finally {
-        reentry = false, ReactSharedInternals.H = previousDispatcher, reenableLogs(), Error.prepareStackTrace = frame;
+        var name = getComponentNameFromType(type);
+        return name ? "<" + name + ">" : "<...>";
+      } catch (x) {
+        return "<...>";
       }
-      sampleLines = (sampleLines = fn ? fn.displayName || fn.name : "") ? describeBuiltInComponentFrame(sampleLines) : "";
-      "function" === typeof fn && componentFrameCache.set(fn, sampleLines);
-      return sampleLines;
-    }
-    function describeUnknownElementTypeFrameInDEV(type) {
-      if (null == type) return "";
-      if ("function" === typeof type) {
-        var prototype = type.prototype;
-        return describeNativeComponentFrame(type, !(!prototype || !prototype.isReactComponent));
-      }
-      if ("string" === typeof type) return describeBuiltInComponentFrame(type);
-      switch (type) {
-        case REACT_SUSPENSE_TYPE:
-          return describeBuiltInComponentFrame("Suspense");
-        case REACT_SUSPENSE_LIST_TYPE:
-          return describeBuiltInComponentFrame("SuspenseList");
-      }
-      if ("object" === typeof type) switch (type.$$typeof) {
-        case REACT_FORWARD_REF_TYPE:
-          return type = describeNativeComponentFrame(type.render, false), type;
-        case REACT_MEMO_TYPE:
-          return describeUnknownElementTypeFrameInDEV(type.type);
-        case REACT_LAZY_TYPE:
-          prototype = type._payload;
-          type = type._init;
-          try {
-            return describeUnknownElementTypeFrameInDEV(type(prototype));
-          } catch (x) {}
-      }
-      return "";
     }
     function getOwner() {
       var dispatcher = ReactSharedInternals.A;
       return null === dispatcher ? null : dispatcher.getOwner();
+    }
+    function UnknownOwner() {
+      return Error("react-stack-top-frame");
     }
     function hasValidKey(config) {
       if (hasOwnProperty.call(config, "key")) {
@@ -363,8 +193,8 @@ function requireReactJsxRuntime_development() {
       componentName = this.props.ref;
       return void 0 !== componentName ? componentName : null;
     }
-    function ReactElement(type, key, self, source, owner, props) {
-      self = props.ref;
+    function ReactElement(type, key, props, owner, debugStack, debugTask) {
+      var refProp = props.ref;
       type = {
         $$typeof: REACT_ELEMENT_TYPE,
         type: type,
@@ -372,7 +202,7 @@ function requireReactJsxRuntime_development() {
         props: props,
         _owner: owner
       };
-      null !== (void 0 !== self ? self : null) ? Object.defineProperty(type, "ref", {
+      null !== (void 0 !== refProp ? refProp : null) ? Object.defineProperty(type, "ref", {
         enumerable: false,
         get: elementRefGetterWithDeprecationWarning
       }) : Object.defineProperty(type, "ref", {
@@ -392,24 +222,29 @@ function requireReactJsxRuntime_development() {
         writable: true,
         value: null
       });
+      Object.defineProperty(type, "_debugStack", {
+        configurable: false,
+        enumerable: false,
+        writable: true,
+        value: debugStack
+      });
+      Object.defineProperty(type, "_debugTask", {
+        configurable: false,
+        enumerable: false,
+        writable: true,
+        value: debugTask
+      });
       Object.freeze && (Object.freeze(type.props), Object.freeze(type));
       return type;
     }
-    function jsxDEVImpl(type, config, maybeKey, isStaticChildren, source, self) {
-      if ("string" === typeof type || "function" === typeof type || type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || type === REACT_OFFSCREEN_TYPE || "object" === typeof type && null !== type && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_CONSUMER_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_CLIENT_REFERENCE$1 || void 0 !== type.getModuleId)) {
-        var children = config.children;
-        if (void 0 !== children) if (isStaticChildren) {
-          if (isArrayImpl(children)) {
-            for (isStaticChildren = 0; isStaticChildren < children.length; isStaticChildren++) validateChildKeys(children[isStaticChildren], type);
-            Object.freeze && Object.freeze(children);
-          } else console.error("React.jsx: Static children should always be an array. You are likely explicitly calling React.jsxs or React.jsxDEV. Use the Babel transform instead.");
-        } else validateChildKeys(children, type);
-      } else {
-        children = "";
-        if (void 0 === type || "object" === typeof type && null !== type && 0 === Object.keys(type).length) children += " You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.";
-        null === type ? isStaticChildren = "null" : isArrayImpl(type) ? isStaticChildren = "array" : void 0 !== type && type.$$typeof === REACT_ELEMENT_TYPE ? (isStaticChildren = "<" + (getComponentNameFromType(type.type) || "Unknown") + " />", children = " Did you accidentally export a JSX literal instead of a component?") : isStaticChildren = typeof type;
-        console.error("React.jsx: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s", isStaticChildren, children);
-      }
+    function jsxDEVImpl(type, config, maybeKey, isStaticChildren, debugStack, debugTask) {
+      var children = config.children;
+      if (void 0 !== children) if (isStaticChildren) {
+        if (isArrayImpl(children)) {
+          for (isStaticChildren = 0; isStaticChildren < children.length; isStaticChildren++) validateChildKeys(children[isStaticChildren]);
+          Object.freeze && Object.freeze(children);
+        } else console.error("React.jsx: Static children should always be an array. You are likely explicitly calling React.jsxs or React.jsxDEV. Use the Babel transform instead.");
+      } else validateChildKeys(children);
       if (hasOwnProperty.call(config, "key")) {
         children = getComponentNameFromType(type);
         var keys = Object.keys(config).filter(function (k) {
@@ -426,84 +261,53 @@ function requireReactJsxRuntime_development() {
         for (var propName in config) "key" !== propName && (maybeKey[propName] = config[propName]);
       } else maybeKey = config;
       children && defineKeyPropWarningGetter(maybeKey, "function" === typeof type ? type.displayName || type.name || "Unknown" : type);
-      return ReactElement(type, children, self, source, getOwner(), maybeKey);
+      return ReactElement(type, children, maybeKey, getOwner(), debugStack, debugTask);
     }
-    function validateChildKeys(node, parentType) {
-      if ("object" === typeof node && node && node.$$typeof !== REACT_CLIENT_REFERENCE) if (isArrayImpl(node)) for (var i = 0; i < node.length; i++) {
-        var child = node[i];
-        isValidElement(child) && validateExplicitKey(child, parentType);
-      } else if (isValidElement(node)) node._store && (node._store.validated = 1);else if (null === node || "object" !== typeof node ? i = null : (i = MAYBE_ITERATOR_SYMBOL && node[MAYBE_ITERATOR_SYMBOL] || node["@@iterator"], i = "function" === typeof i ? i : null), "function" === typeof i && i !== node.entries && (i = i.call(node), i !== node)) for (; !(node = i.next()).done;) isValidElement(node.value) && validateExplicitKey(node.value, parentType);
+    function validateChildKeys(node) {
+      isValidElement(node) ? node._store && (node._store.validated = 1) : "object" === typeof node && null !== node && node.$$typeof === REACT_LAZY_TYPE && ("fulfilled" === node._payload.status ? isValidElement(node._payload.value) && node._payload.value._store && (node._payload.value._store.validated = 1) : node._store && (node._store.validated = 1));
     }
     function isValidElement(object) {
       return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
-    }
-    function validateExplicitKey(element, parentType) {
-      if (element._store && !element._store.validated && null == element.key && (element._store.validated = 1, parentType = getCurrentComponentErrorInfo(parentType), !ownerHasKeyUseWarning[parentType])) {
-        ownerHasKeyUseWarning[parentType] = true;
-        var childOwner = "";
-        element && null != element._owner && element._owner !== getOwner() && (childOwner = null, "number" === typeof element._owner.tag ? childOwner = getComponentNameFromType(element._owner.type) : "string" === typeof element._owner.name && (childOwner = element._owner.name), childOwner = " It was passed a child from " + childOwner + ".");
-        var prevGetCurrentStack = ReactSharedInternals.getCurrentStack;
-        ReactSharedInternals.getCurrentStack = function () {
-          var stack = describeUnknownElementTypeFrameInDEV(element.type);
-          prevGetCurrentStack && (stack += prevGetCurrentStack() || "");
-          return stack;
-        };
-        console.error('Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information.', parentType, childOwner);
-        ReactSharedInternals.getCurrentStack = prevGetCurrentStack;
-      }
-    }
-    function getCurrentComponentErrorInfo(parentType) {
-      var info = "",
-        owner = getOwner();
-      owner && (owner = getComponentNameFromType(owner.type)) && (info = "\n\nCheck the render method of `" + owner + "`.");
-      info || (parentType = getComponentNameFromType(parentType)) && (info = "\n\nCheck the top-level render call using <" + parentType + ">.");
-      return info;
     }
     var React$1 = React,
       REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"),
       REACT_PORTAL_TYPE = Symbol.for("react.portal"),
       REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"),
       REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"),
-      REACT_PROFILER_TYPE = Symbol.for("react.profiler");
-    var REACT_CONSUMER_TYPE = Symbol.for("react.consumer"),
+      REACT_PROFILER_TYPE = Symbol.for("react.profiler"),
+      REACT_CONSUMER_TYPE = Symbol.for("react.consumer"),
       REACT_CONTEXT_TYPE = Symbol.for("react.context"),
       REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"),
       REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"),
       REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"),
       REACT_MEMO_TYPE = Symbol.for("react.memo"),
       REACT_LAZY_TYPE = Symbol.for("react.lazy"),
-      REACT_OFFSCREEN_TYPE = Symbol.for("react.offscreen"),
-      MAYBE_ITERATOR_SYMBOL = Symbol.iterator,
-      REACT_CLIENT_REFERENCE$2 = Symbol.for("react.client.reference"),
+      REACT_ACTIVITY_TYPE = Symbol.for("react.activity"),
+      REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"),
       ReactSharedInternals = React$1.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE,
       hasOwnProperty = Object.prototype.hasOwnProperty,
-      assign = Object.assign,
-      REACT_CLIENT_REFERENCE$1 = Symbol.for("react.client.reference"),
       isArrayImpl = Array.isArray,
-      disabledDepth = 0,
-      prevLog,
-      prevInfo,
-      prevWarn,
-      prevError,
-      prevGroup,
-      prevGroupCollapsed,
-      prevGroupEnd;
-    disabledLog.__reactDisabledLog = true;
-    var prefix,
-      suffix,
-      reentry = false;
-    var componentFrameCache = new ("function" === typeof WeakMap ? WeakMap : Map)();
-    var REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"),
-      specialPropKeyWarningShown;
-    var didWarnAboutElementRef = {};
-    var didWarnAboutKeySpread = {},
-      ownerHasKeyUseWarning = {};
-    reactJsxRuntime_development.Fragment = REACT_FRAGMENT_TYPE;
-    reactJsxRuntime_development.jsx = function (type, config, maybeKey, source, self) {
-      return jsxDEVImpl(type, config, maybeKey, false, source, self);
+      createTask = console.createTask ? console.createTask : function () {
+        return null;
+      };
+    React$1 = {
+      react_stack_bottom_frame: function (callStackForError) {
+        return callStackForError();
+      }
     };
-    reactJsxRuntime_development.jsxs = function (type, config, maybeKey, source, self) {
-      return jsxDEVImpl(type, config, maybeKey, true, source, self);
+    var specialPropKeyWarningShown;
+    var didWarnAboutElementRef = {};
+    var unknownOwnerDebugStack = React$1.react_stack_bottom_frame.bind(React$1, UnknownOwner)();
+    var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
+    var didWarnAboutKeySpread = {};
+    reactJsxRuntime_development.Fragment = REACT_FRAGMENT_TYPE;
+    reactJsxRuntime_development.jsx = function (type, config, maybeKey) {
+      var trackActualOwner = 1e4 > ReactSharedInternals.recentlyCreatedOwnerStacks++;
+      return jsxDEVImpl(type, config, maybeKey, false, trackActualOwner ? Error("react-stack-top-frame") : unknownOwnerDebugStack, trackActualOwner ? createTask(getTaskName(type)) : unknownOwnerDebugTask);
+    };
+    reactJsxRuntime_development.jsxs = function (type, config, maybeKey) {
+      var trackActualOwner = 1e4 > ReactSharedInternals.recentlyCreatedOwnerStacks++;
+      return jsxDEVImpl(type, config, maybeKey, true, trackActualOwner ? Error("react-stack-top-frame") : unknownOwnerDebugStack, trackActualOwner ? createTask(getTaskName(type)) : unknownOwnerDebugTask);
     };
   }();
   return reactJsxRuntime_development;
@@ -1908,7 +1712,7 @@ function composeClasses(slots, getUtilityClass, classes = undefined) {
  *   ...
  * @param {number} code
  */
-function formatMuiErrorMessage$1(code, ...args) {
+function formatMuiErrorMessage(code, ...args) {
   const url = new URL(`https://mui.com/production-error/?code=${code}`);
   args.forEach(arg => url.searchParams.append('args[]', arg));
   return `Minified MUI error #${code}; visit ${url} for the full message.`;
@@ -1918,9 +1722,9 @@ function formatMuiErrorMessage$1(code, ...args) {
 //
 // A strict capitalization should uppercase the first letter of each word in the sentence.
 // We only handle the first word.
-function capitalize$1(string) {
+function capitalize(string) {
   if (typeof string !== 'string') {
-    throw new Error(process.env.NODE_ENV !== "production" ? 'MUI: `capitalize(string)` expects a string argument.' : formatMuiErrorMessage$1(7));
+    throw new Error(process.env.NODE_ENV !== "production" ? 'MUI: `capitalize(string)` expects a string argument.' : formatMuiErrorMessage(7));
   }
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -2174,20 +1978,20 @@ function requireReactIs$1() {
 var reactIsExports = /*@__PURE__*/ requireReactIs$1();
 
 // https://github.com/sindresorhus/is-plain-obj/blob/main/index.js
-function isPlainObject$1(item) {
+function isPlainObject(item) {
   if (typeof item !== 'object' || item === null) {
     return false;
   }
   const prototype = Object.getPrototypeOf(item);
   return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in item) && !(Symbol.iterator in item);
 }
-function deepClone$1(source) {
-  if (/*#__PURE__*/React__namespace.isValidElement(source) || reactIsExports.isValidElementType(source) || !isPlainObject$1(source)) {
+function deepClone(source) {
+  if (/*#__PURE__*/React__namespace.isValidElement(source) || reactIsExports.isValidElementType(source) || !isPlainObject(source)) {
     return source;
   }
   const output = {};
   Object.keys(source).forEach(key => {
-    output[key] = deepClone$1(source[key]);
+    output[key] = deepClone(source[key]);
   });
   return output;
 }
@@ -2210,23 +2014,23 @@ function deepClone$1(source) {
  * @param options.clone Set to `false` to merge the source object directly into the target object.
  * @returns The merged object.
  */
-function deepmerge$1(target, source, options = {
+function deepmerge(target, source, options = {
   clone: true
 }) {
   const output = options.clone ? {
     ...target
   } : target;
-  if (isPlainObject$1(target) && isPlainObject$1(source)) {
+  if (isPlainObject(target) && isPlainObject(source)) {
     Object.keys(source).forEach(key => {
       if (/*#__PURE__*/React__namespace.isValidElement(source[key]) || reactIsExports.isValidElementType(source[key])) {
         output[key] = source[key];
-      } else if (isPlainObject$1(source[key]) &&
+      } else if (isPlainObject(source[key]) &&
       // Avoid prototype pollution
-      Object.prototype.hasOwnProperty.call(target, key) && isPlainObject$1(target[key])) {
+      Object.prototype.hasOwnProperty.call(target, key) && isPlainObject(target[key])) {
         // Since `output` is a clone of `target` and we have narrowed `target` in this block we can cast to the same type.
-        output[key] = deepmerge$1(target[key], source[key], options);
+        output[key] = deepmerge(target[key], source[key], options);
       } else if (options.clone) {
-        output[key] = isPlainObject$1(source[key]) ? deepClone$1(source[key]) : source[key];
+        output[key] = isPlainObject(source[key]) ? deepClone(source[key]) : source[key];
       } else {
         output[key] = source[key];
       }
@@ -2239,7 +2043,7 @@ function merge(acc, item) {
   if (!item) {
     return acc;
   }
-  return deepmerge$1(acc, item, {
+  return deepmerge(acc, item, {
     clone: false // No need to clone deep, it's way faster.
   });
 }
@@ -2279,7 +2083,7 @@ function getContainerQuery(theme, shorthand) {
   const matches = shorthand.match(/^@([^/]+)?\/?(.+)?$/);
   if (!matches) {
     if (process.env.NODE_ENV !== 'production') {
-      throw new Error(process.env.NODE_ENV !== "production" ? `MUI: The provided shorthand ${`(${shorthand})`} is invalid. The format should be \`@<breakpoint | number>\` or \`@<breakpoint | number>/<container>\`.\n` + 'For example, `@sm` or `@600` or `@40rem/sidebar`.' : formatMuiErrorMessage$1(18, `(${shorthand})`));
+      throw new Error(process.env.NODE_ENV !== "production" ? `MUI: The provided shorthand ${`(${shorthand})`} is invalid. The format should be \`@<breakpoint | number>\` or \`@<breakpoint | number>/<container>\`.\n` + 'For example, `@sm` or `@600` or `@40rem/sidebar`.' : formatMuiErrorMessage(18, `(${shorthand})`));
     }
     return null;
   }
@@ -2450,7 +2254,7 @@ function style$1(options) {
       let value = getStyleValue(themeMapping, transform, propValueFinal);
       if (propValueFinal === value && typeof propValueFinal === 'string') {
         // Haven't found value
-        value = getStyleValue(themeMapping, transform, `${prop}${propValueFinal === 'default' ? '' : capitalize$1(propValueFinal)}`, propValueFinal);
+        value = getStyleValue(themeMapping, transform, `${prop}${propValueFinal === 'default' ? '' : capitalize(propValueFinal)}`, propValueFinal);
       }
       if (cssProperty === false) {
         return value;
@@ -3192,7 +2996,7 @@ function unstable_createStyleFunctionSx() {
       let value = getStyleValue(themeMapping, transform, propValueFinal);
       if (propValueFinal === value && typeof propValueFinal === 'string') {
         // Haven't found value
-        value = getStyleValue(themeMapping, transform, `${prop}${propValueFinal === 'default' ? '' : capitalize$1(propValueFinal)}`, propValueFinal);
+        value = getStyleValue(themeMapping, transform, `${prop}${propValueFinal === 'default' ? '' : capitalize(propValueFinal)}`, propValueFinal);
       }
       if (cssProperty === false) {
         return value;
@@ -3304,7 +3108,7 @@ function extendSxProp$1(props) {
   } else if (typeof inSx === 'function') {
     finalSx = (...args) => {
       const result = inSx(...args);
-      if (!isPlainObject$1(result)) {
+      if (!isPlainObject(result)) {
         return systemProps;
       }
       return {
@@ -5288,7 +5092,7 @@ function keyframes() {
 }
 
 // eslint-disable-next-line no-undef
-var reactPropsRegex = /^((children|dangerouslySetInnerHTML|key|ref|autoFocus|defaultValue|defaultChecked|innerHTML|suppressContentEditableWarning|suppressHydrationWarning|valueLink|abbr|accept|acceptCharset|accessKey|action|allow|allowUserMedia|allowPaymentRequest|allowFullScreen|allowTransparency|alt|async|autoComplete|autoPlay|capture|cellPadding|cellSpacing|challenge|charSet|checked|cite|classID|className|cols|colSpan|content|contentEditable|contextMenu|controls|controlsList|coords|crossOrigin|data|dateTime|decoding|default|defer|dir|disabled|disablePictureInPicture|disableRemotePlayback|download|draggable|encType|enterKeyHint|fetchpriority|fetchPriority|form|formAction|formEncType|formMethod|formNoValidate|formTarget|frameBorder|headers|height|hidden|high|href|hrefLang|htmlFor|httpEquiv|id|inputMode|integrity|is|keyParams|keyType|kind|label|lang|list|loading|loop|low|marginHeight|marginWidth|max|maxLength|media|mediaGroup|method|min|minLength|multiple|muted|name|nonce|noValidate|open|optimum|pattern|placeholder|playsInline|poster|preload|profile|radioGroup|readOnly|referrerPolicy|rel|required|reversed|role|rows|rowSpan|sandbox|scope|scoped|scrolling|seamless|selected|shape|size|sizes|slot|span|spellCheck|src|srcDoc|srcLang|srcSet|start|step|style|summary|tabIndex|target|title|translate|type|useMap|value|width|wmode|wrap|about|datatype|inlist|prefix|property|resource|typeof|vocab|autoCapitalize|autoCorrect|autoSave|color|incremental|fallback|inert|itemProp|itemScope|itemType|itemID|itemRef|on|option|results|security|unselectable|accentHeight|accumulate|additive|alignmentBaseline|allowReorder|alphabetic|amplitude|arabicForm|ascent|attributeName|attributeType|autoReverse|azimuth|baseFrequency|baselineShift|baseProfile|bbox|begin|bias|by|calcMode|capHeight|clip|clipPathUnits|clipPath|clipRule|colorInterpolation|colorInterpolationFilters|colorProfile|colorRendering|contentScriptType|contentStyleType|cursor|cx|cy|d|decelerate|descent|diffuseConstant|direction|display|divisor|dominantBaseline|dur|dx|dy|edgeMode|elevation|enableBackground|end|exponent|externalResourcesRequired|fill|fillOpacity|fillRule|filter|filterRes|filterUnits|floodColor|floodOpacity|focusable|fontFamily|fontSize|fontSizeAdjust|fontStretch|fontStyle|fontVariant|fontWeight|format|from|fr|fx|fy|g1|g2|glyphName|glyphOrientationHorizontal|glyphOrientationVertical|glyphRef|gradientTransform|gradientUnits|hanging|horizAdvX|horizOriginX|ideographic|imageRendering|in|in2|intercept|k|k1|k2|k3|k4|kernelMatrix|kernelUnitLength|kerning|keyPoints|keySplines|keyTimes|lengthAdjust|letterSpacing|lightingColor|limitingConeAngle|local|markerEnd|markerMid|markerStart|markerHeight|markerUnits|markerWidth|mask|maskContentUnits|maskUnits|mathematical|mode|numOctaves|offset|opacity|operator|order|orient|orientation|origin|overflow|overlinePosition|overlineThickness|panose1|paintOrder|pathLength|patternContentUnits|patternTransform|patternUnits|pointerEvents|points|pointsAtX|pointsAtY|pointsAtZ|preserveAlpha|preserveAspectRatio|primitiveUnits|r|radius|refX|refY|renderingIntent|repeatCount|repeatDur|requiredExtensions|requiredFeatures|restart|result|rotate|rx|ry|scale|seed|shapeRendering|slope|spacing|specularConstant|specularExponent|speed|spreadMethod|startOffset|stdDeviation|stemh|stemv|stitchTiles|stopColor|stopOpacity|strikethroughPosition|strikethroughThickness|string|stroke|strokeDasharray|strokeDashoffset|strokeLinecap|strokeLinejoin|strokeMiterlimit|strokeOpacity|strokeWidth|surfaceScale|systemLanguage|tableValues|targetX|targetY|textAnchor|textDecoration|textRendering|textLength|to|transform|u1|u2|underlinePosition|underlineThickness|unicode|unicodeBidi|unicodeRange|unitsPerEm|vAlphabetic|vHanging|vIdeographic|vMathematical|values|vectorEffect|version|vertAdvY|vertOriginX|vertOriginY|viewBox|viewTarget|visibility|widths|wordSpacing|writingMode|x|xHeight|x1|x2|xChannelSelector|xlinkActuate|xlinkArcrole|xlinkHref|xlinkRole|xlinkShow|xlinkTitle|xlinkType|xmlBase|xmlns|xmlnsXlink|xmlLang|xmlSpace|y|y1|y2|yChannelSelector|z|zoomAndPan|for|class|autofocus)|(([Dd][Aa][Tt][Aa]|[Aa][Rr][Ii][Aa]|x)-.*))$/; // https://esbench.com/bench/5bfee68a4cd7e6009ef61d23
+var reactPropsRegex = /^((children|dangerouslySetInnerHTML|key|ref|autoFocus|defaultValue|defaultChecked|innerHTML|suppressContentEditableWarning|suppressHydrationWarning|valueLink|abbr|accept|acceptCharset|accessKey|action|allow|allowUserMedia|allowPaymentRequest|allowFullScreen|allowTransparency|alt|async|autoComplete|autoPlay|capture|cellPadding|cellSpacing|challenge|charSet|checked|cite|classID|className|cols|colSpan|content|contentEditable|contextMenu|controls|controlsList|coords|crossOrigin|data|dateTime|decoding|default|defer|dir|disabled|disablePictureInPicture|disableRemotePlayback|download|draggable|encType|enterKeyHint|fetchpriority|fetchPriority|form|formAction|formEncType|formMethod|formNoValidate|formTarget|frameBorder|headers|height|hidden|high|href|hrefLang|htmlFor|httpEquiv|id|inputMode|integrity|is|keyParams|keyType|kind|label|lang|list|loading|loop|low|marginHeight|marginWidth|max|maxLength|media|mediaGroup|method|min|minLength|multiple|muted|name|nonce|noValidate|open|optimum|pattern|placeholder|playsInline|popover|popoverTarget|popoverTargetAction|poster|preload|profile|radioGroup|readOnly|referrerPolicy|rel|required|reversed|role|rows|rowSpan|sandbox|scope|scoped|scrolling|seamless|selected|shape|size|sizes|slot|span|spellCheck|src|srcDoc|srcLang|srcSet|start|step|style|summary|tabIndex|target|title|translate|type|useMap|value|width|wmode|wrap|about|datatype|inlist|prefix|property|resource|typeof|vocab|autoCapitalize|autoCorrect|autoSave|color|incremental|fallback|inert|itemProp|itemScope|itemType|itemID|itemRef|on|option|results|security|unselectable|accentHeight|accumulate|additive|alignmentBaseline|allowReorder|alphabetic|amplitude|arabicForm|ascent|attributeName|attributeType|autoReverse|azimuth|baseFrequency|baselineShift|baseProfile|bbox|begin|bias|by|calcMode|capHeight|clip|clipPathUnits|clipPath|clipRule|colorInterpolation|colorInterpolationFilters|colorProfile|colorRendering|contentScriptType|contentStyleType|cursor|cx|cy|d|decelerate|descent|diffuseConstant|direction|display|divisor|dominantBaseline|dur|dx|dy|edgeMode|elevation|enableBackground|end|exponent|externalResourcesRequired|fill|fillOpacity|fillRule|filter|filterRes|filterUnits|floodColor|floodOpacity|focusable|fontFamily|fontSize|fontSizeAdjust|fontStretch|fontStyle|fontVariant|fontWeight|format|from|fr|fx|fy|g1|g2|glyphName|glyphOrientationHorizontal|glyphOrientationVertical|glyphRef|gradientTransform|gradientUnits|hanging|horizAdvX|horizOriginX|ideographic|imageRendering|in|in2|intercept|k|k1|k2|k3|k4|kernelMatrix|kernelUnitLength|kerning|keyPoints|keySplines|keyTimes|lengthAdjust|letterSpacing|lightingColor|limitingConeAngle|local|markerEnd|markerMid|markerStart|markerHeight|markerUnits|markerWidth|mask|maskContentUnits|maskUnits|mathematical|mode|numOctaves|offset|opacity|operator|order|orient|orientation|origin|overflow|overlinePosition|overlineThickness|panose1|paintOrder|pathLength|patternContentUnits|patternTransform|patternUnits|pointerEvents|points|pointsAtX|pointsAtY|pointsAtZ|preserveAlpha|preserveAspectRatio|primitiveUnits|r|radius|refX|refY|renderingIntent|repeatCount|repeatDur|requiredExtensions|requiredFeatures|restart|result|rotate|rx|ry|scale|seed|shapeRendering|slope|spacing|specularConstant|specularExponent|speed|spreadMethod|startOffset|stdDeviation|stemh|stemv|stitchTiles|stopColor|stopOpacity|strikethroughPosition|strikethroughThickness|string|stroke|strokeDasharray|strokeDashoffset|strokeLinecap|strokeLinejoin|strokeMiterlimit|strokeOpacity|strokeWidth|surfaceScale|systemLanguage|tableValues|targetX|targetY|textAnchor|textDecoration|textRendering|textLength|to|transform|u1|u2|underlinePosition|underlineThickness|unicode|unicodeBidi|unicodeRange|unitsPerEm|vAlphabetic|vHanging|vIdeographic|vMathematical|values|vectorEffect|version|vertAdvY|vertOriginX|vertOriginY|viewBox|viewTarget|visibility|widths|wordSpacing|writingMode|x|xHeight|x1|x2|xChannelSelector|xlinkActuate|xlinkArcrole|xlinkHref|xlinkRole|xlinkShow|xlinkTitle|xlinkType|xmlBase|xmlns|xmlnsXlink|xmlLang|xmlSpace|y|y1|y2|yChannelSelector|z|zoomAndPan|for|class|autofocus)|(([Dd][Aa][Tt][Aa]|[Aa][Rr][Ii][Aa]|x)-.*))$/; // https://esbench.com/bench/5bfee68a4cd7e6009ef61d23
 
 var isPropValid = /* #__PURE__ */memoize(function (prop) {
   return reactPropsRegex.test(prop) || prop.charCodeAt(0) === 111
@@ -5428,20 +5232,20 @@ var tags = ['a', 'abbr', 'address', 'area', 'article', 'aside', 'audio', 'b', 'b
 'circle', 'clipPath', 'defs', 'ellipse', 'foreignObject', 'g', 'image', 'line', 'linearGradient', 'mask', 'path', 'pattern', 'polygon', 'polyline', 'radialGradient', 'rect', 'stop', 'svg', 'text', 'tspan'];
 
 // bind it to avoid mutating the original function
-var newStyled = createStyled$1.bind(null);
+var styled$2 = createStyled$1.bind(null);
 tags.forEach(function (tagName) {
-  newStyled[tagName] = newStyled(tagName);
+  styled$2[tagName] = styled$2(tagName);
 });
 
 /**
- * @mui/styled-engine v7.3.5
+ * @mui/styled-engine v7.3.7
  *
  * @license MIT
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
 function styled$1(tag, options) {
-  const stylesFactory = newStyled(tag, options);
+  const stylesFactory = styled$2(tag, options);
   if (process.env.NODE_ENV !== 'production') {
     return (...styles) => {
       const component = typeof tag === 'string' ? `"${tag}"` : 'component';
@@ -5686,7 +5490,7 @@ function createTheme$1(options = {}, ...args) {
   } = options;
   const breakpoints = createBreakpoints(breakpointsInput);
   const spacing = createSpacing(spacingInput);
-  let muiTheme = deepmerge$1({
+  let muiTheme = deepmerge({
     breakpoints,
     direction: 'ltr',
     components: {},
@@ -5703,7 +5507,7 @@ function createTheme$1(options = {}, ...args) {
   }, other);
   muiTheme = cssContainerQueries(muiTheme);
   muiTheme.applyStyles = applyStyles;
-  muiTheme = args.reduce((acc, argument) => deepmerge$1(acc, argument), muiTheme);
+  muiTheme = args.reduce((acc, argument) => deepmerge(acc, argument), muiTheme);
   muiTheme.unstable_sxConfig = {
     ...defaultSxConfig,
     ...other?.unstable_sxConfig
@@ -5729,6 +5533,23 @@ const systemDefaultTheme$1 = createTheme$1();
 function useTheme$1(defaultTheme = systemDefaultTheme$1) {
   return useTheme$2(defaultTheme);
 }
+
+const defaultGenerator = componentName => componentName;
+const createClassNameGenerator = () => {
+  let generate = defaultGenerator;
+  return {
+    configure(generator) {
+      generate = generator;
+    },
+    generate(componentName) {
+      return generate(componentName);
+    },
+    reset() {
+      generate = defaultGenerator;
+    }
+  };
+};
+const ClassNameGenerator = createClassNameGenerator();
 
 function createBox(options = {}) {
   const {
@@ -5756,6 +5577,33 @@ function createBox(options = {}) {
     });
   });
   return Box;
+}
+
+const globalStateClasses = {
+  active: 'active',
+  checked: 'checked',
+  completed: 'completed',
+  disabled: 'disabled',
+  error: 'error',
+  expanded: 'expanded',
+  focused: 'focused',
+  focusVisible: 'focusVisible',
+  open: 'open',
+  readOnly: 'readOnly',
+  required: 'required',
+  selected: 'selected'
+};
+function generateUtilityClass(componentName, slot, globalStatePrefix = 'Mui') {
+  const globalStateClass = globalStateClasses[slot];
+  return globalStateClass ? `${globalStatePrefix}-${globalStateClass}` : `${ClassNameGenerator.generate(componentName)}-${slot}`;
+}
+
+function generateUtilityClasses(componentName, slots, globalStatePrefix = 'Mui') {
+  const result = {};
+  slots.forEach(slot => {
+    result[slot] = generateUtilityClass(componentName, slot, globalStatePrefix);
+  });
+  return result;
 }
 
 function getFunctionComponentName(Component, fallback = '') {
@@ -5977,7 +5825,7 @@ function createStyled(input = {}) {
           return processStyle(props, style, props.theme.modularCssLayers ? layerName : undefined);
         };
       }
-      if (isPlainObject$1(style)) {
+      if (isPlainObject(style)) {
         const serialized = preprocessStyles(style);
         return function styleObjectProcessor(props) {
           if (!serialized.variants) {
@@ -6065,7 +5913,7 @@ function createStyled(input = {}) {
 }
 function generateDisplayName(componentName, componentSlot, tag) {
   if (componentName) {
-    return `${componentName}${capitalize$1(componentSlot || '')}`;
+    return `${componentName}${capitalize(componentSlot || '')}`;
   }
   return `Styled(${getDisplayName(tag)})`;
 }
@@ -6157,6 +6005,15 @@ function resolveProps(defaultProps, props, mergeClassNameAndStyle = false) {
   return output;
 }
 
+/**
+ * A version of `React.useLayoutEffect` that does not show a warning when server-side rendering.
+ * This is useful for effects that are only needed for client-side rendering but not for SSR.
+ *
+ * Before you use this hook, make sure to read https://gist.github.com/gaearon/e7d97cdf38a2907924ea12e4ebdf3c85
+ * and confirm it doesn't apply to your use-case.
+ */
+const useEnhancedEffect = typeof window !== 'undefined' ? React__namespace.useLayoutEffect : React__namespace.useEffect;
+
 function clamp(val, min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER) {
   return Math.max(min, Math.min(val, max));
 }
@@ -6217,7 +6074,7 @@ function decomposeColor(color) {
   const marker = color.indexOf('(');
   const type = color.substring(0, marker);
   if (!['rgb', 'rgba', 'hsl', 'hsla', 'color'].includes(type)) {
-    throw new Error(process.env.NODE_ENV !== "production" ? `MUI: Unsupported \`${color}\` color.\n` + 'The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color().' : formatMuiErrorMessage$1(9, color));
+    throw new Error(process.env.NODE_ENV !== "production" ? `MUI: Unsupported \`${color}\` color.\n` + 'The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color().' : formatMuiErrorMessage(9, color));
   }
   let values = color.substring(marker + 1, color.length - 1);
   let colorSpace;
@@ -6228,7 +6085,7 @@ function decomposeColor(color) {
       values[3] = values[3].slice(1);
     }
     if (!['srgb', 'display-p3', 'a98-rgb', 'prophoto-rgb', 'rec-2020'].includes(colorSpace)) {
-      throw new Error(process.env.NODE_ENV !== "production" ? `MUI: unsupported \`${colorSpace}\` color space.\n` + 'The following color spaces are supported: srgb, display-p3, a98-rgb, prophoto-rgb, rec-2020.' : formatMuiErrorMessage$1(10, colorSpace));
+      throw new Error(process.env.NODE_ENV !== "production" ? `MUI: unsupported \`${colorSpace}\` color space.\n` + 'The following color spaces are supported: srgb, display-p3, a98-rgb, prophoto-rgb, rec-2020.' : formatMuiErrorMessage(10, colorSpace));
     }
   } else {
     values = values.split(',');
@@ -6465,6 +6322,27 @@ function private_safeEmphasize(color, coefficient, warning) {
   }
 }
 
+// This module is based on https://github.com/airbnb/prop-types-exact repository.
+// However, in order to reduce the number of dependencies and to remove some extra safe checks
+// the module was forked.
+
+const specialProperty = 'exact-prop: \u200b';
+function exactProp(propTypes) {
+  if (process.env.NODE_ENV === 'production') {
+    return propTypes;
+  }
+  return {
+    ...propTypes,
+    [specialProperty]: props => {
+      const unsupportedProps = Object.keys(props).filter(prop => !propTypes.hasOwnProperty(prop));
+      if (unsupportedProps.length > 0) {
+        return new Error(`The following props are not supported: ${unsupportedProps.map(prop => `\`${prop}\``).join(', ')}. Please remove them.`);
+      }
+      return null;
+    }
+  };
+}
+
 const RtlContext = /*#__PURE__*/React__namespace.createContext();
 process.env.NODE_ENV !== "production" ? {
   children: PropTypes.node,
@@ -6522,6 +6400,49 @@ function useDefaultProps$1({
       components: ctx
     }
   });
+}
+
+let globalId = 0;
+
+// TODO React 17: Remove `useGlobalId` once React 17 support is removed
+function useGlobalId(idOverride) {
+  const [defaultId, setDefaultId] = React__namespace.useState(idOverride);
+  const id = idOverride || defaultId;
+  React__namespace.useEffect(() => {
+    if (defaultId == null) {
+      // Fallback to this default id when possible.
+      // Use the incrementing value for client-side rendering only.
+      // We can't use it server-side.
+      // If you want to use random values please consider the Birthday Problem: https://en.wikipedia.org/wiki/Birthday_problem
+      globalId += 1;
+      setDefaultId(`mui-${globalId}`);
+    }
+  }, [defaultId]);
+  return id;
+}
+
+// See https://github.com/mui/material-ui/issues/41190#issuecomment-2040873379 for why
+const safeReact = {
+  ...React__namespace
+};
+const maybeReactUseId = safeReact.useId;
+
+/**
+ *
+ * @example <div id={useId()} />
+ * @param idOverride
+ * @returns {string}
+ */
+function useId(idOverride) {
+  // React.useId() is only available from React 17.0.0.
+  if (maybeReactUseId !== undefined) {
+    const reactId = maybeReactUseId();
+    return idOverride ?? reactId;
+  }
+
+  // TODO: uncomment once we enable eslint-plugin-react-compiler // eslint-disable-next-line react-compiler/react-compiler
+  // eslint-disable-next-line react-hooks/rules-of-hooks -- `React.useId` is invariant at runtime.
+  return useGlobalId(idOverride);
 }
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -6735,7 +6656,7 @@ function prepareCssVars(theme, parserConfig = {}) {
       css,
       varsWithDefaults
     } = cssVarsParser(scheme, parserConfig);
-    themeVars = deepmerge$1(themeVars, varsWithDefaults);
+    themeVars = deepmerge(themeVars, varsWithDefaults);
     colorSchemesMap[key] = {
       css,
       vars
@@ -6748,7 +6669,7 @@ function prepareCssVars(theme, parserConfig = {}) {
       vars,
       varsWithDefaults
     } = cssVarsParser(defaultScheme, parserConfig);
-    themeVars = deepmerge$1(themeVars, varsWithDefaults);
+    themeVars = deepmerge(themeVars, varsWithDefaults);
     colorSchemesMap[defaultColorScheme] = {
       css,
       vars
@@ -6794,7 +6715,7 @@ function prepareCssVars(theme, parserConfig = {}) {
     Object.entries(colorSchemesMap).forEach(([, {
       vars: schemeVars
     }]) => {
-      vars = deepmerge$1(vars, schemeVars);
+      vars = deepmerge(vars, schemeVars);
     });
     return vars;
   };
@@ -6893,82 +6814,12 @@ function createGetColorSchemeSelector(selector) {
   };
 }
 
-/**
- * WARNING: Don't import this directly. It's imported by the code generated by
- * `@mui/interal-babel-plugin-minify-errors`. Make sure to always use string literals in `Error`
- * constructors to ensure the plugin works as expected. Supported patterns include:
- *   throw new Error('My message');
- *   throw new Error(`My message: ${foo}`);
- *   throw new Error(`My message: ${foo}` + 'another string');
- *   ...
- * @param {number} code
- */
-function formatMuiErrorMessage(code, ...args) {
-  const url = new URL(`https://mui.com/production-error/?code=${code}`);
-  args.forEach(arg => url.searchParams.append('args[]', arg));
-  return `Minified MUI error #${code}; visit ${url} for the full message.`;
-}
-
-// https://github.com/sindresorhus/is-plain-obj/blob/main/index.js
-function isPlainObject(item) {
-  if (typeof item !== 'object' || item === null) {
-    return false;
-  }
-  const prototype = Object.getPrototypeOf(item);
-  return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in item) && !(Symbol.iterator in item);
-}
-function deepClone(source) {
-  if (/*#__PURE__*/React__namespace.isValidElement(source) || reactIsExports.isValidElementType(source) || !isPlainObject(source)) {
-    return source;
-  }
-  const output = {};
-  Object.keys(source).forEach(key => {
-    output[key] = deepClone(source[key]);
-  });
-  return output;
-}
-
-/**
- * Merge objects deeply.
- * It will shallow copy React elements.
- *
- * If `options.clone` is set to `false` the source object will be merged directly into the target object.
- *
- * @example
- * ```ts
- * deepmerge({ a: { b: 1 }, d: 2 }, { a: { c: 2 }, d: 4 });
- * // => { a: { b: 1, c: 2 }, d: 4 }
- * ````
- *
- * @param target The target object.
- * @param source The source object.
- * @param options The merge options.
- * @param options.clone Set to `false` to merge the source object directly into the target object.
- * @returns The merged object.
- */
-function deepmerge(target, source, options = {
-  clone: true
-}) {
-  const output = options.clone ? {
-    ...target
-  } : target;
-  if (isPlainObject(target) && isPlainObject(source)) {
-    Object.keys(source).forEach(key => {
-      if (/*#__PURE__*/React__namespace.isValidElement(source[key]) || reactIsExports.isValidElementType(source[key])) {
-        output[key] = source[key];
-      } else if (isPlainObject(source[key]) &&
-      // Avoid prototype pollution
-      Object.prototype.hasOwnProperty.call(target, key) && isPlainObject(target[key])) {
-        // Since `output` is a clone of `target` and we have narrowed `target` in this block we can cast to the same type.
-        output[key] = deepmerge(target[key], source[key], options);
-      } else if (options.clone) {
-        output[key] = isPlainObject(source[key]) ? deepClone(source[key]) : source[key];
-      } else {
-        output[key] = source[key];
-      }
-    });
-  }
-  return output;
+function isMuiElement(element, muiNames) {
+  return /*#__PURE__*/React__namespace.isValidElement(element) && muiNames.indexOf(
+  // For server components `muiName` is available in element.type._payload.value.muiName
+  // relevant info - https://github.com/facebook/react/blob/2807d781a08db8e9873687fccc25c0f12b4fb3d4/packages/react/src/ReactLazy.js#L45
+  // eslint-disable-next-line no-underscore-dangle
+  element.type.muiName ?? element.type?._payload?.value?.muiName) !== -1;
 }
 
 const common = {
@@ -7366,42 +7217,6 @@ function prepareTypographyVars(typography) {
     }
   });
   return vars;
-}
-
-const defaultGenerator = componentName => componentName;
-const createClassNameGenerator = () => {
-  let generate = defaultGenerator;
-  return {
-    configure(generator) {
-      generate = generator;
-    },
-    generate(componentName) {
-      return generate(componentName);
-    },
-    reset() {
-      generate = defaultGenerator;
-    }
-  };
-};
-const ClassNameGenerator = createClassNameGenerator();
-
-const globalStateClasses = {
-  active: 'active',
-  checked: 'checked',
-  completed: 'completed',
-  disabled: 'disabled',
-  error: 'error',
-  expanded: 'expanded',
-  focused: 'focused',
-  focusVisible: 'focusVisible',
-  open: 'open',
-  readOnly: 'readOnly',
-  required: 'required',
-  selected: 'selected'
-};
-function generateUtilityClass(componentName, slot, globalStatePrefix = 'Mui') {
-  const globalStateClass = globalStateClasses[slot];
-  return globalStateClass ? `${globalStatePrefix}-${globalStateClass}` : `${ClassNameGenerator.generate(componentName)}-${slot}`;
 }
 
 function createMixins(breakpoints, mixins) {
@@ -8523,39 +8338,12 @@ function isAdornedStart(obj) {
   return obj.startAdornment;
 }
 
-// It should to be noted that this function isn't equivalent to `text-transform: capitalize`.
-//
-// A strict capitalization should uppercase the first letter of each word in the sentence.
-// We only handle the first word.
-function capitalize(string) {
-  if (typeof string !== 'string') {
-    throw new Error(process.env.NODE_ENV !== "production" ? 'MUI: `capitalize(string)` expects a string argument.' : formatMuiErrorMessage(7));
-  }
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function isMuiElement(element, muiNames) {
-  return /*#__PURE__*/React__namespace.isValidElement(element) && muiNames.indexOf(
-  // For server components `muiName` is available in element.type._payload.value.muiName
-  // relevant info - https://github.com/facebook/react/blob/2807d781a08db8e9873687fccc25c0f12b4fb3d4/packages/react/src/ReactLazy.js#L45
-  // eslint-disable-next-line no-underscore-dangle
-  element.type.muiName ?? element.type?._payload?.value?.muiName) !== -1;
-}
-
 /**
  * @ignore - internal component.
  */
 const FormControlContext = /*#__PURE__*/React__namespace.createContext(undefined);
 if (process.env.NODE_ENV !== 'production') {
   FormControlContext.displayName = 'FormControlContext';
-}
-
-function generateUtilityClasses(componentName, slots, globalStatePrefix = 'Mui') {
-  const result = {};
-  slots.forEach(slot => {
-    result[slot] = generateUtilityClass(componentName, slot, globalStatePrefix);
-  });
-  return result;
 }
 
 function getFormControlUtilityClasses(slot) {
@@ -9932,6 +9720,9 @@ function elementTypeAcceptingRef(props, propName, componentName, location, propF
   if (typeof propValue === 'function' && !isClassComponent$1(propValue)) {
     warningHint = 'Did you accidentally provide a plain function component instead?';
   }
+  if (propValue === React__namespace.Fragment) {
+    warningHint = 'Did you accidentally provide a React.Fragment instead?';
+  }
   if (warningHint !== undefined) {
     return new Error(`Invalid ${location} \`${safePropName}\` supplied to \`${componentName}\`. ` + `Expected an element type that can hold a ref. ${warningHint} ` + 'For more information see https://mui.com/r/caveat-with-refs-guide');
   }
@@ -9954,15 +9745,6 @@ function isFocusVisible(element) {
   }
   return false;
 }
-
-/**
- * A version of `React.useLayoutEffect` that does not show a warning when server-side rendering.
- * This is useful for effects that are only needed for client-side rendering but not for SSR.
- *
- * Before you use this hook, make sure to read https://gist.github.com/gaearon/e7d97cdf38a2907924ea12e4ebdf3c85
- * and confirm it doesn't apply to your use-case.
- */
-const useEnhancedEffect = typeof window !== 'undefined' ? React__namespace.useLayoutEffect : React__namespace.useEffect;
 
 /**
  * Inspired by https://github.com/facebook/react/issues/14099#issuecomment-440013892
@@ -11306,7 +11088,7 @@ const TouchRipple = /*#__PURE__*/React__namespace.forwardRef(function TouchRippl
       rippleSize = Math.sqrt(sizeX ** 2 + sizeY ** 2);
     }
 
-    // Touche devices
+    // Touch devices
     if (event?.touches) {
       // check that this isn't another touchstart due to multitouch
       // otherwise we will only clear a single timer when unmounting while two
@@ -11612,7 +11394,10 @@ const ButtonBase = /*#__PURE__*/React__namespace.forwardRef(function ButtonBase(
   }
   const buttonProps = {};
   if (ComponentProp === 'button') {
-    buttonProps.type = type === undefined ? 'button' : type;
+    const hasFormAttributes = !!other.formAction;
+    // ButtonBase was defaulting to type="button" when no type prop was provided, which prevented form submission and broke formAction functionality.
+    // The fix checks for form-related attributes and skips the default type to allow the browser's natural submit behavior (type="submit").
+    buttonProps.type = type === undefined && !hasFormAttributes ? 'button' : type;
     buttonProps.disabled = disabled;
   } else {
     if (!other.href && !other.to) {
@@ -11740,6 +11525,10 @@ process.env.NODE_ENV !== "production" ? ButtonBase.propTypes /* remove-proptypes
    * if needed.
    */
   focusVisibleClassName: PropTypes.string,
+  /**
+   * @ignore
+   */
+  formAction: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   /**
    * @ignore
    */
@@ -11961,7 +11750,7 @@ const SwitchBase = /*#__PURE__*/React__namespace.forwardRef(function SwitchBase(
   };
   const handleInputChange = event => {
     // Workaround for https://github.com/facebook/react/issues/9023
-    if (event.nativeEvent.defaultPrevented) {
+    if (event.nativeEvent.defaultPrevented || readOnly) {
       return;
     }
     const newChecked = event.target.checked;
@@ -12492,49 +12281,6 @@ function setRef(ref, value) {
   }
 }
 
-let globalId = 0;
-
-// TODO React 17: Remove `useGlobalId` once React 17 support is removed
-function useGlobalId(idOverride) {
-  const [defaultId, setDefaultId] = React__namespace.useState(idOverride);
-  const id = idOverride || defaultId;
-  React__namespace.useEffect(() => {
-    if (defaultId == null) {
-      // Fallback to this default id when possible.
-      // Use the incrementing value for client-side rendering only.
-      // We can't use it server-side.
-      // If you want to use random values please consider the Birthday Problem: https://en.wikipedia.org/wiki/Birthday_problem
-      globalId += 1;
-      setDefaultId(`mui-${globalId}`);
-    }
-  }, [defaultId]);
-  return id;
-}
-
-// See https://github.com/mui/material-ui/issues/41190#issuecomment-2040873379 for why
-const safeReact = {
-  ...React__namespace
-};
-const maybeReactUseId = safeReact.useId;
-
-/**
- *
- * @example <div id={useId()} />
- * @param idOverride
- * @returns {string}
- */
-function useId(idOverride) {
-  // React.useId() is only available from React 17.0.0.
-  if (maybeReactUseId !== undefined) {
-    const reactId = maybeReactUseId();
-    return idOverride ?? reactId;
-  }
-
-  // TODO: uncomment once we enable eslint-plugin-react-compiler // eslint-disable-next-line react-compiler/react-compiler
-  // eslint-disable-next-line react-hooks/rules-of-hooks -- `React.useId` is invariant at runtime.
-  return useGlobalId(idOverride);
-}
-
 // Brought from [Base UI](https://github.com/mui/base-ui/blob/master/packages/react/src/merge-props/mergeProps.ts#L119)
 // Use it directly from Base UI once it's a package dependency.
 function isEventHandler(key, value) {
@@ -12978,7 +12724,7 @@ var hasRequiredDayjs_min;
 function requireDayjs_min() {
   if (hasRequiredDayjs_min) return dayjs_min$1.exports;
   hasRequiredDayjs_min = 1;
-  (function (module, exports) {
+  (function (module, exports$1) {
     !function (t, e) {
       module.exports = e() ;
     }(dayjs_min, function () {
@@ -13363,7 +13109,7 @@ var hasRequiredWeekOfYear;
 function requireWeekOfYear() {
   if (hasRequiredWeekOfYear) return weekOfYear$2.exports;
   hasRequiredWeekOfYear = 1;
-  (function (module, exports) {
+  (function (module, exports$1) {
     !function (e, t) {
       module.exports = t() ;
     }(weekOfYear$1, function () {
@@ -13402,7 +13148,7 @@ var hasRequiredCustomParseFormat;
 function requireCustomParseFormat() {
   if (hasRequiredCustomParseFormat) return customParseFormat$1.exports;
   hasRequiredCustomParseFormat = 1;
-  (function (module, exports) {
+  (function (module, exports$1) {
     !function (e, t) {
       module.exports = t() ;
     }(customParseFormat, function () {
@@ -13619,7 +13365,7 @@ var hasRequiredLocalizedFormat;
 function requireLocalizedFormat() {
   if (hasRequiredLocalizedFormat) return localizedFormat$1.exports;
   hasRequiredLocalizedFormat = 1;
-  (function (module, exports) {
+  (function (module, exports$1) {
     !function (e, t) {
       module.exports = t() ;
     }(localizedFormat, function () {
@@ -13664,7 +13410,7 @@ var hasRequiredIsBetween;
 function requireIsBetween() {
   if (hasRequiredIsBetween) return isBetween$1.exports;
   hasRequiredIsBetween = 1;
-  (function (module, exports) {
+  (function (module, exports$1) {
     !function (e, i) {
       module.exports = i() ;
     }(isBetween, function () {
@@ -13794,7 +13540,7 @@ const defaultFormats = {
   monthShort: 'MMM',
   dayOfMonth: 'D',
   weekday: 'dddd',
-  weekdayShort: 'ddd',
+  weekdayShort: 'dd',
   hours24h: 'HH',
   hours12h: 'hh',
   meridiem: 'A',
@@ -13880,9 +13626,24 @@ class AdapterDayjs {
       return value.format(comparisonTemplate) === comparingInValueTimezone.format(comparisonTemplate);
     };
     /**
-     * Replace "default" by undefined before passing it to `dayjs
+     * Replaces "default" by undefined and "system" by the system timezone before passing it to `dayjs`.
      */
-    this.cleanTimezone = timezone => timezone === 'default' ? undefined : timezone;
+    this.cleanTimezone = timezone => {
+      switch (timezone) {
+        case 'default':
+          {
+            return undefined;
+          }
+        case 'system':
+          {
+            return defaultDayjs.tz.guess();
+          }
+        default:
+          {
+            return timezone;
+          }
+      }
+    };
     this.createSystemDate = value => {
       // TODO v7: Stop using `this.rawDayJsInstance` (drop the `instance` param on the adapters)
       /* istanbul ignore next */
@@ -13931,6 +13692,32 @@ class AdapterDayjs {
       }
       return localeObject.formats;
     };
+    /**
+     * If the new day does not have the same offset as the old one (when switching to summer day time for example),
+     * Then dayjs will not automatically adjust the offset (moment does).
+     * We have to parse again the value to make sure the `fixOffset` method is applied.
+     * See https://github.com/iamkun/dayjs/blob/b3624de619d6e734cd0ffdbbd3502185041c1b60/src/plugin/timezone/index.js#L72
+     */
+    this.adjustOffset = value => {
+      if (!this.hasTimezonePlugin()) {
+        return value;
+      }
+      const timezone = this.getTimezone(value);
+      if (timezone !== 'UTC') {
+        var _fixedValue$$offset, _value$$offset;
+        const fixedValue = value.tz(this.cleanTimezone(timezone), true);
+        // @ts-ignore
+        if (((_fixedValue$$offset = fixedValue.$offset) != null ? _fixedValue$$offset : 0) === ((_value$$offset = value.$offset) != null ? _value$$offset : 0)) {
+          return value;
+        }
+        // Change only what is needed to avoid creating a new object with unwanted data
+        // Especially important when used in an environment where utc or timezone dates are used only in some places
+        // Reference: https://github.com/mui/mui-x/issues/13290
+        // @ts-ignore
+        value.$offset = fixedValue.$offset;
+      }
+      return value;
+    };
     this.date = value => {
       if (value === null) {
         return null;
@@ -13955,14 +13742,16 @@ class AdapterDayjs {
       return parsedValue.locale(this.locale);
     };
     this.getTimezone = value => {
-      if (this.hasUTCPlugin() && value.isUTC()) {
-        return 'UTC';
-      }
       if (this.hasTimezonePlugin()) {
         var _value$$x;
         // @ts-ignore
         const zone = (_value$$x = value.$x) == null ? void 0 : _value$$x.$timezone;
-        return zone != null ? zone : 'system';
+        if (zone) {
+          return zone;
+        }
+      }
+      if (this.hasUTCPlugin() && value.isUTC()) {
+        return 'UTC';
       }
       return 'system';
     };
@@ -14099,49 +13888,49 @@ class AdapterDayjs {
       return value >= start && value <= end;
     };
     this.startOfYear = value => {
-      return value.startOf('year');
+      return this.adjustOffset(value.startOf('year'));
     };
     this.startOfMonth = value => {
-      return value.startOf('month');
+      return this.adjustOffset(value.startOf('month'));
     };
     this.startOfWeek = value => {
-      return value.startOf('week');
+      return this.adjustOffset(value.startOf('week'));
     };
     this.startOfDay = value => {
-      return value.startOf('day');
+      return this.adjustOffset(value.startOf('day'));
     };
     this.endOfYear = value => {
-      return value.endOf('year');
+      return this.adjustOffset(value.endOf('year'));
     };
     this.endOfMonth = value => {
-      return value.endOf('month');
+      return this.adjustOffset(value.endOf('month'));
     };
     this.endOfWeek = value => {
-      return value.endOf('week');
+      return this.adjustOffset(value.endOf('week'));
     };
     this.endOfDay = value => {
-      return value.endOf('day');
+      return this.adjustOffset(value.endOf('day'));
     };
     this.addYears = (value, amount) => {
-      return amount < 0 ? value.subtract(Math.abs(amount), 'year') : value.add(amount, 'year');
+      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'year') : value.add(amount, 'year'));
     };
     this.addMonths = (value, amount) => {
-      return amount < 0 ? value.subtract(Math.abs(amount), 'month') : value.add(amount, 'month');
+      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'month') : value.add(amount, 'month'));
     };
     this.addWeeks = (value, amount) => {
-      return amount < 0 ? value.subtract(Math.abs(amount), 'week') : value.add(amount, 'week');
+      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'week') : value.add(amount, 'week'));
     };
     this.addDays = (value, amount) => {
-      return amount < 0 ? value.subtract(Math.abs(amount), 'day') : value.add(amount, 'day');
+      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'day') : value.add(amount, 'day'));
     };
     this.addHours = (value, amount) => {
-      return amount < 0 ? value.subtract(Math.abs(amount), 'hour') : value.add(amount, 'hour');
+      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'hour') : value.add(amount, 'hour'));
     };
     this.addMinutes = (value, amount) => {
-      return amount < 0 ? value.subtract(Math.abs(amount), 'minute') : value.add(amount, 'minute');
+      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'minute') : value.add(amount, 'minute'));
     };
     this.addSeconds = (value, amount) => {
-      return amount < 0 ? value.subtract(Math.abs(amount), 'second') : value.add(amount, 'second');
+      return this.adjustOffset(amount < 0 ? value.subtract(Math.abs(amount), 'second') : value.add(amount, 'second'));
     };
     this.getYear = value => {
       return value.year();
@@ -14165,34 +13954,34 @@ class AdapterDayjs {
       return value.millisecond();
     };
     this.setYear = (value, year) => {
-      return value.set('year', year);
+      return this.adjustOffset(value.set('year', year));
     };
     this.setMonth = (value, month) => {
-      return value.set('month', month);
+      return this.adjustOffset(value.set('month', month));
     };
     this.setDate = (value, date) => {
-      return value.set('date', date);
+      return this.adjustOffset(value.set('date', date));
     };
     this.setHours = (value, hours) => {
-      return value.set('hour', hours);
+      return this.adjustOffset(value.set('hour', hours));
     };
     this.setMinutes = (value, minutes) => {
-      return value.set('minute', minutes);
+      return this.adjustOffset(value.set('minute', minutes));
     };
     this.setSeconds = (value, seconds) => {
-      return value.set('second', seconds);
+      return this.adjustOffset(value.set('second', seconds));
     };
     this.setMilliseconds = (value, milliseconds) => {
-      return value.set('millisecond', milliseconds);
+      return this.adjustOffset(value.set('millisecond', milliseconds));
     };
     this.getDaysInMonth = value => {
       return value.daysInMonth();
     };
     this.getNextMonth = value => {
-      return value.add(1, 'month');
+      return this.addMonths(value, 1);
     };
     this.getPreviousMonth = value => {
-      return value.subtract(1, 'month');
+      return this.addMonths(value, -1);
     };
     this.getMonthArray = value => {
       const firstMonth = value.startOf('year');
@@ -14208,10 +13997,9 @@ class AdapterDayjs {
     };
     this.getWeekdays = () => {
       const start = this.dayjs().startOf('week');
-      return [0, 1, 2, 3, 4, 5, 6].map(diff => this.formatByString(start.add(diff, 'day'), 'dd'));
+      return [0, 1, 2, 3, 4, 5, 6].map(diff => this.formatByString(this.addDays(start, diff), 'dd'));
     };
     this.getWeekArray = value => {
-      const timezone = this.getTimezone(value);
       const cleanValue = this.setLocaleToValue(value);
       const start = cleanValue.startOf('month').startOf('week');
       const end = cleanValue.endOf('month').endOf('week');
@@ -14222,15 +14010,7 @@ class AdapterDayjs {
         const weekNumber = Math.floor(count / 7);
         nestedWeeks[weekNumber] = nestedWeeks[weekNumber] || [];
         nestedWeeks[weekNumber].push(current);
-        current = current.add(1, 'day');
-
-        // If the new day does not have the same offset as the old one (when switching to summer day time for example),
-        // Then dayjs will not automatically adjust the offset (moment does)
-        // We have to parse again the value to make sure the `fixOffset` method is applied
-        // See https://github.com/iamkun/dayjs/blob/b3624de619d6e734cd0ffdbbd3502185041c1b60/src/plugin/timezone/index.js#L72
-        if (this.hasTimezonePlugin() && timezone !== 'UTC' && timezone !== 'system') {
-          current = current.tz(this.cleanTimezone(timezone), true);
-        }
+        current = this.addDays(current, 1);
         count += 1;
       }
       return nestedWeeks;
@@ -14245,7 +14025,7 @@ class AdapterDayjs {
       let current = startDate;
       while (current < endDate) {
         years.push(current);
-        current = current.add(1, 'year');
+        current = this.addYears(current, 1);
       }
       return years;
     };
@@ -14925,7 +14705,7 @@ process.env.NODE_ENV !== "production" ? IconButton.propTypes /* remove-proptypes
   sx: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])), PropTypes.func, PropTypes.object])
 } : void 0;
 
-const FileUploadContainer$1 = styled$2.section `
+const FileUploadContainer$1 = styled$3.section `
   position: relative;
   margin: 5px 0 0;
   border: 2px dotted ${(props) => props.colors?.grey300 ?? "grey"};
@@ -14936,7 +14716,7 @@ const FileUploadContainer$1 = styled$2.section `
   align-items: center;
   background-color: transparent;
 `;
-const FormField$2 = styled$2.input `
+const FormField$2 = styled$3.input `
   font-size: 18px;
   display: block;
   width: 100%;
@@ -14952,7 +14732,7 @@ const FormField$2 = styled$2.input `
     outline: none;
   }
 `;
-const DragDropText$1 = styled$2.p `
+const DragDropText$1 = styled$3.p `
   font-weight: bold;
   font-size: 10px;
   color: ${(props) => props.colors?.grey300 ?? "grey"};
@@ -14960,7 +14740,7 @@ const DragDropText$1 = styled$2.p `
   margin-top: 0;
   text-align: center;
 `;
-const UploadFileBtn$1 = styled$2.button `
+const UploadFileBtn$1 = styled$3.button `
   box-sizing: border-box;
   appearance: none;
   background-color: transparent;
@@ -15040,17 +14820,17 @@ const UploadFileBtn$1 = styled$2.button `
     pointer-events: none;
   }
 `;
-const FilePreviewContainer$1 = styled$2.article `
+const FilePreviewContainer$1 = styled$3.article `
   span {
     font-size: 14px;
   }
 `;
-const PreviewList$1 = styled$2.section `
+const PreviewList$1 = styled$3.section `
   display: flex;
   flex-wrap: wrap;
   margin-top: 10px;
 `;
-const FileMetaData$1 = styled$2.div `
+const FileMetaData$1 = styled$3.div `
   display: ${(props) => props.$isImageFile || props.$isVideoFile || props.$isPdfFile || props.$isExcelFile ? "none" : "flex"};
   flex-direction: column;
   position: absolute;
@@ -15069,13 +14849,13 @@ const FileMetaData$1 = styled$2.div `
     justify-content: space-between;
   }
 `;
-const RemoveFileIcon$1 = styled$2(IconButton) `
+const RemoveFileIcon$1 = styled$3(IconButton) `
   cursor: pointer;
   &:hover {
     transform: scale(1.1);
   }
 `;
-const PreviewContainer$1 = styled$2.section `
+const PreviewContainer$1 = styled$3.section `
   padding: 0.25rem;
   height: 60px;
   border-radius: 6px;
@@ -15085,12 +14865,12 @@ const PreviewContainer$1 = styled$2.section `
     position: relative;
   }
 `;
-const ImagePreview$1 = styled$2.img `
+const ImagePreview$1 = styled$3.img `
   border-radius: 6px;
   width: 100%;
   height: 100%;
 `;
-const VideoPreview$1 = styled$2.video `
+const VideoPreview$1 = styled$3.video `
   border-radius: 6px;
   width: 100%;
   height: 100%;
@@ -15656,7 +15436,7 @@ function ariaHidden(element, hide) {
   }
 }
 function getPaddingRight(element) {
-  return parseInt(ownerWindow(element).getComputedStyle(element).paddingRight, 10) || 0;
+  return parseFloat(ownerWindow(element).getComputedStyle(element).paddingRight) || 0;
 }
 function isAriaHiddenForbiddenOnElement(element) {
   // The forbidden HTML tags are the ones from ARIA specification that
@@ -15923,25 +15703,31 @@ function getReactElementRef(element) {
   return element?.ref || null;
 }
 
-// This module is based on https://github.com/airbnb/prop-types-exact repository.
-// However, in order to reduce the number of dependencies and to remove some extra safe checks
-// the module was forked.
-
-const specialProperty = 'exact-prop: \u200b';
-function exactProp(propTypes) {
-  if (process.env.NODE_ENV === 'production') {
-    return propTypes;
+/**
+ * Gets the actual active element, traversing through shadow roots if necessary.
+ *
+ * When an element inside a shadow root has focus, `document.activeElement` returns
+ * the shadow host element. This function recursively traverses shadow roots to find
+ * the actual focused element.
+ *
+ * @param root - The document or shadow root to start the search from.
+ * @returns The actual focused element, or null if no element has focus.
+ *
+ * @example
+ * // In a shadow DOM context
+ * const activeElement = getActiveElement(document);
+ * // Returns the actual focused element inside the shadow root
+ *
+ * @example
+ * // Starting from a specific document
+ * const activeElement = getActiveElement(ownerDocument(element));
+ */
+function activeElement(doc) {
+  let element = doc.activeElement;
+  while (element?.shadowRoot?.activeElement != null) {
+    element = element.shadowRoot.activeElement;
   }
-  return {
-    ...propTypes,
-    [specialProperty]: props => {
-      const unsupportedProps = Object.keys(props).filter(prop => !propTypes.hasOwnProperty(prop));
-      if (unsupportedProps.length > 0) {
-        return new Error(`The following props are not supported: ${unsupportedProps.map(prop => `\`${prop}\``).join(', ')}. Please remove them.`);
-      }
-      return null;
-    }
-  };
+  return element;
 }
 
 // Inspired by https://github.com/focus-trap/tabbable
@@ -16046,7 +15832,8 @@ function FocusTrap(props) {
       return;
     }
     const doc = ownerDocument(rootRef.current);
-    if (!rootRef.current.contains(doc.activeElement)) {
+    const activeElement$1 = activeElement(doc);
+    if (!rootRef.current.contains(activeElement$1)) {
       if (!rootRef.current.hasAttribute('tabIndex')) {
         if (process.env.NODE_ENV !== 'production') {
           console.error(['MUI: The modal content node does not accept focus.', 'For the benefit of assistive technologies, ' + 'the tabIndex of the node is being set to "-1".'].join('\n'));
@@ -16086,10 +15873,11 @@ function FocusTrap(props) {
       if (disableEnforceFocus || !isEnabled() || nativeEvent.key !== 'Tab') {
         return;
       }
+      const activeElement$1 = activeElement(doc);
 
       // Make sure the next tab starts from the right place.
-      // doc.activeElement refers to the origin.
-      if (doc.activeElement === rootRef.current && nativeEvent.shiftKey) {
+      // activeElement refers to the origin.
+      if (activeElement$1 === rootRef.current && nativeEvent.shiftKey) {
         // We need to ignore the next contain as
         // it will try to move the focus back to the rootRef element.
         ignoreNextEnforceFocus.current = true;
@@ -16106,23 +15894,24 @@ function FocusTrap(props) {
       if (rootElement === null) {
         return;
       }
+      const activeEl = activeElement(doc);
       if (!doc.hasFocus() || !isEnabled() || ignoreNextEnforceFocus.current) {
         ignoreNextEnforceFocus.current = false;
         return;
       }
 
       // The focus is already inside
-      if (rootElement.contains(doc.activeElement)) {
+      if (rootElement.contains(activeEl)) {
         return;
       }
 
       // The disableEnforceFocus is set and the focus is outside of the focus trap (and sentinel nodes)
-      if (disableEnforceFocus && doc.activeElement !== sentinelStart.current && doc.activeElement !== sentinelEnd.current) {
+      if (disableEnforceFocus && activeEl !== sentinelStart.current && activeEl !== sentinelEnd.current) {
         return;
       }
 
       // if the focus event is not coming from inside the children's react tree, reset the refs
-      if (doc.activeElement !== reactFocusEventTarget.current) {
+      if (activeEl !== reactFocusEventTarget.current) {
         reactFocusEventTarget.current = null;
       } else if (reactFocusEventTarget.current !== null) {
         return;
@@ -16131,7 +15920,7 @@ function FocusTrap(props) {
         return;
       }
       let tabbable = [];
-      if (doc.activeElement === sentinelStart.current || doc.activeElement === sentinelEnd.current) {
+      if (activeEl === sentinelStart.current || activeEl === sentinelEnd.current) {
         tabbable = getTabbable(rootRef.current);
       }
 
@@ -16163,7 +15952,8 @@ function FocusTrap(props) {
     // The whatwg spec defines how the browser should behave but does not explicitly mention any events:
     // https://html.spec.whatwg.org/multipage/interaction.html#focus-fixup-rule.
     const interval = setInterval(() => {
-      if (doc.activeElement && doc.activeElement.tagName === 'BODY') {
+      const activeEl = activeElement(doc);
+      if (activeEl && activeEl.tagName === 'BODY') {
         contain();
       }
     }, 50);
@@ -16660,7 +16450,6 @@ const Backdrop = /*#__PURE__*/React__namespace.forwardRef(function Backdrop(inPr
     children: /*#__PURE__*/jsxRuntimeExports.jsx(RootSlot, {
       "aria-hidden": true,
       ...rootProps,
-      classes: classes,
       ref: ref,
       children: children
     })
@@ -17526,7 +17315,7 @@ process.env.NODE_ENV !== "production" ? Paper.propTypes /* remove-proptypes */ =
 function getDialogUtilityClass(slot) {
   return generateUtilityClass('MuiDialog', slot);
 }
-const dialogClasses = generateUtilityClasses('MuiDialog', ['root', 'scrollPaper', 'scrollBody', 'container', 'paper', 'paperScrollPaper', 'paperScrollBody', 'paperWidthFalse', 'paperWidthXs', 'paperWidthSm', 'paperWidthMd', 'paperWidthLg', 'paperWidthXl', 'paperFullWidth', 'paperFullScreen']);
+const dialogClasses = generateUtilityClasses('MuiDialog', ['root', 'backdrop', 'scrollPaper', 'scrollBody', 'container', 'paper', 'paperScrollPaper', 'paperScrollBody', 'paperWidthFalse', 'paperWidthXs', 'paperWidthSm', 'paperWidthMd', 'paperWidthLg', 'paperWidthXl', 'paperFullWidth', 'paperFullScreen']);
 
 const DialogContext = /*#__PURE__*/React__namespace.createContext({});
 if (process.env.NODE_ENV !== 'production') {
@@ -17535,8 +17324,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const DialogBackdrop = styled(Backdrop, {
   name: 'MuiDialog',
-  slot: 'Backdrop',
-  overrides: (props, styles) => styles.backdrop
+  slot: 'Backdrop'
 })({
   // Improve scrollable dialog support.
   zIndex: -1
@@ -17551,6 +17339,7 @@ const useUtilityClasses$4 = ownerState => {
   } = ownerState;
   const slots = {
     root: ['root'],
+    backdrop: ['backdrop'],
     container: ['container', `scroll${capitalize(scroll)}`],
     paper: ['paper', `paperScroll${capitalize(scroll)}`, `paperWidth${capitalize(String(maxWidth))}`, fullWidth && 'paperFullWidth', fullScreen && 'paperFullScreen']
   };
@@ -17801,7 +17590,8 @@ const Dialog = /*#__PURE__*/React__namespace.forwardRef(function Dialog(inProps,
     elementType: DialogBackdrop,
     shouldForwardComponentProp: true,
     externalForwardedProps,
-    ownerState
+    ownerState,
+    className: classes.backdrop
   });
   const [PaperSlot, paperSlotProps] = useSlot('paper', {
     elementType: DialogPaper,
@@ -19938,7 +19728,7 @@ var CloudUploadIcon = createSvgIcon(/*#__PURE__*/jsxRuntimeExports.jsx("path", {
   d: "M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96M14 13v4h-4v-4H7l5-5 5 5z"
 }), 'CloudUpload');
 
-const FormField = styled$2.input `
+const FormField = styled$3.input `
   cursor: pointer;
   font-size: 18px;
   display: block;

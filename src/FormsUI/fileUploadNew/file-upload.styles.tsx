@@ -1,10 +1,16 @@
+import { StyledComponent } from "@emotion/styled";
 import {
   Box,
   Typography,
   Button,
   styled,
   IconButton,
+  BoxProps,
+  TypographyProps,
+  ButtonProps,
+  IconButtonProps,
 } from "@mui/material";
+import { DetailedHTMLProps, ImgHTMLAttributes, InputHTMLAttributes, VideoHTMLAttributes } from "react";
 
 type FileMetaDataProps = {
   $isImageFile?: boolean;
@@ -13,7 +19,9 @@ type FileMetaDataProps = {
   $isExcelFile?: boolean;
 };
 
-export const FileUploadContainer = styled(Box)(({ theme }) => ({
+type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+
+export const FileUploadContainer: StyledComponent<BoxProps> = styled(Box)(({ theme }) => ({
   position: 'relative',
   margin: '5px 0 0',
   border: `2px dotted ${theme.palette.grey[300]}`,
@@ -27,7 +35,7 @@ export const FileUploadContainer = styled(Box)(({ theme }) => ({
   boxSizing: 'border-box',
 }));
 
-export const FormField = styled('input')({
+export const FormField: StyledComponent<InputProps> = styled('input')({
   fontSize: '18px',
   display: 'block',
   width: '100%',
@@ -40,13 +48,13 @@ export const FormField = styled('input')({
   bottom: 0,
   opacity: 0,
   cursor: 'pointer',
-  
+
   '&:focus': {
     outline: 'none',
   },
 });
 
-export const DragDropText = styled(Typography)(({ theme }) => ({
+export const DragDropText: StyledComponent<TypographyProps> = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   fontSize: '12px',
   color: theme.palette.grey[500],
@@ -55,7 +63,7 @@ export const DragDropText = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
 }));
 
-export const UploadFileBtn = styled(Button)(({ theme }) => ({
+export const UploadFileBtn: StyledComponent<ButtonProps> = styled(Button)(({ theme }) => ({
   boxSizing: 'border-box',
   backgroundColor: 'transparent',
   border: `2px solid ${theme.palette.primary.main}`,
@@ -71,7 +79,7 @@ export const UploadFileBtn = styled(Button)(({ theme }) => ({
   zIndex: 1,
   transition: 'all 250ms ease-in-out',
   gap: '8px',
-  
+
   '&::after': {
     content: '""',
     position: 'absolute',
@@ -85,21 +93,21 @@ export const UploadFileBtn = styled(Button)(({ theme }) => ({
     zIndex: -1,
     transition: 'width 250ms ease-in-out',
   },
-  
+
   '&:hover': {
     color: theme.palette.background.paper,
     backgroundColor: 'transparent',
-    
+
     '&::after': {
       width: '110%',
     },
   },
-  
+
   '&:disabled': {
     opacity: 0.4,
     filter: 'grayscale(100%)',
   },
-  
+
   '@media (max-width: 500px)': {
     width: '100%',
     fontSize: '0.75rem',
@@ -107,19 +115,19 @@ export const UploadFileBtn = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const FilePreviewContainer = styled(Box)({
+export const FilePreviewContainer: StyledComponent<BoxProps> = styled(Box)({
   width: '100%',
   marginTop: '16px',
 });
 
-export const PreviewList = styled(Box)({
+export const PreviewList: StyledComponent<BoxProps> = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
   width: '100%',
 });
 
-export const RemoveFileIcon = styled(IconButton)`
+export const RemoveFileIcon: StyledComponent<IconButtonProps> = styled(IconButton)`
   cursor: pointer;
   transition: transform 0.2s;
   
@@ -128,14 +136,14 @@ export const RemoveFileIcon = styled(IconButton)`
   }
 `;
 
-export const PreviewContainer = styled(Box)({
+export const PreviewContainer: StyledComponent<BoxProps> = styled(Box)({
   padding: '4px',
   width: '80px',
   height: '80px',
   borderRadius: '8px',
   boxSizing: 'border-box',
   flexShrink: 0,
-  
+
   '& > div:first-of-type': {
     height: '100%',
     width: '100%',
@@ -143,22 +151,23 @@ export const PreviewContainer = styled(Box)({
   },
 });
 
-export const ImagePreview = styled('img')({
+export const ImagePreview: StyledComponent<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>> = styled('img')({
   borderRadius: '6px',
   width: '100%',
   height: '100%',
   objectFit: 'cover',
 });
 
-export const VideoPreview = styled('video')({
+export const VideoPreview: StyledComponent<DetailedHTMLProps<VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>> = styled('video')({
   borderRadius: '6px',
   width: '100%',
   height: '100%',
   objectFit: 'cover',
 });
 
-export const FileMetaData = styled(Box, {
-  shouldForwardProp: (prop) => !['$isImageFile', '$isVideoFile', '$isPdfFile', '$isExcelFile'].includes(prop as string),
+export const FileMetaData: StyledComponent<BoxProps & FileMetaDataProps> = styled(Box, {
+  shouldForwardProp: (prop) =>
+    !['$isImageFile', '$isVideoFile', '$isPdfFile', '$isExcelFile'].includes(prop as string),
 })<FileMetaDataProps>(({ $isImageFile, $isVideoFile, $isPdfFile, $isExcelFile }) => ({
   display: ($isImageFile || $isVideoFile || $isPdfFile || $isExcelFile) ? 'none' : 'flex',
   flexDirection: 'column',
@@ -172,7 +181,7 @@ export const FileMetaData = styled(Box, {
   color: 'white',
   fontWeight: 'bold',
   backgroundColor: 'rgba(5, 5, 5, 0.55)',
-  
+
   '& aside': {
     marginTop: 'auto',
     display: 'flex',
