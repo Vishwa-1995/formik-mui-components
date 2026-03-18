@@ -39,8 +39,7 @@ To keep the bundle size small and avoid version conflicts, ensure your project h
   "react-dom": "^18.0.0 || ^19.0.0",
   "@mui/material": "^6.0.0 || ^7.0.0",
   "@mui/icons-material": "^6.0.0 || ^7.0.0",
-  "@mui/x-date-pickers": "^6.10.1",
-  "@react-pdf-viewer/core": "3.12.0"
+  "styled-components": "^6.1.0"
 }
 ```
 
