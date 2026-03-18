@@ -3,10 +3,12 @@
 var React = require('react');
 var formik = require('formik');
 var material = require('@mui/material');
+var emStyled = require('@emotion/styled');
+var react = require('@emotion/react');
 var reactCSS = require('reactcss');
 var reactColor = require('react-color');
 var xDatePickers = require('@mui/x-date-pickers');
-var styled$3 = require('styled-components');
+var styled$2 = require('styled-components');
 var Cropper = require('react-easy-crop');
 var zustand = require('zustand');
 var ReactDOM = require('react-dom');
@@ -327,7 +329,7 @@ function requireJsxRuntime() {
 
 var jsxRuntimeExports = requireJsxRuntime();
 
-const AutoCompleteWrapper = ({ required, freeSolo, disabled, name, getOptions, customHandleChange, ...otherProps }) => {
+const AutoCompleteWrapper = ({ required, freeSolo, disabled, name, getOptions, customHandleChange, customHandleInputChange, ...otherProps }) => {
     const { setFieldValue, setFieldTouched } = formik.useFormikContext();
     const [field, mata] = formik.useField(name);
     const [showOptions, setShowOptions] = React.useState(false);
@@ -368,6 +370,7 @@ const AutoCompleteWrapper = ({ required, freeSolo, disabled, name, getOptions, c
             setFieldValue(name, { label: value.toString(), value: "" });
             customHandleChange && customHandleChange(value);
         }
+        customHandleInputChange && customHandleInputChange(value, reason);
     };
     const configAutocomplete = {
         ...otherProps,
@@ -481,9 +484,9 @@ const AutoCompleteSearchMultipleWrapper = ({ name, label, useQueryResult, setInp
 
 var propTypes = {exports: {}};
 
-var reactIs$2 = {exports: {}};
+var reactIs$1 = {exports: {}};
 
-var reactIs_production_min$1 = {};
+var reactIs_production_min = {};
 
 /** @license React v16.13.1
  * react-is.production.min.js
@@ -493,10 +496,10 @@ var reactIs_production_min$1 = {};
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var hasRequiredReactIs_production_min$1;
-function requireReactIs_production_min$1() {
-  if (hasRequiredReactIs_production_min$1) return reactIs_production_min$1;
-  hasRequiredReactIs_production_min$1 = 1;
+var hasRequiredReactIs_production_min;
+function requireReactIs_production_min() {
+  if (hasRequiredReactIs_production_min) return reactIs_production_min;
+  hasRequiredReactIs_production_min = 1;
   var b = "function" === typeof Symbol && Symbol.for,
     c = b ? Symbol.for("react.element") : 60103,
     d = b ? Symbol.for("react.portal") : 60106,
@@ -549,64 +552,64 @@ function requireReactIs_production_min$1() {
   function A(a) {
     return z(a) === m;
   }
-  reactIs_production_min$1.AsyncMode = l;
-  reactIs_production_min$1.ConcurrentMode = m;
-  reactIs_production_min$1.ContextConsumer = k;
-  reactIs_production_min$1.ContextProvider = h;
-  reactIs_production_min$1.Element = c;
-  reactIs_production_min$1.ForwardRef = n;
-  reactIs_production_min$1.Fragment = e;
-  reactIs_production_min$1.Lazy = t;
-  reactIs_production_min$1.Memo = r;
-  reactIs_production_min$1.Portal = d;
-  reactIs_production_min$1.Profiler = g;
-  reactIs_production_min$1.StrictMode = f;
-  reactIs_production_min$1.Suspense = p;
-  reactIs_production_min$1.isAsyncMode = function (a) {
+  reactIs_production_min.AsyncMode = l;
+  reactIs_production_min.ConcurrentMode = m;
+  reactIs_production_min.ContextConsumer = k;
+  reactIs_production_min.ContextProvider = h;
+  reactIs_production_min.Element = c;
+  reactIs_production_min.ForwardRef = n;
+  reactIs_production_min.Fragment = e;
+  reactIs_production_min.Lazy = t;
+  reactIs_production_min.Memo = r;
+  reactIs_production_min.Portal = d;
+  reactIs_production_min.Profiler = g;
+  reactIs_production_min.StrictMode = f;
+  reactIs_production_min.Suspense = p;
+  reactIs_production_min.isAsyncMode = function (a) {
     return A(a) || z(a) === l;
   };
-  reactIs_production_min$1.isConcurrentMode = A;
-  reactIs_production_min$1.isContextConsumer = function (a) {
+  reactIs_production_min.isConcurrentMode = A;
+  reactIs_production_min.isContextConsumer = function (a) {
     return z(a) === k;
   };
-  reactIs_production_min$1.isContextProvider = function (a) {
+  reactIs_production_min.isContextProvider = function (a) {
     return z(a) === h;
   };
-  reactIs_production_min$1.isElement = function (a) {
+  reactIs_production_min.isElement = function (a) {
     return "object" === typeof a && null !== a && a.$$typeof === c;
   };
-  reactIs_production_min$1.isForwardRef = function (a) {
+  reactIs_production_min.isForwardRef = function (a) {
     return z(a) === n;
   };
-  reactIs_production_min$1.isFragment = function (a) {
+  reactIs_production_min.isFragment = function (a) {
     return z(a) === e;
   };
-  reactIs_production_min$1.isLazy = function (a) {
+  reactIs_production_min.isLazy = function (a) {
     return z(a) === t;
   };
-  reactIs_production_min$1.isMemo = function (a) {
+  reactIs_production_min.isMemo = function (a) {
     return z(a) === r;
   };
-  reactIs_production_min$1.isPortal = function (a) {
+  reactIs_production_min.isPortal = function (a) {
     return z(a) === d;
   };
-  reactIs_production_min$1.isProfiler = function (a) {
+  reactIs_production_min.isProfiler = function (a) {
     return z(a) === g;
   };
-  reactIs_production_min$1.isStrictMode = function (a) {
+  reactIs_production_min.isStrictMode = function (a) {
     return z(a) === f;
   };
-  reactIs_production_min$1.isSuspense = function (a) {
+  reactIs_production_min.isSuspense = function (a) {
     return z(a) === p;
   };
-  reactIs_production_min$1.isValidElementType = function (a) {
+  reactIs_production_min.isValidElementType = function (a) {
     return "string" === typeof a || "function" === typeof a || a === e || a === m || a === g || a === f || a === p || a === q || "object" === typeof a && null !== a && (a.$$typeof === t || a.$$typeof === r || a.$$typeof === h || a.$$typeof === k || a.$$typeof === n || a.$$typeof === w || a.$$typeof === x || a.$$typeof === y || a.$$typeof === v);
   };
-  reactIs_production_min$1.typeOf = z;
-  return reactIs_production_min$1;
+  reactIs_production_min.typeOf = z;
+  return reactIs_production_min;
 }
 
-var reactIs_development$2 = {};
+var reactIs_development$1 = {};
 
 /** @license React v16.13.1
  * react-is.development.js
@@ -616,10 +619,10 @@ var reactIs_development$2 = {};
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var hasRequiredReactIs_development$2;
-function requireReactIs_development$2() {
-  if (hasRequiredReactIs_development$2) return reactIs_development$2;
-  hasRequiredReactIs_development$2 = 1;
+var hasRequiredReactIs_development$1;
+function requireReactIs_development$1() {
+  if (hasRequiredReactIs_development$1) return reactIs_development$1;
+  hasRequiredReactIs_development$1 = 1;
   if (process.env.NODE_ENV !== "production") {
     (function () {
 
@@ -746,49 +749,49 @@ function requireReactIs_development$2() {
       function isSuspense(object) {
         return typeOf(object) === REACT_SUSPENSE_TYPE;
       }
-      reactIs_development$2.AsyncMode = AsyncMode;
-      reactIs_development$2.ConcurrentMode = ConcurrentMode;
-      reactIs_development$2.ContextConsumer = ContextConsumer;
-      reactIs_development$2.ContextProvider = ContextProvider;
-      reactIs_development$2.Element = Element;
-      reactIs_development$2.ForwardRef = ForwardRef;
-      reactIs_development$2.Fragment = Fragment;
-      reactIs_development$2.Lazy = Lazy;
-      reactIs_development$2.Memo = Memo;
-      reactIs_development$2.Portal = Portal;
-      reactIs_development$2.Profiler = Profiler;
-      reactIs_development$2.StrictMode = StrictMode;
-      reactIs_development$2.Suspense = Suspense;
-      reactIs_development$2.isAsyncMode = isAsyncMode;
-      reactIs_development$2.isConcurrentMode = isConcurrentMode;
-      reactIs_development$2.isContextConsumer = isContextConsumer;
-      reactIs_development$2.isContextProvider = isContextProvider;
-      reactIs_development$2.isElement = isElement;
-      reactIs_development$2.isForwardRef = isForwardRef;
-      reactIs_development$2.isFragment = isFragment;
-      reactIs_development$2.isLazy = isLazy;
-      reactIs_development$2.isMemo = isMemo;
-      reactIs_development$2.isPortal = isPortal;
-      reactIs_development$2.isProfiler = isProfiler;
-      reactIs_development$2.isStrictMode = isStrictMode;
-      reactIs_development$2.isSuspense = isSuspense;
-      reactIs_development$2.isValidElementType = isValidElementType;
-      reactIs_development$2.typeOf = typeOf;
+      reactIs_development$1.AsyncMode = AsyncMode;
+      reactIs_development$1.ConcurrentMode = ConcurrentMode;
+      reactIs_development$1.ContextConsumer = ContextConsumer;
+      reactIs_development$1.ContextProvider = ContextProvider;
+      reactIs_development$1.Element = Element;
+      reactIs_development$1.ForwardRef = ForwardRef;
+      reactIs_development$1.Fragment = Fragment;
+      reactIs_development$1.Lazy = Lazy;
+      reactIs_development$1.Memo = Memo;
+      reactIs_development$1.Portal = Portal;
+      reactIs_development$1.Profiler = Profiler;
+      reactIs_development$1.StrictMode = StrictMode;
+      reactIs_development$1.Suspense = Suspense;
+      reactIs_development$1.isAsyncMode = isAsyncMode;
+      reactIs_development$1.isConcurrentMode = isConcurrentMode;
+      reactIs_development$1.isContextConsumer = isContextConsumer;
+      reactIs_development$1.isContextProvider = isContextProvider;
+      reactIs_development$1.isElement = isElement;
+      reactIs_development$1.isForwardRef = isForwardRef;
+      reactIs_development$1.isFragment = isFragment;
+      reactIs_development$1.isLazy = isLazy;
+      reactIs_development$1.isMemo = isMemo;
+      reactIs_development$1.isPortal = isPortal;
+      reactIs_development$1.isProfiler = isProfiler;
+      reactIs_development$1.isStrictMode = isStrictMode;
+      reactIs_development$1.isSuspense = isSuspense;
+      reactIs_development$1.isValidElementType = isValidElementType;
+      reactIs_development$1.typeOf = typeOf;
     })();
   }
-  return reactIs_development$2;
+  return reactIs_development$1;
 }
 
-var hasRequiredReactIs$2;
-function requireReactIs$2() {
-  if (hasRequiredReactIs$2) return reactIs$2.exports;
-  hasRequiredReactIs$2 = 1;
+var hasRequiredReactIs$1;
+function requireReactIs$1() {
+  if (hasRequiredReactIs$1) return reactIs$1.exports;
+  hasRequiredReactIs$1 = 1;
   if (process.env.NODE_ENV === 'production') {
-    reactIs$2.exports = requireReactIs_production_min$1();
+    reactIs$1.exports = requireReactIs_production_min();
   } else {
-    reactIs$2.exports = requireReactIs_development$2();
+    reactIs$1.exports = requireReactIs_development$1();
   }
-  return reactIs$2.exports;
+  return reactIs$1.exports;
 }
 
 /*
@@ -1003,7 +1006,7 @@ var hasRequiredFactoryWithTypeCheckers;
 function requireFactoryWithTypeCheckers() {
   if (hasRequiredFactoryWithTypeCheckers) return factoryWithTypeCheckers;
   hasRequiredFactoryWithTypeCheckers = 1;
-  var ReactIs = requireReactIs$2();
+  var ReactIs = requireReactIs$1();
   var assign = requireObjectAssign();
   var ReactPropTypesSecret = /*@__PURE__*/requireReactPropTypesSecret();
   var has = /*@__PURE__*/requireHas();
@@ -1616,7 +1619,7 @@ function requirePropTypes() {
   if (hasRequiredPropTypes) return propTypes.exports;
   hasRequiredPropTypes = 1;
   if (process.env.NODE_ENV !== 'production') {
-    var ReactIs = requireReactIs$2();
+    var ReactIs = requireReactIs$1();
 
     // By explicitly using `prop-types` you are opting into new development behavior.
     // http://fb.me/prop-types-in-prod
@@ -1729,7 +1732,7 @@ function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-var reactIs$1 = {exports: {}};
+var reactIs = {exports: {}};
 
 var reactIs_production = {};
 
@@ -1846,7 +1849,7 @@ function requireReactIs_production() {
   return reactIs_production;
 }
 
-var reactIs_development$1 = {};
+var reactIs_development = {};
 
 /**
  * @license React
@@ -1857,10 +1860,10 @@ var reactIs_development$1 = {};
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var hasRequiredReactIs_development$1;
-function requireReactIs_development$1() {
-  if (hasRequiredReactIs_development$1) return reactIs_development$1;
-  hasRequiredReactIs_development$1 = 1;
+var hasRequiredReactIs_development;
+function requireReactIs_development() {
+  if (hasRequiredReactIs_development) return reactIs_development;
+  hasRequiredReactIs_development = 1;
   "production" !== process.env.NODE_ENV && function () {
     function typeOf(object) {
       if ("object" === typeof object && null !== object) {
@@ -1907,75 +1910,75 @@ function requireReactIs_development$1() {
       REACT_LAZY_TYPE = Symbol.for("react.lazy"),
       REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"),
       REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference");
-    reactIs_development$1.ContextConsumer = REACT_CONSUMER_TYPE;
-    reactIs_development$1.ContextProvider = REACT_CONTEXT_TYPE;
-    reactIs_development$1.Element = REACT_ELEMENT_TYPE;
-    reactIs_development$1.ForwardRef = REACT_FORWARD_REF_TYPE;
-    reactIs_development$1.Fragment = REACT_FRAGMENT_TYPE;
-    reactIs_development$1.Lazy = REACT_LAZY_TYPE;
-    reactIs_development$1.Memo = REACT_MEMO_TYPE;
-    reactIs_development$1.Portal = REACT_PORTAL_TYPE;
-    reactIs_development$1.Profiler = REACT_PROFILER_TYPE;
-    reactIs_development$1.StrictMode = REACT_STRICT_MODE_TYPE;
-    reactIs_development$1.Suspense = REACT_SUSPENSE_TYPE;
-    reactIs_development$1.SuspenseList = REACT_SUSPENSE_LIST_TYPE;
-    reactIs_development$1.isContextConsumer = function (object) {
+    reactIs_development.ContextConsumer = REACT_CONSUMER_TYPE;
+    reactIs_development.ContextProvider = REACT_CONTEXT_TYPE;
+    reactIs_development.Element = REACT_ELEMENT_TYPE;
+    reactIs_development.ForwardRef = REACT_FORWARD_REF_TYPE;
+    reactIs_development.Fragment = REACT_FRAGMENT_TYPE;
+    reactIs_development.Lazy = REACT_LAZY_TYPE;
+    reactIs_development.Memo = REACT_MEMO_TYPE;
+    reactIs_development.Portal = REACT_PORTAL_TYPE;
+    reactIs_development.Profiler = REACT_PROFILER_TYPE;
+    reactIs_development.StrictMode = REACT_STRICT_MODE_TYPE;
+    reactIs_development.Suspense = REACT_SUSPENSE_TYPE;
+    reactIs_development.SuspenseList = REACT_SUSPENSE_LIST_TYPE;
+    reactIs_development.isContextConsumer = function (object) {
       return typeOf(object) === REACT_CONSUMER_TYPE;
     };
-    reactIs_development$1.isContextProvider = function (object) {
+    reactIs_development.isContextProvider = function (object) {
       return typeOf(object) === REACT_CONTEXT_TYPE;
     };
-    reactIs_development$1.isElement = function (object) {
+    reactIs_development.isElement = function (object) {
       return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
     };
-    reactIs_development$1.isForwardRef = function (object) {
+    reactIs_development.isForwardRef = function (object) {
       return typeOf(object) === REACT_FORWARD_REF_TYPE;
     };
-    reactIs_development$1.isFragment = function (object) {
+    reactIs_development.isFragment = function (object) {
       return typeOf(object) === REACT_FRAGMENT_TYPE;
     };
-    reactIs_development$1.isLazy = function (object) {
+    reactIs_development.isLazy = function (object) {
       return typeOf(object) === REACT_LAZY_TYPE;
     };
-    reactIs_development$1.isMemo = function (object) {
+    reactIs_development.isMemo = function (object) {
       return typeOf(object) === REACT_MEMO_TYPE;
     };
-    reactIs_development$1.isPortal = function (object) {
+    reactIs_development.isPortal = function (object) {
       return typeOf(object) === REACT_PORTAL_TYPE;
     };
-    reactIs_development$1.isProfiler = function (object) {
+    reactIs_development.isProfiler = function (object) {
       return typeOf(object) === REACT_PROFILER_TYPE;
     };
-    reactIs_development$1.isStrictMode = function (object) {
+    reactIs_development.isStrictMode = function (object) {
       return typeOf(object) === REACT_STRICT_MODE_TYPE;
     };
-    reactIs_development$1.isSuspense = function (object) {
+    reactIs_development.isSuspense = function (object) {
       return typeOf(object) === REACT_SUSPENSE_TYPE;
     };
-    reactIs_development$1.isSuspenseList = function (object) {
+    reactIs_development.isSuspenseList = function (object) {
       return typeOf(object) === REACT_SUSPENSE_LIST_TYPE;
     };
-    reactIs_development$1.isValidElementType = function (type) {
+    reactIs_development.isValidElementType = function (type) {
       return "string" === typeof type || "function" === typeof type || type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || "object" === typeof type && null !== type && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_CONSUMER_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_CLIENT_REFERENCE || void 0 !== type.getModuleId) ? true : false;
     };
-    reactIs_development$1.typeOf = typeOf;
+    reactIs_development.typeOf = typeOf;
   }();
-  return reactIs_development$1;
+  return reactIs_development;
 }
 
-var hasRequiredReactIs$1;
-function requireReactIs$1() {
-  if (hasRequiredReactIs$1) return reactIs$1.exports;
-  hasRequiredReactIs$1 = 1;
+var hasRequiredReactIs;
+function requireReactIs() {
+  if (hasRequiredReactIs) return reactIs.exports;
+  hasRequiredReactIs = 1;
   if (process.env.NODE_ENV === 'production') {
-    reactIs$1.exports = /*@__PURE__*/requireReactIs_production();
+    reactIs.exports = /*@__PURE__*/requireReactIs_production();
   } else {
-    reactIs$1.exports = /*@__PURE__*/requireReactIs_development$1();
+    reactIs.exports = /*@__PURE__*/requireReactIs_development();
   }
-  return reactIs$1.exports;
+  return reactIs.exports;
 }
 
-var reactIsExports = /*@__PURE__*/ requireReactIs$1();
+var reactIsExports = /*@__PURE__*/ requireReactIs();
 
 // https://github.com/sindresorhus/is-plain-obj/blob/main/index.js
 function isPlainObject(item) {
@@ -2083,7 +2086,7 @@ function getContainerQuery(theme, shorthand) {
   const matches = shorthand.match(/^@([^/]+)?\/?(.+)?$/);
   if (!matches) {
     if (process.env.NODE_ENV !== 'production') {
-      throw new Error(process.env.NODE_ENV !== "production" ? `MUI: The provided shorthand ${`(${shorthand})`} is invalid. The format should be \`@<breakpoint | number>\` or \`@<breakpoint | number>/<container>\`.\n` + 'For example, `@sm` or `@600` or `@40rem/sidebar`.' : formatMuiErrorMessage(18, `(${shorthand})`));
+      throw /* minify-error */new Error(`MUI: The provided shorthand ${`(${shorthand})`} is invalid. The format should be \`@<breakpoint | number>\` or \`@<breakpoint | number>/<container>\`.\n` + 'For example, `@sm` or `@600` or `@40rem/sidebar`.');
     }
     return null;
   }
@@ -3128,1571 +3131,6 @@ function extendSxProp$1(props) {
   };
 }
 
-function _extends() {
-  return _extends = Object.assign ? Object.assign.bind() : function (n) {
-    for (var e = 1; e < arguments.length; e++) {
-      var t = arguments[e];
-      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
-    }
-    return n;
-  }, _extends.apply(null, arguments);
-}
-
-/*
-
-Based off glamor's StyleSheet, thanks Sunil ❤️
-
-high performance StyleSheet for css-in-js systems
-
-- uses multiple style tags behind the scenes for millions of rules
-- uses `insertRule` for appending in production for *much* faster performance
-
-// usage
-
-import { StyleSheet } from '@emotion/sheet'
-
-let styleSheet = new StyleSheet({ key: '', container: document.head })
-
-styleSheet.insert('#box { border: 1px solid red; }')
-- appends a css rule into the stylesheet
-
-styleSheet.flush()
-- empties the stylesheet of all its contents
-
-*/
-
-function sheetForTag(tag) {
-  if (tag.sheet) {
-    return tag.sheet;
-  } // this weirdness brought to you by firefox
-
-  /* istanbul ignore next */
-
-  for (var i = 0; i < document.styleSheets.length; i++) {
-    if (document.styleSheets[i].ownerNode === tag) {
-      return document.styleSheets[i];
-    }
-  } // this function should always return with a value
-  // TS can't understand it though so we make it stop complaining here
-
-  return undefined;
-}
-function createStyleElement(options) {
-  var tag = document.createElement('style');
-  tag.setAttribute('data-emotion', options.key);
-  if (options.nonce !== undefined) {
-    tag.setAttribute('nonce', options.nonce);
-  }
-  tag.appendChild(document.createTextNode(''));
-  tag.setAttribute('data-s', '');
-  return tag;
-}
-var StyleSheet = /*#__PURE__*/function () {
-  // Using Node instead of HTMLElement since container may be a ShadowRoot
-  function StyleSheet(options) {
-    var _this = this;
-    this._insertTag = function (tag) {
-      var before;
-      if (_this.tags.length === 0) {
-        if (_this.insertionPoint) {
-          before = _this.insertionPoint.nextSibling;
-        } else if (_this.prepend) {
-          before = _this.container.firstChild;
-        } else {
-          before = _this.before;
-        }
-      } else {
-        before = _this.tags[_this.tags.length - 1].nextSibling;
-      }
-      _this.container.insertBefore(tag, before);
-      _this.tags.push(tag);
-    };
-    this.isSpeedy = options.speedy === undefined ? true : options.speedy;
-    this.tags = [];
-    this.ctr = 0;
-    this.nonce = options.nonce; // key is the value of the data-emotion attribute, it's used to identify different sheets
-
-    this.key = options.key;
-    this.container = options.container;
-    this.prepend = options.prepend;
-    this.insertionPoint = options.insertionPoint;
-    this.before = null;
-  }
-  var _proto = StyleSheet.prototype;
-  _proto.hydrate = function hydrate(nodes) {
-    nodes.forEach(this._insertTag);
-  };
-  _proto.insert = function insert(rule) {
-    // the max length is how many rules we have per style tag, it's 65000 in speedy mode
-    // it's 1 in dev because we insert source maps that map a single rule to a location
-    // and you can only have one source map per style tag
-    if (this.ctr % (this.isSpeedy ? 65000 : 1) === 0) {
-      this._insertTag(createStyleElement(this));
-    }
-    var tag = this.tags[this.tags.length - 1];
-    if (this.isSpeedy) {
-      var sheet = sheetForTag(tag);
-      try {
-        // this is the ultrafast version, works across browsers
-        // the big drawback is that the css won't be editable in devtools
-        sheet.insertRule(rule, sheet.cssRules.length);
-      } catch (e) {}
-    } else {
-      tag.appendChild(document.createTextNode(rule));
-    }
-    this.ctr++;
-  };
-  _proto.flush = function flush() {
-    this.tags.forEach(function (tag) {
-      var _tag$parentNode;
-      return (_tag$parentNode = tag.parentNode) == null ? void 0 : _tag$parentNode.removeChild(tag);
-    });
-    this.tags = [];
-    this.ctr = 0;
-  };
-  return StyleSheet;
-}();
-
-var MS = '-ms-';
-var MOZ = '-moz-';
-var WEBKIT = '-webkit-';
-var COMMENT = 'comm';
-var RULESET = 'rule';
-var DECLARATION = 'decl';
-var IMPORT = '@import';
-var KEYFRAMES = '@keyframes';
-var LAYER = '@layer';
-
-/**
- * @param {number}
- * @return {number}
- */
-var abs = Math.abs;
-
-/**
- * @param {number}
- * @return {string}
- */
-var from = String.fromCharCode;
-
-/**
- * @param {object}
- * @return {object}
- */
-var assign = Object.assign;
-
-/**
- * @param {string} value
- * @param {number} length
- * @return {number}
- */
-function hash(value, length) {
-  return charat(value, 0) ^ 45 ? (((length << 2 ^ charat(value, 0)) << 2 ^ charat(value, 1)) << 2 ^ charat(value, 2)) << 2 ^ charat(value, 3) : 0;
-}
-
-/**
- * @param {string} value
- * @return {string}
- */
-function trim(value) {
-  return value.trim();
-}
-
-/**
- * @param {string} value
- * @param {RegExp} pattern
- * @return {string?}
- */
-function match(value, pattern) {
-  return (value = pattern.exec(value)) ? value[0] : value;
-}
-
-/**
- * @param {string} value
- * @param {(string|RegExp)} pattern
- * @param {string} replacement
- * @return {string}
- */
-function replace(value, pattern, replacement) {
-  return value.replace(pattern, replacement);
-}
-
-/**
- * @param {string} value
- * @param {string} search
- * @return {number}
- */
-function indexof(value, search) {
-  return value.indexOf(search);
-}
-
-/**
- * @param {string} value
- * @param {number} index
- * @return {number}
- */
-function charat(value, index) {
-  return value.charCodeAt(index) | 0;
-}
-
-/**
- * @param {string} value
- * @param {number} begin
- * @param {number} end
- * @return {string}
- */
-function substr(value, begin, end) {
-  return value.slice(begin, end);
-}
-
-/**
- * @param {string} value
- * @return {number}
- */
-function strlen(value) {
-  return value.length;
-}
-
-/**
- * @param {any[]} value
- * @return {number}
- */
-function sizeof(value) {
-  return value.length;
-}
-
-/**
- * @param {any} value
- * @param {any[]} array
- * @return {any}
- */
-function append(value, array) {
-  return array.push(value), value;
-}
-
-/**
- * @param {string[]} array
- * @param {function} callback
- * @return {string}
- */
-function combine(array, callback) {
-  return array.map(callback).join('');
-}
-
-var line = 1;
-var column = 1;
-var length = 0;
-var position = 0;
-var character = 0;
-var characters = '';
-
-/**
- * @param {string} value
- * @param {object | null} root
- * @param {object | null} parent
- * @param {string} type
- * @param {string[] | string} props
- * @param {object[] | string} children
- * @param {number} length
- */
-function node(value, root, parent, type, props, children, length) {
-  return {
-    value: value,
-    root: root,
-    parent: parent,
-    type: type,
-    props: props,
-    children: children,
-    line: line,
-    column: column,
-    length: length,
-    return: ''
-  };
-}
-
-/**
- * @param {object} root
- * @param {object} props
- * @return {object}
- */
-function copy(root, props) {
-  return assign(node('', null, null, '', null, null, 0), root, {
-    length: -root.length
-  }, props);
-}
-
-/**
- * @return {number}
- */
-function char() {
-  return character;
-}
-
-/**
- * @return {number}
- */
-function prev() {
-  character = position > 0 ? charat(characters, --position) : 0;
-  if (column--, character === 10) column = 1, line--;
-  return character;
-}
-
-/**
- * @return {number}
- */
-function next() {
-  character = position < length ? charat(characters, position++) : 0;
-  if (column++, character === 10) column = 1, line++;
-  return character;
-}
-
-/**
- * @return {number}
- */
-function peek() {
-  return charat(characters, position);
-}
-
-/**
- * @return {number}
- */
-function caret() {
-  return position;
-}
-
-/**
- * @param {number} begin
- * @param {number} end
- * @return {string}
- */
-function slice(begin, end) {
-  return substr(characters, begin, end);
-}
-
-/**
- * @param {number} type
- * @return {number}
- */
-function token(type) {
-  switch (type) {
-    // \0 \t \n \r \s whitespace token
-    case 0:
-    case 9:
-    case 10:
-    case 13:
-    case 32:
-      return 5;
-    // ! + , / > @ ~ isolate token
-    case 33:
-    case 43:
-    case 44:
-    case 47:
-    case 62:
-    case 64:
-    case 126:
-    // ; { } breakpoint token
-    case 59:
-    case 123:
-    case 125:
-      return 4;
-    // : accompanied token
-    case 58:
-      return 3;
-    // " ' ( [ opening delimit token
-    case 34:
-    case 39:
-    case 40:
-    case 91:
-      return 2;
-    // ) ] closing delimit token
-    case 41:
-    case 93:
-      return 1;
-  }
-  return 0;
-}
-
-/**
- * @param {string} value
- * @return {any[]}
- */
-function alloc(value) {
-  return line = column = 1, length = strlen(characters = value), position = 0, [];
-}
-
-/**
- * @param {any} value
- * @return {any}
- */
-function dealloc(value) {
-  return characters = '', value;
-}
-
-/**
- * @param {number} type
- * @return {string}
- */
-function delimit(type) {
-  return trim(slice(position - 1, delimiter(type === 91 ? type + 2 : type === 40 ? type + 1 : type)));
-}
-
-/**
- * @param {number} type
- * @return {string}
- */
-function whitespace(type) {
-  while (character = peek()) if (character < 33) next();else break;
-  return token(type) > 2 || token(character) > 3 ? '' : ' ';
-}
-
-/**
- * @param {number} index
- * @param {number} count
- * @return {string}
- */
-function escaping(index, count) {
-  while (--count && next())
-  // not 0-9 A-F a-f
-  if (character < 48 || character > 102 || character > 57 && character < 65 || character > 70 && character < 97) break;
-  return slice(index, caret() + (count < 6 && peek() == 32 && next() == 32));
-}
-
-/**
- * @param {number} type
- * @return {number}
- */
-function delimiter(type) {
-  while (next()) switch (character) {
-    // ] ) " '
-    case type:
-      return position;
-    // " '
-    case 34:
-    case 39:
-      if (type !== 34 && type !== 39) delimiter(character);
-      break;
-    // (
-    case 40:
-      if (type === 41) delimiter(type);
-      break;
-    // \
-    case 92:
-      next();
-      break;
-  }
-  return position;
-}
-
-/**
- * @param {number} type
- * @param {number} index
- * @return {number}
- */
-function commenter(type, index) {
-  while (next())
-  // //
-  if (type + character === 47 + 10) break;
-  // /*
-  else if (type + character === 42 + 42 && peek() === 47) break;
-  return '/*' + slice(index, position - 1) + '*' + from(type === 47 ? type : next());
-}
-
-/**
- * @param {number} index
- * @return {string}
- */
-function identifier(index) {
-  while (!token(peek())) next();
-  return slice(index, position);
-}
-
-/**
- * @param {string} value
- * @return {object[]}
- */
-function compile(value) {
-  return dealloc(parse('', null, null, null, [''], value = alloc(value), 0, [0], value));
-}
-
-/**
- * @param {string} value
- * @param {object} root
- * @param {object?} parent
- * @param {string[]} rule
- * @param {string[]} rules
- * @param {string[]} rulesets
- * @param {number[]} pseudo
- * @param {number[]} points
- * @param {string[]} declarations
- * @return {object}
- */
-function parse(value, root, parent, rule, rules, rulesets, pseudo, points, declarations) {
-  var index = 0;
-  var offset = 0;
-  var length = pseudo;
-  var atrule = 0;
-  var property = 0;
-  var previous = 0;
-  var variable = 1;
-  var scanning = 1;
-  var ampersand = 1;
-  var character = 0;
-  var type = '';
-  var props = rules;
-  var children = rulesets;
-  var reference = rule;
-  var characters = type;
-  while (scanning) switch (previous = character, character = next()) {
-    // (
-    case 40:
-      if (previous != 108 && charat(characters, length - 1) == 58) {
-        if (indexof(characters += replace(delimit(character), '&', '&\f'), '&\f') != -1) ampersand = -1;
-        break;
-      }
-    // " ' [
-    case 34:
-    case 39:
-    case 91:
-      characters += delimit(character);
-      break;
-    // \t \n \r \s
-    case 9:
-    case 10:
-    case 13:
-    case 32:
-      characters += whitespace(previous);
-      break;
-    // \
-    case 92:
-      characters += escaping(caret() - 1, 7);
-      continue;
-    // /
-    case 47:
-      switch (peek()) {
-        case 42:
-        case 47:
-          append(comment(commenter(next(), caret()), root, parent), declarations);
-          break;
-        default:
-          characters += '/';
-      }
-      break;
-    // {
-    case 123 * variable:
-      points[index++] = strlen(characters) * ampersand;
-    // } ; \0
-    case 125 * variable:
-    case 59:
-    case 0:
-      switch (character) {
-        // \0 }
-        case 0:
-        case 125:
-          scanning = 0;
-        // ;
-        case 59 + offset:
-          if (ampersand == -1) characters = replace(characters, /\f/g, '');
-          if (property > 0 && strlen(characters) - length) append(property > 32 ? declaration(characters + ';', rule, parent, length - 1) : declaration(replace(characters, ' ', '') + ';', rule, parent, length - 2), declarations);
-          break;
-        // @ ;
-        case 59:
-          characters += ';';
-        // { rule/at-rule
-        default:
-          append(reference = ruleset(characters, root, parent, index, offset, rules, points, type, props = [], children = [], length), rulesets);
-          if (character === 123) if (offset === 0) parse(characters, root, reference, reference, props, rulesets, length, points, children);else switch (atrule === 99 && charat(characters, 3) === 110 ? 100 : atrule) {
-            // d l m s
-            case 100:
-            case 108:
-            case 109:
-            case 115:
-              parse(value, reference, reference, rule && append(ruleset(value, reference, reference, 0, 0, rules, points, type, rules, props = [], length), children), rules, children, length, points, rule ? props : children);
-              break;
-            default:
-              parse(characters, reference, reference, reference, [''], children, 0, points, children);
-          }
-      }
-      index = offset = property = 0, variable = ampersand = 1, type = characters = '', length = pseudo;
-      break;
-    // :
-    case 58:
-      length = 1 + strlen(characters), property = previous;
-    default:
-      if (variable < 1) if (character == 123) --variable;else if (character == 125 && variable++ == 0 && prev() == 125) continue;
-      switch (characters += from(character), character * variable) {
-        // &
-        case 38:
-          ampersand = offset > 0 ? 1 : (characters += '\f', -1);
-          break;
-        // ,
-        case 44:
-          points[index++] = (strlen(characters) - 1) * ampersand, ampersand = 1;
-          break;
-        // @
-        case 64:
-          // -
-          if (peek() === 45) characters += delimit(next());
-          atrule = peek(), offset = length = strlen(type = characters += identifier(caret())), character++;
-          break;
-        // -
-        case 45:
-          if (previous === 45 && strlen(characters) == 2) variable = 0;
-      }
-  }
-  return rulesets;
-}
-
-/**
- * @param {string} value
- * @param {object} root
- * @param {object?} parent
- * @param {number} index
- * @param {number} offset
- * @param {string[]} rules
- * @param {number[]} points
- * @param {string} type
- * @param {string[]} props
- * @param {string[]} children
- * @param {number} length
- * @return {object}
- */
-function ruleset(value, root, parent, index, offset, rules, points, type, props, children, length) {
-  var post = offset - 1;
-  var rule = offset === 0 ? rules : [''];
-  var size = sizeof(rule);
-  for (var i = 0, j = 0, k = 0; i < index; ++i) for (var x = 0, y = substr(value, post + 1, post = abs(j = points[i])), z = value; x < size; ++x) if (z = trim(j > 0 ? rule[x] + ' ' + y : replace(y, /&\f/g, rule[x]))) props[k++] = z;
-  return node(value, root, parent, offset === 0 ? RULESET : type, props, children, length);
-}
-
-/**
- * @param {number} value
- * @param {object} root
- * @param {object?} parent
- * @return {object}
- */
-function comment(value, root, parent) {
-  return node(value, root, parent, COMMENT, from(char()), substr(value, 2, -2), 0);
-}
-
-/**
- * @param {string} value
- * @param {object} root
- * @param {object?} parent
- * @param {number} length
- * @return {object}
- */
-function declaration(value, root, parent, length) {
-  return node(value, root, parent, DECLARATION, substr(value, 0, length), substr(value, length + 1, -1), length);
-}
-
-/**
- * @param {object[]} children
- * @param {function} callback
- * @return {string}
- */
-function serialize(children, callback) {
-  var output = '';
-  var length = sizeof(children);
-  for (var i = 0; i < length; i++) output += callback(children[i], i, children, callback) || '';
-  return output;
-}
-
-/**
- * @param {object} element
- * @param {number} index
- * @param {object[]} children
- * @param {function} callback
- * @return {string}
- */
-function stringify(element, index, children, callback) {
-  switch (element.type) {
-    case LAYER:
-      if (element.children.length) break;
-    case IMPORT:
-    case DECLARATION:
-      return element.return = element.return || element.value;
-    case COMMENT:
-      return '';
-    case KEYFRAMES:
-      return element.return = element.value + '{' + serialize(element.children, callback) + '}';
-    case RULESET:
-      element.value = element.props.join(',');
-  }
-  return strlen(children = serialize(element.children, callback)) ? element.return = element.value + '{' + children + '}' : '';
-}
-
-/**
- * @param {function[]} collection
- * @return {function}
- */
-function middleware(collection) {
-  var length = sizeof(collection);
-  return function (element, index, children, callback) {
-    var output = '';
-    for (var i = 0; i < length; i++) output += collection[i](element, index, children, callback) || '';
-    return output;
-  };
-}
-
-/**
- * @param {function} callback
- * @return {function}
- */
-function rulesheet(callback) {
-  return function (element) {
-    if (!element.root) if (element = element.return) callback(element);
-  };
-}
-
-function memoize(fn) {
-  var cache = Object.create(null);
-  return function (arg) {
-    if (cache[arg] === undefined) cache[arg] = fn(arg);
-    return cache[arg];
-  };
-}
-
-var identifierWithPointTracking = function identifierWithPointTracking(begin, points, index) {
-  var previous = 0;
-  var character = 0;
-  while (true) {
-    previous = character;
-    character = peek(); // &\f
-
-    if (previous === 38 && character === 12) {
-      points[index] = 1;
-    }
-    if (token(character)) {
-      break;
-    }
-    next();
-  }
-  return slice(begin, position);
-};
-var toRules = function toRules(parsed, points) {
-  // pretend we've started with a comma
-  var index = -1;
-  var character = 44;
-  do {
-    switch (token(character)) {
-      case 0:
-        // &\f
-        if (character === 38 && peek() === 12) {
-          // this is not 100% correct, we don't account for literal sequences here - like for example quoted strings
-          // stylis inserts \f after & to know when & where it should replace this sequence with the context selector
-          // and when it should just concatenate the outer and inner selectors
-          // it's very unlikely for this sequence to actually appear in a different context, so we just leverage this fact here
-          points[index] = 1;
-        }
-        parsed[index] += identifierWithPointTracking(position - 1, points, index);
-        break;
-      case 2:
-        parsed[index] += delimit(character);
-        break;
-      case 4:
-        // comma
-        if (character === 44) {
-          // colon
-          parsed[++index] = peek() === 58 ? '&\f' : '';
-          points[index] = parsed[index].length;
-          break;
-        }
-
-      // fallthrough
-
-      default:
-        parsed[index] += from(character);
-    }
-  } while (character = next());
-  return parsed;
-};
-var getRules = function getRules(value, points) {
-  return dealloc(toRules(alloc(value), points));
-}; // WeakSet would be more appropriate, but only WeakMap is supported in IE11
-
-var fixedElements = /* #__PURE__ */new WeakMap();
-var compat = function compat(element) {
-  if (element.type !== 'rule' || !element.parent ||
-  // positive .length indicates that this rule contains pseudo
-  // negative .length indicates that this rule has been already prefixed
-  element.length < 1) {
-    return;
-  }
-  var value = element.value;
-  var parent = element.parent;
-  var isImplicitRule = element.column === parent.column && element.line === parent.line;
-  while (parent.type !== 'rule') {
-    parent = parent.parent;
-    if (!parent) return;
-  } // short-circuit for the simplest case
-
-  if (element.props.length === 1 && value.charCodeAt(0) !== 58
-  /* colon */ && !fixedElements.get(parent)) {
-    return;
-  } // if this is an implicitly inserted rule (the one eagerly inserted at the each new nested level)
-  // then the props has already been manipulated beforehand as they that array is shared between it and its "rule parent"
-
-  if (isImplicitRule) {
-    return;
-  }
-  fixedElements.set(element, true);
-  var points = [];
-  var rules = getRules(value, points);
-  var parentRules = parent.props;
-  for (var i = 0, k = 0; i < rules.length; i++) {
-    for (var j = 0; j < parentRules.length; j++, k++) {
-      element.props[k] = points[i] ? rules[i].replace(/&\f/g, parentRules[j]) : parentRules[j] + " " + rules[i];
-    }
-  }
-};
-var removeLabel = function removeLabel(element) {
-  if (element.type === 'decl') {
-    var value = element.value;
-    if (
-    // charcode for l
-    value.charCodeAt(0) === 108 &&
-    // charcode for b
-    value.charCodeAt(2) === 98) {
-      // this ignores label
-      element["return"] = '';
-      element.value = '';
-    }
-  }
-};
-
-/* eslint-disable no-fallthrough */
-
-function prefix(value, length) {
-  switch (hash(value, length)) {
-    // color-adjust
-    case 5103:
-      return WEBKIT + 'print-' + value + value;
-    // animation, animation-(delay|direction|duration|fill-mode|iteration-count|name|play-state|timing-function)
-
-    case 5737:
-    case 4201:
-    case 3177:
-    case 3433:
-    case 1641:
-    case 4457:
-    case 2921: // text-decoration, filter, clip-path, backface-visibility, column, box-decoration-break
-
-    case 5572:
-    case 6356:
-    case 5844:
-    case 3191:
-    case 6645:
-    case 3005: // mask, mask-image, mask-(mode|clip|size), mask-(repeat|origin), mask-position, mask-composite,
-
-    case 6391:
-    case 5879:
-    case 5623:
-    case 6135:
-    case 4599:
-    case 4855: // background-clip, columns, column-(count|fill|gap|rule|rule-color|rule-style|rule-width|span|width)
-
-    case 4215:
-    case 6389:
-    case 5109:
-    case 5365:
-    case 5621:
-    case 3829:
-      return WEBKIT + value + value;
-    // appearance, user-select, transform, hyphens, text-size-adjust
-
-    case 5349:
-    case 4246:
-    case 4810:
-    case 6968:
-    case 2756:
-      return WEBKIT + value + MOZ + value + MS + value + value;
-    // flex, flex-direction
-
-    case 6828:
-    case 4268:
-      return WEBKIT + value + MS + value + value;
-    // order
-
-    case 6165:
-      return WEBKIT + value + MS + 'flex-' + value + value;
-    // align-items
-
-    case 5187:
-      return WEBKIT + value + replace(value, /(\w+).+(:[^]+)/, WEBKIT + 'box-$1$2' + MS + 'flex-$1$2') + value;
-    // align-self
-
-    case 5443:
-      return WEBKIT + value + MS + 'flex-item-' + replace(value, /flex-|-self/, '') + value;
-    // align-content
-
-    case 4675:
-      return WEBKIT + value + MS + 'flex-line-pack' + replace(value, /align-content|flex-|-self/, '') + value;
-    // flex-shrink
-
-    case 5548:
-      return WEBKIT + value + MS + replace(value, 'shrink', 'negative') + value;
-    // flex-basis
-
-    case 5292:
-      return WEBKIT + value + MS + replace(value, 'basis', 'preferred-size') + value;
-    // flex-grow
-
-    case 6060:
-      return WEBKIT + 'box-' + replace(value, '-grow', '') + WEBKIT + value + MS + replace(value, 'grow', 'positive') + value;
-    // transition
-
-    case 4554:
-      return WEBKIT + replace(value, /([^-])(transform)/g, '$1' + WEBKIT + '$2') + value;
-    // cursor
-
-    case 6187:
-      return replace(replace(replace(value, /(zoom-|grab)/, WEBKIT + '$1'), /(image-set)/, WEBKIT + '$1'), value, '') + value;
-    // background, background-image
-
-    case 5495:
-    case 3959:
-      return replace(value, /(image-set\([^]*)/, WEBKIT + '$1' + '$`$1');
-    // justify-content
-
-    case 4968:
-      return replace(replace(value, /(.+:)(flex-)?(.*)/, WEBKIT + 'box-pack:$3' + MS + 'flex-pack:$3'), /s.+-b[^;]+/, 'justify') + WEBKIT + value + value;
-    // (margin|padding)-inline-(start|end)
-
-    case 4095:
-    case 3583:
-    case 4068:
-    case 2532:
-      return replace(value, /(.+)-inline(.+)/, WEBKIT + '$1$2') + value;
-    // (min|max)?(width|height|inline-size|block-size)
-
-    case 8116:
-    case 7059:
-    case 5753:
-    case 5535:
-    case 5445:
-    case 5701:
-    case 4933:
-    case 4677:
-    case 5533:
-    case 5789:
-    case 5021:
-    case 4765:
-      // stretch, max-content, min-content, fill-available
-      if (strlen(value) - 1 - length > 6) switch (charat(value, length + 1)) {
-        // (m)ax-content, (m)in-content
-        case 109:
-          // -
-          if (charat(value, length + 4) !== 45) break;
-        // (f)ill-available, (f)it-content
-
-        case 102:
-          return replace(value, /(.+:)(.+)-([^]+)/, '$1' + WEBKIT + '$2-$3' + '$1' + MOZ + (charat(value, length + 3) == 108 ? '$3' : '$2-$3')) + value;
-        // (s)tretch
-
-        case 115:
-          return ~indexof(value, 'stretch') ? prefix(replace(value, 'stretch', 'fill-available'), length) + value : value;
-      }
-      break;
-    // position: sticky
-
-    case 4949:
-      // (s)ticky?
-      if (charat(value, length + 1) !== 115) break;
-    // display: (flex|inline-flex)
-
-    case 6444:
-      switch (charat(value, strlen(value) - 3 - (~indexof(value, '!important') && 10))) {
-        // stic(k)y
-        case 107:
-          return replace(value, ':', ':' + WEBKIT) + value;
-        // (inline-)?fl(e)x
-
-        case 101:
-          return replace(value, /(.+:)([^;!]+)(;|!.+)?/, '$1' + WEBKIT + (charat(value, 14) === 45 ? 'inline-' : '') + 'box$3' + '$1' + WEBKIT + '$2$3' + '$1' + MS + '$2box$3') + value;
-      }
-      break;
-    // writing-mode
-
-    case 5936:
-      switch (charat(value, length + 11)) {
-        // vertical-l(r)
-        case 114:
-          return WEBKIT + value + MS + replace(value, /[svh]\w+-[tblr]{2}/, 'tb') + value;
-        // vertical-r(l)
-
-        case 108:
-          return WEBKIT + value + MS + replace(value, /[svh]\w+-[tblr]{2}/, 'tb-rl') + value;
-        // horizontal(-)tb
-
-        case 45:
-          return WEBKIT + value + MS + replace(value, /[svh]\w+-[tblr]{2}/, 'lr') + value;
-      }
-      return WEBKIT + value + MS + value + value;
-  }
-  return value;
-}
-var prefixer = function prefixer(element, index, children, callback) {
-  if (element.length > -1) if (!element["return"]) switch (element.type) {
-    case DECLARATION:
-      element["return"] = prefix(element.value, element.length);
-      break;
-    case KEYFRAMES:
-      return serialize([copy(element, {
-        value: replace(element.value, '@', '@' + WEBKIT)
-      })], callback);
-    case RULESET:
-      if (element.length) return combine(element.props, function (value) {
-        switch (match(value, /(::plac\w+|:read-\w+)/)) {
-          // :read-(only|write)
-          case ':read-only':
-          case ':read-write':
-            return serialize([copy(element, {
-              props: [replace(value, /:(read-\w+)/, ':' + MOZ + '$1')]
-            })], callback);
-          // :placeholder
-
-          case '::placeholder':
-            return serialize([copy(element, {
-              props: [replace(value, /:(plac\w+)/, ':' + WEBKIT + 'input-$1')]
-            }), copy(element, {
-              props: [replace(value, /:(plac\w+)/, ':' + MOZ + '$1')]
-            }), copy(element, {
-              props: [replace(value, /:(plac\w+)/, MS + 'input-$1')]
-            })], callback);
-        }
-        return '';
-      });
-  }
-};
-var defaultStylisPlugins = [prefixer];
-var createCache = function createCache(options) {
-  var key = options.key;
-  if (key === 'css') {
-    var ssrStyles = document.querySelectorAll("style[data-emotion]:not([data-s])"); // get SSRed styles out of the way of React's hydration
-    // document.head is a safe place to move them to(though note document.head is not necessarily the last place they will be)
-    // note this very very intentionally targets all style elements regardless of the key to ensure
-    // that creating a cache works inside of render of a React component
-
-    Array.prototype.forEach.call(ssrStyles, function (node) {
-      // we want to only move elements which have a space in the data-emotion attribute value
-      // because that indicates that it is an Emotion 11 server-side rendered style elements
-      // while we will already ignore Emotion 11 client-side inserted styles because of the :not([data-s]) part in the selector
-      // Emotion 10 client-side inserted styles did not have data-s (but importantly did not have a space in their data-emotion attributes)
-      // so checking for the space ensures that loading Emotion 11 after Emotion 10 has inserted some styles
-      // will not result in the Emotion 10 styles being destroyed
-      var dataEmotionAttribute = node.getAttribute('data-emotion');
-      if (dataEmotionAttribute.indexOf(' ') === -1) {
-        return;
-      }
-      document.head.appendChild(node);
-      node.setAttribute('data-s', '');
-    });
-  }
-  var stylisPlugins = options.stylisPlugins || defaultStylisPlugins;
-  var inserted = {};
-  var container;
-  var nodesToHydrate = [];
-  {
-    container = options.container || document.head;
-    Array.prototype.forEach.call(
-    // this means we will ignore elements which don't have a space in them which
-    // means that the style elements we're looking at are only Emotion 11 server-rendered style elements
-    document.querySelectorAll("style[data-emotion^=\"" + key + " \"]"), function (node) {
-      var attrib = node.getAttribute("data-emotion").split(' ');
-      for (var i = 1; i < attrib.length; i++) {
-        inserted[attrib[i]] = true;
-      }
-      nodesToHydrate.push(node);
-    });
-  }
-  var _insert;
-  var omnipresentPlugins = [compat, removeLabel];
-  {
-    var currentSheet;
-    var finalizingPlugins = [stringify, rulesheet(function (rule) {
-      currentSheet.insert(rule);
-    })];
-    var serializer = middleware(omnipresentPlugins.concat(stylisPlugins, finalizingPlugins));
-    var stylis = function stylis(styles) {
-      return serialize(compile(styles), serializer);
-    };
-    _insert = function insert(selector, serialized, sheet, shouldCache) {
-      currentSheet = sheet;
-      stylis(selector ? selector + "{" + serialized.styles + "}" : serialized.styles);
-      if (shouldCache) {
-        cache.inserted[serialized.name] = true;
-      }
-    };
-  }
-  var cache = {
-    key: key,
-    sheet: new StyleSheet({
-      key: key,
-      container: container,
-      nonce: options.nonce,
-      speedy: options.speedy,
-      prepend: options.prepend,
-      insertionPoint: options.insertionPoint
-    }),
-    nonce: options.nonce,
-    inserted: inserted,
-    registered: {},
-    insert: _insert
-  };
-  cache.sheet.hydrate(nodesToHydrate);
-  return cache;
-};
-
-var reactIs = {exports: {}};
-
-var reactIs_production_min = {};
-
-/** @license React v16.13.1
- * react-is.production.min.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-var hasRequiredReactIs_production_min;
-function requireReactIs_production_min() {
-  if (hasRequiredReactIs_production_min) return reactIs_production_min;
-  hasRequiredReactIs_production_min = 1;
-  var b = "function" === typeof Symbol && Symbol.for,
-    c = b ? Symbol.for("react.element") : 60103,
-    d = b ? Symbol.for("react.portal") : 60106,
-    e = b ? Symbol.for("react.fragment") : 60107,
-    f = b ? Symbol.for("react.strict_mode") : 60108,
-    g = b ? Symbol.for("react.profiler") : 60114,
-    h = b ? Symbol.for("react.provider") : 60109,
-    k = b ? Symbol.for("react.context") : 60110,
-    l = b ? Symbol.for("react.async_mode") : 60111,
-    m = b ? Symbol.for("react.concurrent_mode") : 60111,
-    n = b ? Symbol.for("react.forward_ref") : 60112,
-    p = b ? Symbol.for("react.suspense") : 60113,
-    q = b ? Symbol.for("react.suspense_list") : 60120,
-    r = b ? Symbol.for("react.memo") : 60115,
-    t = b ? Symbol.for("react.lazy") : 60116,
-    v = b ? Symbol.for("react.block") : 60121,
-    w = b ? Symbol.for("react.fundamental") : 60117,
-    x = b ? Symbol.for("react.responder") : 60118,
-    y = b ? Symbol.for("react.scope") : 60119;
-  function z(a) {
-    if ("object" === typeof a && null !== a) {
-      var u = a.$$typeof;
-      switch (u) {
-        case c:
-          switch (a = a.type, a) {
-            case l:
-            case m:
-            case e:
-            case g:
-            case f:
-            case p:
-              return a;
-            default:
-              switch (a = a && a.$$typeof, a) {
-                case k:
-                case n:
-                case t:
-                case r:
-                case h:
-                  return a;
-                default:
-                  return u;
-              }
-          }
-        case d:
-          return u;
-      }
-    }
-  }
-  function A(a) {
-    return z(a) === m;
-  }
-  reactIs_production_min.AsyncMode = l;
-  reactIs_production_min.ConcurrentMode = m;
-  reactIs_production_min.ContextConsumer = k;
-  reactIs_production_min.ContextProvider = h;
-  reactIs_production_min.Element = c;
-  reactIs_production_min.ForwardRef = n;
-  reactIs_production_min.Fragment = e;
-  reactIs_production_min.Lazy = t;
-  reactIs_production_min.Memo = r;
-  reactIs_production_min.Portal = d;
-  reactIs_production_min.Profiler = g;
-  reactIs_production_min.StrictMode = f;
-  reactIs_production_min.Suspense = p;
-  reactIs_production_min.isAsyncMode = function (a) {
-    return A(a) || z(a) === l;
-  };
-  reactIs_production_min.isConcurrentMode = A;
-  reactIs_production_min.isContextConsumer = function (a) {
-    return z(a) === k;
-  };
-  reactIs_production_min.isContextProvider = function (a) {
-    return z(a) === h;
-  };
-  reactIs_production_min.isElement = function (a) {
-    return "object" === typeof a && null !== a && a.$$typeof === c;
-  };
-  reactIs_production_min.isForwardRef = function (a) {
-    return z(a) === n;
-  };
-  reactIs_production_min.isFragment = function (a) {
-    return z(a) === e;
-  };
-  reactIs_production_min.isLazy = function (a) {
-    return z(a) === t;
-  };
-  reactIs_production_min.isMemo = function (a) {
-    return z(a) === r;
-  };
-  reactIs_production_min.isPortal = function (a) {
-    return z(a) === d;
-  };
-  reactIs_production_min.isProfiler = function (a) {
-    return z(a) === g;
-  };
-  reactIs_production_min.isStrictMode = function (a) {
-    return z(a) === f;
-  };
-  reactIs_production_min.isSuspense = function (a) {
-    return z(a) === p;
-  };
-  reactIs_production_min.isValidElementType = function (a) {
-    return "string" === typeof a || "function" === typeof a || a === e || a === m || a === g || a === f || a === p || a === q || "object" === typeof a && null !== a && (a.$$typeof === t || a.$$typeof === r || a.$$typeof === h || a.$$typeof === k || a.$$typeof === n || a.$$typeof === w || a.$$typeof === x || a.$$typeof === y || a.$$typeof === v);
-  };
-  reactIs_production_min.typeOf = z;
-  return reactIs_production_min;
-}
-
-var reactIs_development = {};
-
-/** @license React v16.13.1
- * react-is.development.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-var hasRequiredReactIs_development;
-function requireReactIs_development() {
-  if (hasRequiredReactIs_development) return reactIs_development;
-  hasRequiredReactIs_development = 1;
-  if (process.env.NODE_ENV !== "production") {
-    (function () {
-
-      // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
-      // nor polyfill, then a plain number is used for performance.
-      var hasSymbol = typeof Symbol === 'function' && Symbol.for;
-      var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
-      var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
-      var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
-      var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
-      var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
-      var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
-      var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
-      // (unstable) APIs that have been removed. Can we remove the symbols?
-
-      var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
-      var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
-      var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
-      var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
-      var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
-      var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
-      var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
-      var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
-      var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
-      var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
-      var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
-      function isValidElementType(type) {
-        return typeof type === 'string' || typeof type === 'function' ||
-        // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-        type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
-      }
-      function typeOf(object) {
-        if (typeof object === 'object' && object !== null) {
-          var $$typeof = object.$$typeof;
-          switch ($$typeof) {
-            case REACT_ELEMENT_TYPE:
-              var type = object.type;
-              switch (type) {
-                case REACT_ASYNC_MODE_TYPE:
-                case REACT_CONCURRENT_MODE_TYPE:
-                case REACT_FRAGMENT_TYPE:
-                case REACT_PROFILER_TYPE:
-                case REACT_STRICT_MODE_TYPE:
-                case REACT_SUSPENSE_TYPE:
-                  return type;
-                default:
-                  var $$typeofType = type && type.$$typeof;
-                  switch ($$typeofType) {
-                    case REACT_CONTEXT_TYPE:
-                    case REACT_FORWARD_REF_TYPE:
-                    case REACT_LAZY_TYPE:
-                    case REACT_MEMO_TYPE:
-                    case REACT_PROVIDER_TYPE:
-                      return $$typeofType;
-                    default:
-                      return $$typeof;
-                  }
-              }
-            case REACT_PORTAL_TYPE:
-              return $$typeof;
-          }
-        }
-        return undefined;
-      } // AsyncMode is deprecated along with isAsyncMode
-
-      var AsyncMode = REACT_ASYNC_MODE_TYPE;
-      var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
-      var ContextConsumer = REACT_CONTEXT_TYPE;
-      var ContextProvider = REACT_PROVIDER_TYPE;
-      var Element = REACT_ELEMENT_TYPE;
-      var ForwardRef = REACT_FORWARD_REF_TYPE;
-      var Fragment = REACT_FRAGMENT_TYPE;
-      var Lazy = REACT_LAZY_TYPE;
-      var Memo = REACT_MEMO_TYPE;
-      var Portal = REACT_PORTAL_TYPE;
-      var Profiler = REACT_PROFILER_TYPE;
-      var StrictMode = REACT_STRICT_MODE_TYPE;
-      var Suspense = REACT_SUSPENSE_TYPE;
-      var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
-
-      function isAsyncMode(object) {
-        {
-          if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-            hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
-
-            console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
-          }
-        }
-        return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
-      }
-      function isConcurrentMode(object) {
-        return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
-      }
-      function isContextConsumer(object) {
-        return typeOf(object) === REACT_CONTEXT_TYPE;
-      }
-      function isContextProvider(object) {
-        return typeOf(object) === REACT_PROVIDER_TYPE;
-      }
-      function isElement(object) {
-        return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
-      }
-      function isForwardRef(object) {
-        return typeOf(object) === REACT_FORWARD_REF_TYPE;
-      }
-      function isFragment(object) {
-        return typeOf(object) === REACT_FRAGMENT_TYPE;
-      }
-      function isLazy(object) {
-        return typeOf(object) === REACT_LAZY_TYPE;
-      }
-      function isMemo(object) {
-        return typeOf(object) === REACT_MEMO_TYPE;
-      }
-      function isPortal(object) {
-        return typeOf(object) === REACT_PORTAL_TYPE;
-      }
-      function isProfiler(object) {
-        return typeOf(object) === REACT_PROFILER_TYPE;
-      }
-      function isStrictMode(object) {
-        return typeOf(object) === REACT_STRICT_MODE_TYPE;
-      }
-      function isSuspense(object) {
-        return typeOf(object) === REACT_SUSPENSE_TYPE;
-      }
-      reactIs_development.AsyncMode = AsyncMode;
-      reactIs_development.ConcurrentMode = ConcurrentMode;
-      reactIs_development.ContextConsumer = ContextConsumer;
-      reactIs_development.ContextProvider = ContextProvider;
-      reactIs_development.Element = Element;
-      reactIs_development.ForwardRef = ForwardRef;
-      reactIs_development.Fragment = Fragment;
-      reactIs_development.Lazy = Lazy;
-      reactIs_development.Memo = Memo;
-      reactIs_development.Portal = Portal;
-      reactIs_development.Profiler = Profiler;
-      reactIs_development.StrictMode = StrictMode;
-      reactIs_development.Suspense = Suspense;
-      reactIs_development.isAsyncMode = isAsyncMode;
-      reactIs_development.isConcurrentMode = isConcurrentMode;
-      reactIs_development.isContextConsumer = isContextConsumer;
-      reactIs_development.isContextProvider = isContextProvider;
-      reactIs_development.isElement = isElement;
-      reactIs_development.isForwardRef = isForwardRef;
-      reactIs_development.isFragment = isFragment;
-      reactIs_development.isLazy = isLazy;
-      reactIs_development.isMemo = isMemo;
-      reactIs_development.isPortal = isPortal;
-      reactIs_development.isProfiler = isProfiler;
-      reactIs_development.isStrictMode = isStrictMode;
-      reactIs_development.isSuspense = isSuspense;
-      reactIs_development.isValidElementType = isValidElementType;
-      reactIs_development.typeOf = typeOf;
-    })();
-  }
-  return reactIs_development;
-}
-
-var hasRequiredReactIs;
-function requireReactIs() {
-  if (hasRequiredReactIs) return reactIs.exports;
-  hasRequiredReactIs = 1;
-  if (process.env.NODE_ENV === 'production') {
-    reactIs.exports = requireReactIs_production_min();
-  } else {
-    reactIs.exports = requireReactIs_development();
-  }
-  return reactIs.exports;
-}
-
-var hoistNonReactStatics_cjs;
-var hasRequiredHoistNonReactStatics_cjs;
-function requireHoistNonReactStatics_cjs() {
-  if (hasRequiredHoistNonReactStatics_cjs) return hoistNonReactStatics_cjs;
-  hasRequiredHoistNonReactStatics_cjs = 1;
-  var reactIs = requireReactIs();
-
-  /**
-   * Copyright 2015, Yahoo! Inc.
-   * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
-   */
-  var REACT_STATICS = {
-    childContextTypes: true,
-    contextType: true,
-    contextTypes: true,
-    defaultProps: true,
-    displayName: true,
-    getDefaultProps: true,
-    getDerivedStateFromError: true,
-    getDerivedStateFromProps: true,
-    mixins: true,
-    propTypes: true,
-    type: true
-  };
-  var KNOWN_STATICS = {
-    name: true,
-    length: true,
-    prototype: true,
-    caller: true,
-    callee: true,
-    arguments: true,
-    arity: true
-  };
-  var FORWARD_REF_STATICS = {
-    '$$typeof': true,
-    render: true,
-    defaultProps: true,
-    displayName: true,
-    propTypes: true
-  };
-  var MEMO_STATICS = {
-    '$$typeof': true,
-    compare: true,
-    defaultProps: true,
-    displayName: true,
-    propTypes: true,
-    type: true
-  };
-  var TYPE_STATICS = {};
-  TYPE_STATICS[reactIs.ForwardRef] = FORWARD_REF_STATICS;
-  TYPE_STATICS[reactIs.Memo] = MEMO_STATICS;
-  function getStatics(component) {
-    // React v16.11 and below
-    if (reactIs.isMemo(component)) {
-      return MEMO_STATICS;
-    } // React v16.12 and above
-
-    return TYPE_STATICS[component['$$typeof']] || REACT_STATICS;
-  }
-  var defineProperty = Object.defineProperty;
-  var getOwnPropertyNames = Object.getOwnPropertyNames;
-  var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-  var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-  var getPrototypeOf = Object.getPrototypeOf;
-  var objectPrototype = Object.prototype;
-  function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
-    if (typeof sourceComponent !== 'string') {
-      // don't hoist over string (html) components
-      if (objectPrototype) {
-        var inheritedComponent = getPrototypeOf(sourceComponent);
-        if (inheritedComponent && inheritedComponent !== objectPrototype) {
-          hoistNonReactStatics(targetComponent, inheritedComponent, blacklist);
-        }
-      }
-      var keys = getOwnPropertyNames(sourceComponent);
-      if (getOwnPropertySymbols) {
-        keys = keys.concat(getOwnPropertySymbols(sourceComponent));
-      }
-      var targetStatics = getStatics(targetComponent);
-      var sourceStatics = getStatics(sourceComponent);
-      for (var i = 0; i < keys.length; ++i) {
-        var key = keys[i];
-        if (!KNOWN_STATICS[key] && !(blacklist && blacklist[key]) && !(sourceStatics && sourceStatics[key]) && !(targetStatics && targetStatics[key])) {
-          var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
-          try {
-            // Avoid failures from read-only properties
-            defineProperty(targetComponent, key, descriptor);
-          } catch (e) {}
-        }
-      }
-    }
-    return targetComponent;
-  }
-  hoistNonReactStatics_cjs = hoistNonReactStatics;
-  return hoistNonReactStatics_cjs;
-}
-
-requireHoistNonReactStatics_cjs();
-
-var isBrowser = true;
-function getRegisteredStyles(registered, registeredStyles, classNames) {
-  var rawClassName = '';
-  classNames.split(' ').forEach(function (className) {
-    if (registered[className] !== undefined) {
-      registeredStyles.push(registered[className] + ";");
-    } else if (className) {
-      rawClassName += className + " ";
-    }
-  });
-  return rawClassName;
-}
-var registerStyles = function registerStyles(cache, serialized, isStringTag) {
-  var className = cache.key + "-" + serialized.name;
-  if (
-  // we only need to add the styles to the registered cache if the
-  // class name could be used further down
-  // the tree but if it's a string tag, we know it won't
-  // so we don't have to add it to registered cache.
-  // this improves memory usage since we can avoid storing the whole style string
-  (isStringTag === false ||
-  // we need to always store it if we're in compat mode and
-  // in node since emotion-server relies on whether a style is in
-  // the registered cache to know whether a style is global or not
-  // also, note that this check will be dead code eliminated in the browser
-  isBrowser === false) && cache.registered[className] === undefined) {
-    cache.registered[className] = serialized.styles;
-  }
-};
-var insertStyles = function insertStyles(cache, serialized, isStringTag) {
-  registerStyles(cache, serialized, isStringTag);
-  var className = cache.key + "-" + serialized.name;
-  if (cache.inserted[serialized.name] === undefined) {
-    var current = serialized;
-    do {
-      cache.insert(serialized === current ? "." + className : '', current, cache.sheet, true);
-      current = current.next;
-    } while (current !== undefined);
-  }
-};
-
 /* eslint-disable */
 // Inspired by https://github.com/garycourt/murmurhash-js
 // Ported from https://github.com/aappleby/smhasher/blob/61a0530f28277f2e850bfc39600ce61d02b518de/src/MurmurHash2.cpp#L37-L86
@@ -4787,6 +3225,14 @@ var unitlessKeys = {
   strokeWidth: 1
 };
 
+function memoize(fn) {
+  var cache = Object.create(null);
+  return function (arg) {
+    if (cache[arg] === undefined) cache[arg] = fn(arg);
+    return cache[arg];
+  };
+}
+
 var hyphenateRegex = /[A-Z]|^ms/g;
 var animationRegex = /_EMO_([^_]+?)_([^]*?)_EMO_/g;
 var isCustomProperty = function isCustomProperty(property) {
@@ -4864,24 +3310,12 @@ function handleInterpolation(mergedProps, registered, interpolation) {
         }
         return createStringFromObject(mergedProps, registered, interpolation);
       }
-    case 'function':
-      {
-        if (mergedProps !== undefined) {
-          var previousCursor = cursor;
-          var result = interpolation(mergedProps);
-          cursor = previousCursor;
-          return handleInterpolation(mergedProps, registered, result);
-        }
-        break;
-      }
   } // finalize string values (regular strings and functions interpolated into css calls)
 
   var asString = interpolation;
-  if (registered == null) {
+  {
     return asString;
   }
-  var cached = registered[asString];
-  return cached !== undefined ? cached : asString;
 }
 function createStringFromObject(mergedProps, registered, obj) {
   var string = '';
@@ -4894,13 +3328,11 @@ function createStringFromObject(mergedProps, registered, obj) {
       var value = obj[key];
       if (typeof value !== 'object') {
         var asString = value;
-        if (registered != null && registered[asString] !== undefined) {
-          string += key + "{" + registered[asString] + "}";
-        } else if (isProcessableValue(asString)) {
+        if (isProcessableValue(asString)) {
           string += processStyleName(key) + ":" + processStyleValue(key, asString) + ";";
         }
       } else {
-        if (Array.isArray(value) && typeof value[0] === 'string' && (registered == null || registered[value[0]] === undefined)) {
+        if (Array.isArray(value) && typeof value[0] === 'string' && (registered == null)) {
           for (var _i = 0; _i < value.length; _i++) {
             if (isProcessableValue(value[_i])) {
               string += processStyleName(key) + ":" + processStyleValue(key, value[_i]) + ";";
@@ -4969,283 +3401,15 @@ function serializeStyles(args, registered, mergedProps) {
   };
 }
 
-var syncFallback = function syncFallback(create) {
-  return create();
-};
-var useInsertionEffect = React__namespace['useInsertion' + 'Effect'] ? React__namespace['useInsertion' + 'Effect'] : false;
-var useInsertionEffectAlwaysWithSyncFallback = useInsertionEffect || syncFallback;
-
-var EmotionCacheContext = /* #__PURE__ */React__namespace.createContext(
-// we're doing this to avoid preconstruct's dead code elimination in this one case
-// because this module is primarily intended for the browser and node
-// but it's also required in react native and similar environments sometimes
-// and we could have a special build just for that
-// but this is much easier and the native packages
-// might use a different theme context in the future anyway
-typeof HTMLElement !== 'undefined' ? /* #__PURE__ */createCache({
-  key: 'css'
-}) : null);
-EmotionCacheContext.Provider;
-var withEmotionCache = function withEmotionCache(func) {
-  return /*#__PURE__*/React.forwardRef(function (props, ref) {
-    // the cache will never be null in the browser
-    var cache = React.useContext(EmotionCacheContext);
-    return func(props, cache, ref);
-  });
-};
-var ThemeContext = /* #__PURE__ */React__namespace.createContext({});
-var hasOwn = {}.hasOwnProperty;
-var typePropName = '__EMOTION_TYPE_PLEASE_DO_NOT_USE__';
-var createEmotionProps = function createEmotionProps(type, props) {
-  var newProps = {};
-  for (var _key in props) {
-    if (hasOwn.call(props, _key)) {
-      newProps[_key] = props[_key];
-    }
-  }
-  newProps[typePropName] = type; // Runtime labeling is an opt-in feature because:
-
-  return newProps;
-};
-var Insertion$1 = function Insertion(_ref) {
-  var cache = _ref.cache,
-    serialized = _ref.serialized,
-    isStringTag = _ref.isStringTag;
-  registerStyles(cache, serialized, isStringTag);
-  useInsertionEffectAlwaysWithSyncFallback(function () {
-    return insertStyles(cache, serialized, isStringTag);
-  });
-  return null;
-};
-var Emotion = /* #__PURE__ */withEmotionCache(function (props, cache, ref) {
-  var cssProp = props.css; // so that using `css` from `emotion` and passing the result to the css prop works
-  // not passing the registered cache to serializeStyles because it would
-  // make certain babel optimisations not possible
-
-  if (typeof cssProp === 'string' && cache.registered[cssProp] !== undefined) {
-    cssProp = cache.registered[cssProp];
-  }
-  var WrappedComponent = props[typePropName];
-  var registeredStyles = [cssProp];
-  var className = '';
-  if (typeof props.className === 'string') {
-    className = getRegisteredStyles(cache.registered, registeredStyles, props.className);
-  } else if (props.className != null) {
-    className = props.className + " ";
-  }
-  var serialized = serializeStyles(registeredStyles, undefined, React__namespace.useContext(ThemeContext));
-  className += cache.key + "-" + serialized.name;
-  var newProps = {};
-  for (var _key2 in props) {
-    if (hasOwn.call(props, _key2) && _key2 !== 'css' && _key2 !== typePropName && true) {
-      newProps[_key2] = props[_key2];
-    }
-  }
-  newProps.className = className;
-  if (ref) {
-    newProps.ref = ref;
-  }
-  return /*#__PURE__*/React__namespace.createElement(React__namespace.Fragment, null, /*#__PURE__*/React__namespace.createElement(Insertion$1, {
-    cache: cache,
-    serialized: serialized,
-    isStringTag: typeof WrappedComponent === 'string'
-  }), /*#__PURE__*/React__namespace.createElement(WrappedComponent, newProps));
-});
-var Emotion$1 = Emotion;
-
-var jsx = function jsx(type, props) {
-  // eslint-disable-next-line prefer-rest-params
-  var args = arguments;
-  if (props == null || !hasOwn.call(props, 'css')) {
-    return React__namespace.createElement.apply(undefined, args);
-  }
-  var argsLength = args.length;
-  var createElementArgArray = new Array(argsLength);
-  createElementArgArray[0] = Emotion$1;
-  createElementArgArray[1] = createEmotionProps(type, props);
-  for (var i = 2; i < argsLength; i++) {
-    createElementArgArray[i] = args[i];
-  }
-  return React__namespace.createElement.apply(null, createElementArgArray);
-};
-(function (_jsx) {
-  var JSX;
-  (function (_JSX) {})(JSX || (JSX = _jsx.JSX || (_jsx.JSX = {})));
-})(jsx || (jsx = {}));
-function css() {
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-  return serializeStyles(args);
-}
-function keyframes() {
-  var insertable = css.apply(void 0, arguments);
-  var name = "animation-" + insertable.name;
-  return {
-    name: name,
-    styles: "@keyframes " + name + "{" + insertable.styles + "}",
-    anim: 1,
-    toString: function toString() {
-      return "_EMO_" + this.name + "_" + this.styles + "_EMO_";
-    }
-  };
-}
-
-// eslint-disable-next-line no-undef
-var reactPropsRegex = /^((children|dangerouslySetInnerHTML|key|ref|autoFocus|defaultValue|defaultChecked|innerHTML|suppressContentEditableWarning|suppressHydrationWarning|valueLink|abbr|accept|acceptCharset|accessKey|action|allow|allowUserMedia|allowPaymentRequest|allowFullScreen|allowTransparency|alt|async|autoComplete|autoPlay|capture|cellPadding|cellSpacing|challenge|charSet|checked|cite|classID|className|cols|colSpan|content|contentEditable|contextMenu|controls|controlsList|coords|crossOrigin|data|dateTime|decoding|default|defer|dir|disabled|disablePictureInPicture|disableRemotePlayback|download|draggable|encType|enterKeyHint|fetchpriority|fetchPriority|form|formAction|formEncType|formMethod|formNoValidate|formTarget|frameBorder|headers|height|hidden|high|href|hrefLang|htmlFor|httpEquiv|id|inputMode|integrity|is|keyParams|keyType|kind|label|lang|list|loading|loop|low|marginHeight|marginWidth|max|maxLength|media|mediaGroup|method|min|minLength|multiple|muted|name|nonce|noValidate|open|optimum|pattern|placeholder|playsInline|popover|popoverTarget|popoverTargetAction|poster|preload|profile|radioGroup|readOnly|referrerPolicy|rel|required|reversed|role|rows|rowSpan|sandbox|scope|scoped|scrolling|seamless|selected|shape|size|sizes|slot|span|spellCheck|src|srcDoc|srcLang|srcSet|start|step|style|summary|tabIndex|target|title|translate|type|useMap|value|width|wmode|wrap|about|datatype|inlist|prefix|property|resource|typeof|vocab|autoCapitalize|autoCorrect|autoSave|color|incremental|fallback|inert|itemProp|itemScope|itemType|itemID|itemRef|on|option|results|security|unselectable|accentHeight|accumulate|additive|alignmentBaseline|allowReorder|alphabetic|amplitude|arabicForm|ascent|attributeName|attributeType|autoReverse|azimuth|baseFrequency|baselineShift|baseProfile|bbox|begin|bias|by|calcMode|capHeight|clip|clipPathUnits|clipPath|clipRule|colorInterpolation|colorInterpolationFilters|colorProfile|colorRendering|contentScriptType|contentStyleType|cursor|cx|cy|d|decelerate|descent|diffuseConstant|direction|display|divisor|dominantBaseline|dur|dx|dy|edgeMode|elevation|enableBackground|end|exponent|externalResourcesRequired|fill|fillOpacity|fillRule|filter|filterRes|filterUnits|floodColor|floodOpacity|focusable|fontFamily|fontSize|fontSizeAdjust|fontStretch|fontStyle|fontVariant|fontWeight|format|from|fr|fx|fy|g1|g2|glyphName|glyphOrientationHorizontal|glyphOrientationVertical|glyphRef|gradientTransform|gradientUnits|hanging|horizAdvX|horizOriginX|ideographic|imageRendering|in|in2|intercept|k|k1|k2|k3|k4|kernelMatrix|kernelUnitLength|kerning|keyPoints|keySplines|keyTimes|lengthAdjust|letterSpacing|lightingColor|limitingConeAngle|local|markerEnd|markerMid|markerStart|markerHeight|markerUnits|markerWidth|mask|maskContentUnits|maskUnits|mathematical|mode|numOctaves|offset|opacity|operator|order|orient|orientation|origin|overflow|overlinePosition|overlineThickness|panose1|paintOrder|pathLength|patternContentUnits|patternTransform|patternUnits|pointerEvents|points|pointsAtX|pointsAtY|pointsAtZ|preserveAlpha|preserveAspectRatio|primitiveUnits|r|radius|refX|refY|renderingIntent|repeatCount|repeatDur|requiredExtensions|requiredFeatures|restart|result|rotate|rx|ry|scale|seed|shapeRendering|slope|spacing|specularConstant|specularExponent|speed|spreadMethod|startOffset|stdDeviation|stemh|stemv|stitchTiles|stopColor|stopOpacity|strikethroughPosition|strikethroughThickness|string|stroke|strokeDasharray|strokeDashoffset|strokeLinecap|strokeLinejoin|strokeMiterlimit|strokeOpacity|strokeWidth|surfaceScale|systemLanguage|tableValues|targetX|targetY|textAnchor|textDecoration|textRendering|textLength|to|transform|u1|u2|underlinePosition|underlineThickness|unicode|unicodeBidi|unicodeRange|unitsPerEm|vAlphabetic|vHanging|vIdeographic|vMathematical|values|vectorEffect|version|vertAdvY|vertOriginX|vertOriginY|viewBox|viewTarget|visibility|widths|wordSpacing|writingMode|x|xHeight|x1|x2|xChannelSelector|xlinkActuate|xlinkArcrole|xlinkHref|xlinkRole|xlinkShow|xlinkTitle|xlinkType|xmlBase|xmlns|xmlnsXlink|xmlLang|xmlSpace|y|y1|y2|yChannelSelector|z|zoomAndPan|for|class|autofocus)|(([Dd][Aa][Tt][Aa]|[Aa][Rr][Ii][Aa]|x)-.*))$/; // https://esbench.com/bench/5bfee68a4cd7e6009ef61d23
-
-var isPropValid = /* #__PURE__ */memoize(function (prop) {
-  return reactPropsRegex.test(prop) || prop.charCodeAt(0) === 111
-  /* o */ && prop.charCodeAt(1) === 110
-  /* n */ && prop.charCodeAt(2) < 91;
-}
-/* Z+1 */);
-
-var testOmitPropsOnStringTag = isPropValid;
-var testOmitPropsOnComponent = function testOmitPropsOnComponent(key) {
-  return key !== 'theme';
-};
-var getDefaultShouldForwardProp = function getDefaultShouldForwardProp(tag) {
-  return typeof tag === 'string' &&
-  // 96 is one less than the char code
-  // for "a" so this is checking that
-  // it's a lowercase character
-  tag.charCodeAt(0) > 96 ? testOmitPropsOnStringTag : testOmitPropsOnComponent;
-};
-var composeShouldForwardProps = function composeShouldForwardProps(tag, options, isReal) {
-  var shouldForwardProp;
-  if (options) {
-    var optionsShouldForwardProp = options.shouldForwardProp;
-    shouldForwardProp = tag.__emotion_forwardProp && optionsShouldForwardProp ? function (propName) {
-      return tag.__emotion_forwardProp(propName) && optionsShouldForwardProp(propName);
-    } : optionsShouldForwardProp;
-  }
-  if (typeof shouldForwardProp !== 'function' && isReal) {
-    shouldForwardProp = tag.__emotion_forwardProp;
-  }
-  return shouldForwardProp;
-};
-var Insertion = function Insertion(_ref) {
-  var cache = _ref.cache,
-    serialized = _ref.serialized,
-    isStringTag = _ref.isStringTag;
-  registerStyles(cache, serialized, isStringTag);
-  useInsertionEffectAlwaysWithSyncFallback(function () {
-    return insertStyles(cache, serialized, isStringTag);
-  });
-  return null;
-};
-var createStyled$1 = function createStyled(tag, options) {
-  var isReal = tag.__emotion_real === tag;
-  var baseTag = isReal && tag.__emotion_base || tag;
-  var identifierName;
-  var targetClassName;
-  if (options !== undefined) {
-    identifierName = options.label;
-    targetClassName = options.target;
-  }
-  var shouldForwardProp = composeShouldForwardProps(tag, options, isReal);
-  var defaultShouldForwardProp = shouldForwardProp || getDefaultShouldForwardProp(baseTag);
-  var shouldUseAs = !defaultShouldForwardProp('as');
-  return function () {
-    // eslint-disable-next-line prefer-rest-params
-    var args = arguments;
-    var styles = isReal && tag.__emotion_styles !== undefined ? tag.__emotion_styles.slice(0) : [];
-    if (identifierName !== undefined) {
-      styles.push("label:" + identifierName + ";");
-    }
-    if (args[0] == null || args[0].raw === undefined) {
-      // eslint-disable-next-line prefer-spread
-      styles.push.apply(styles, args);
-    } else {
-      var templateStringsArr = args[0];
-      styles.push(templateStringsArr[0]);
-      var len = args.length;
-      var i = 1;
-      for (; i < len; i++) {
-        styles.push(args[i], templateStringsArr[i]);
-      }
-    }
-    var Styled = withEmotionCache(function (props, cache, ref) {
-      var FinalTag = shouldUseAs && props.as || baseTag;
-      var className = '';
-      var classInterpolations = [];
-      var mergedProps = props;
-      if (props.theme == null) {
-        mergedProps = {};
-        for (var key in props) {
-          mergedProps[key] = props[key];
-        }
-        mergedProps.theme = React__namespace.useContext(ThemeContext);
-      }
-      if (typeof props.className === 'string') {
-        className = getRegisteredStyles(cache.registered, classInterpolations, props.className);
-      } else if (props.className != null) {
-        className = props.className + " ";
-      }
-      var serialized = serializeStyles(styles.concat(classInterpolations), cache.registered, mergedProps);
-      className += cache.key + "-" + serialized.name;
-      if (targetClassName !== undefined) {
-        className += " " + targetClassName;
-      }
-      var finalShouldForwardProp = shouldUseAs && shouldForwardProp === undefined ? getDefaultShouldForwardProp(FinalTag) : defaultShouldForwardProp;
-      var newProps = {};
-      for (var _key in props) {
-        if (shouldUseAs && _key === 'as') continue;
-        if (finalShouldForwardProp(_key)) {
-          newProps[_key] = props[_key];
-        }
-      }
-      newProps.className = className;
-      if (ref) {
-        newProps.ref = ref;
-      }
-      return /*#__PURE__*/React__namespace.createElement(React__namespace.Fragment, null, /*#__PURE__*/React__namespace.createElement(Insertion, {
-        cache: cache,
-        serialized: serialized,
-        isStringTag: typeof FinalTag === 'string'
-      }), /*#__PURE__*/React__namespace.createElement(FinalTag, newProps));
-    });
-    Styled.displayName = identifierName !== undefined ? identifierName : "Styled(" + (typeof baseTag === 'string' ? baseTag : baseTag.displayName || baseTag.name || 'Component') + ")";
-    Styled.defaultProps = tag.defaultProps;
-    Styled.__emotion_real = Styled;
-    Styled.__emotion_base = baseTag;
-    Styled.__emotion_styles = styles;
-    Styled.__emotion_forwardProp = shouldForwardProp;
-    Object.defineProperty(Styled, 'toString', {
-      value: function value() {
-        return "." + targetClassName;
-      }
-    });
-    Styled.withComponent = function (nextTag, nextOptions) {
-      var newStyled = createStyled(nextTag, _extends({}, options, nextOptions, {
-        shouldForwardProp: composeShouldForwardProps(Styled, nextOptions, true)
-      }));
-      return newStyled.apply(void 0, styles);
-    };
-    return Styled;
-  };
-};
-
-var tags = ['a', 'abbr', 'address', 'area', 'article', 'aside', 'audio', 'b', 'base', 'bdi', 'bdo', 'big', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'cite', 'code', 'col', 'colgroup', 'data', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'keygen', 'label', 'legend', 'li', 'link', 'main', 'map', 'mark', 'marquee', 'menu', 'menuitem', 'meta', 'meter', 'nav', 'noscript', 'object', 'ol', 'optgroup', 'option', 'output', 'p', 'param', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'script', 'section', 'select', 'small', 'source', 'span', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'time', 'title', 'tr', 'track', 'u', 'ul', 'var', 'video', 'wbr',
-// SVG
-'circle', 'clipPath', 'defs', 'ellipse', 'foreignObject', 'g', 'image', 'line', 'linearGradient', 'mask', 'path', 'pattern', 'polygon', 'polyline', 'radialGradient', 'rect', 'stop', 'svg', 'text', 'tspan'];
-
-// bind it to avoid mutating the original function
-var styled$2 = createStyled$1.bind(null);
-tags.forEach(function (tagName) {
-  styled$2[tagName] = styled$2(tagName);
-});
-
 /**
- * @mui/styled-engine v7.3.7
+ * @mui/styled-engine v7.3.8
  *
  * @license MIT
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
 function styled$1(tag, options) {
-  const stylesFactory = styled$2(tag, options);
+  const stylesFactory = emStyled(tag, options);
   if (process.env.NODE_ENV !== 'production') {
     return (...styles) => {
       const component = typeof tag === 'string' ? `"${tag}"` : 'component';
@@ -5525,7 +3689,7 @@ function isObjectEmpty$1(obj) {
   return Object.keys(obj).length === 0;
 }
 function useTheme$2(defaultTheme = null) {
-  const contextTheme = React__namespace.useContext(ThemeContext);
+  const contextTheme = React__namespace.useContext(react.ThemeContext);
   return !contextTheme || isObjectEmpty$1(contextTheme) ? defaultTheme : contextTheme;
 }
 
@@ -9860,6 +8024,16 @@ function createControlledPromise() {
   return p;
 }
 
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
 function _objectWithoutPropertiesLoose(r, e) {
   if (null == r) return {};
   var t = {};
@@ -10059,7 +8233,7 @@ var Transition = /*#__PURE__*/function (_React$Component) {
   //   }
   //   return { nextStatus }
   // }
-  ;
+;
   var _proto = Transition.prototype;
   _proto.componentDidMount = function componentDidMount() {
     this.updateStatus(true, this.appearStatus);
@@ -10653,7 +8827,7 @@ var TransitionGroup = /*#__PURE__*/function (_React$Component) {
       firstRender: false
     };
   } // node is `undefined` when user provided `nodeRef` prop
-  ;
+;
   _proto.handleExited = function handleExited(child, node) {
     var currentChildMapping = getChildMapping(this.props.children);
     if (child.key in currentChildMapping) return;
@@ -10872,7 +9046,7 @@ const touchRippleClasses = generateUtilityClasses('MuiTouchRipple', ['root', 'ri
 
 const DURATION = 550;
 const DELAY_RIPPLE = 80;
-const enterKeyframe = keyframes`
+const enterKeyframe = react.keyframes`
   0% {
     transform: scale(0);
     opacity: 0.1;
@@ -10883,7 +9057,7 @@ const enterKeyframe = keyframes`
     opacity: 0.3;
   }
 `;
-const exitKeyframe = keyframes`
+const exitKeyframe = react.keyframes`
   0% {
     opacity: 1;
   }
@@ -10892,7 +9066,7 @@ const exitKeyframe = keyframes`
     opacity: 0;
   }
 `;
-const pulsateKeyframe = keyframes`
+const pulsateKeyframe = react.keyframes`
   0% {
     transform: scale(1);
   }
@@ -13100,7 +11274,7 @@ function requireDayjs_min() {
 }
 
 var dayjs_minExports = requireDayjs_min();
-var defaultDayjs = /*@__PURE__*/getDefaultExportFromCjs(dayjs_minExports);
+var dayjs = /*@__PURE__*/getDefaultExportFromCjs(dayjs_minExports);
 
 var weekOfYear$2 = {exports: {}};
 
@@ -13447,9 +11621,9 @@ const buildWarning = (message, gravity = 'warning') => {
   };
 };
 
-defaultDayjs.extend(customParseFormatPlugin);
-defaultDayjs.extend(localizedFormatPlugin);
-defaultDayjs.extend(isBetweenPlugin);
+dayjs.extend(customParseFormatPlugin);
+dayjs.extend(localizedFormatPlugin);
+dayjs.extend(isBetweenPlugin);
 const localeNotFoundWarning = buildWarning(['Your locale has not been found.', 'Either the locale key is not a supported one. Locales supported by dayjs are available here: https://github.com/iamkun/dayjs/tree/dev/src/locale', "Or you forget to import the locale from 'dayjs/locale/{localeUsed}'", 'fallback on English locale']);
 const formatTokenMap = {
   // Year
@@ -13619,8 +11793,8 @@ class AdapterDayjs {
       }
       return value.locale(expectedLocale);
     };
-    this.hasUTCPlugin = () => typeof defaultDayjs.utc !== 'undefined';
-    this.hasTimezonePlugin = () => typeof defaultDayjs.tz !== 'undefined';
+    this.hasUTCPlugin = () => typeof dayjs.utc !== 'undefined';
+    this.hasTimezonePlugin = () => typeof dayjs.tz !== 'undefined';
     this.isSame = (value, comparing, comparisonTemplate) => {
       const comparingInValueTimezone = this.setTimezone(comparing, this.getTimezone(value));
       return value.format(comparisonTemplate) === comparingInValueTimezone.format(comparisonTemplate);
@@ -13636,7 +11810,7 @@ class AdapterDayjs {
           }
         case 'system':
           {
-            return defaultDayjs.tz.guess();
+            return dayjs.tz.guess();
           }
         default:
           {
@@ -13651,23 +11825,23 @@ class AdapterDayjs {
         return this.rawDayJsInstance(value);
       }
       if (this.hasUTCPlugin() && this.hasTimezonePlugin()) {
-        const timezone = defaultDayjs.tz.guess();
+        const timezone = dayjs.tz.guess();
 
         // We can't change the system timezone in the tests
         /* istanbul ignore next */
         if (timezone !== 'UTC') {
-          return defaultDayjs.tz(value, timezone);
+          return dayjs.tz(value, timezone);
         }
-        return defaultDayjs(value);
+        return dayjs(value);
       }
-      return defaultDayjs(value);
+      return dayjs(value);
     };
     this.createUTCDate = value => {
       /* istanbul ignore next */
       if (!this.hasUTCPlugin()) {
         throw new Error(MISSING_UTC_PLUGIN);
       }
-      return defaultDayjs.utc(value);
+      return dayjs.utc(value);
     };
     this.createTZDate = (value, timezone) => {
       /* istanbul ignore next */
@@ -13680,10 +11854,10 @@ class AdapterDayjs {
         throw new Error(MISSING_TIMEZONE_PLUGIN);
       }
       const keepLocalTime = value !== undefined && !value.endsWith('Z');
-      return defaultDayjs(value).tz(this.cleanTimezone(timezone), keepLocalTime);
+      return dayjs(value).tz(this.cleanTimezone(timezone), keepLocalTime);
     };
     this.getLocaleFormats = () => {
-      const locales = defaultDayjs.Ls;
+      const locales = dayjs.Ls;
       const locale = this.locale || 'en';
       let localeObject = locales[locale];
       if (localeObject === undefined) {
@@ -13781,7 +11955,7 @@ class AdapterDayjs {
         /* istanbul ignore next */
         throw new Error(MISSING_TIMEZONE_PLUGIN);
       }
-      return defaultDayjs.tz(value, this.cleanTimezone(timezone));
+      return dayjs.tz(value, this.cleanTimezone(timezone));
     };
     this.toJsDate = value => {
       return value.toDate();
@@ -14033,10 +12207,10 @@ class AdapterDayjs {
       return ampm === 'am' ? 'AM' : 'PM';
     };
     this.rawDayJsInstance = instance;
-    this.dayjs = withLocale((_this$rawDayJsInstanc = this.rawDayJsInstance) != null ? _this$rawDayJsInstanc : defaultDayjs, _locale);
+    this.dayjs = withLocale((_this$rawDayJsInstanc = this.rawDayJsInstance) != null ? _this$rawDayJsInstanc : dayjs, _locale);
     this.locale = _locale;
     this.formats = _extends({}, defaultFormats, formats);
-    defaultDayjs.extend(weekOfYear);
+    dayjs.extend(weekOfYear);
   }
 }
 
@@ -14077,6 +12251,9 @@ const DateTimePickerWrapper = ({ required, version = "responsive", name, ...othe
     const configTimePicker = {
         ...field,
         ...otherProps,
+        value: field.value ? dayjs(field.value) : null,
+        minDate: otherProps.minDate ? dayjs(otherProps.minDate) : undefined,
+        maxDate: otherProps.maxDate ? dayjs(otherProps.maxDate) : undefined,
         onChange: handleChange,
     };
     const handleBlur = (event) => {
@@ -14102,7 +12279,7 @@ function getCircularProgressUtilityClass(slot) {
 generateUtilityClasses('MuiCircularProgress', ['root', 'determinate', 'indeterminate', 'colorPrimary', 'colorSecondary', 'svg', 'track', 'circle', 'circleDeterminate', 'circleIndeterminate', 'circleDisableShrink']);
 
 const SIZE = 44;
-const circularRotateKeyframe = keyframes`
+const circularRotateKeyframe = react.keyframes`
   0% {
     transform: rotate(0deg);
   }
@@ -14111,7 +12288,7 @@ const circularRotateKeyframe = keyframes`
     transform: rotate(360deg);
   }
 `;
-const circularDashKeyframe = keyframes`
+const circularDashKeyframe = react.keyframes`
   0% {
     stroke-dasharray: 1px, 200px;
     stroke-dashoffset: 0;
@@ -14131,10 +12308,10 @@ const circularDashKeyframe = keyframes`
 // This implementation is for supporting both Styled-components v4+ and Pigment CSS.
 // A global animation has to be created here for Styled-components v4+ (https://github.com/styled-components/styled-components/blob/main/packages/styled-components/src/utils/errors.md#12).
 // which can be done by checking typeof indeterminate1Keyframe !== 'string' (at runtime, Pigment CSS transform keyframes`` to a string).
-const rotateAnimation = typeof circularRotateKeyframe !== 'string' ? css`
+const rotateAnimation = typeof circularRotateKeyframe !== 'string' ? react.css`
         animation: ${circularRotateKeyframe} 1.4s linear infinite;
       ` : null;
-const dashAnimation = typeof circularDashKeyframe !== 'string' ? css`
+const dashAnimation = typeof circularDashKeyframe !== 'string' ? react.css`
         animation: ${circularDashKeyframe} 1.4s ease-in-out infinite;
       ` : null;
 const useUtilityClasses$b = ownerState => {
@@ -14705,7 +12882,7 @@ process.env.NODE_ENV !== "production" ? IconButton.propTypes /* remove-proptypes
   sx: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])), PropTypes.func, PropTypes.object])
 } : void 0;
 
-const FileUploadContainer$1 = styled$3.section `
+const FileUploadContainer$1 = styled$2.section `
   position: relative;
   margin: 5px 0 0;
   border: 2px dotted ${(props) => props.colors?.grey300 ?? "grey"};
@@ -14716,7 +12893,7 @@ const FileUploadContainer$1 = styled$3.section `
   align-items: center;
   background-color: transparent;
 `;
-const FormField$2 = styled$3.input `
+const FormField$2 = styled$2.input `
   font-size: 18px;
   display: block;
   width: 100%;
@@ -14732,7 +12909,7 @@ const FormField$2 = styled$3.input `
     outline: none;
   }
 `;
-const DragDropText$1 = styled$3.p `
+const DragDropText$1 = styled$2.p `
   font-weight: bold;
   font-size: 10px;
   color: ${(props) => props.colors?.grey300 ?? "grey"};
@@ -14740,7 +12917,7 @@ const DragDropText$1 = styled$3.p `
   margin-top: 0;
   text-align: center;
 `;
-const UploadFileBtn$1 = styled$3.button `
+const UploadFileBtn$1 = styled$2.button `
   box-sizing: border-box;
   appearance: none;
   background-color: transparent;
@@ -14820,17 +12997,17 @@ const UploadFileBtn$1 = styled$3.button `
     pointer-events: none;
   }
 `;
-const FilePreviewContainer$1 = styled$3.article `
+const FilePreviewContainer$1 = styled$2.article `
   span {
     font-size: 14px;
   }
 `;
-const PreviewList$1 = styled$3.section `
+const PreviewList$1 = styled$2.section `
   display: flex;
   flex-wrap: wrap;
   margin-top: 10px;
 `;
-const FileMetaData$1 = styled$3.div `
+const FileMetaData$1 = styled$2.div `
   display: ${(props) => props.$isImageFile || props.$isVideoFile || props.$isPdfFile || props.$isExcelFile ? "none" : "flex"};
   flex-direction: column;
   position: absolute;
@@ -14849,13 +13026,13 @@ const FileMetaData$1 = styled$3.div `
     justify-content: space-between;
   }
 `;
-const RemoveFileIcon$1 = styled$3(IconButton) `
+const RemoveFileIcon$1 = styled$2(IconButton) `
   cursor: pointer;
   &:hover {
     transform: scale(1.1);
   }
 `;
-const PreviewContainer$1 = styled$3.section `
+const PreviewContainer$1 = styled$2.section `
   padding: 0.25rem;
   height: 60px;
   border-radius: 6px;
@@ -14865,12 +13042,12 @@ const PreviewContainer$1 = styled$3.section `
     position: relative;
   }
 `;
-const ImagePreview$1 = styled$3.img `
+const ImagePreview$1 = styled$2.img `
   border-radius: 6px;
   width: 100%;
   height: 100%;
 `;
-const VideoPreview$1 = styled$3.video `
+const VideoPreview$1 = styled$2.video `
   border-radius: 6px;
   width: 100%;
   height: 100%;
@@ -14882,7 +13059,7 @@ function getLinearProgressUtilityClass(slot) {
 generateUtilityClasses('MuiLinearProgress', ['root', 'colorPrimary', 'colorSecondary', 'determinate', 'indeterminate', 'buffer', 'query', 'dashed', 'dashedColorPrimary', 'dashedColorSecondary', 'bar', 'bar1', 'bar2', 'barColorPrimary', 'barColorSecondary', 'bar1Indeterminate', 'bar1Determinate', 'bar1Buffer', 'bar2Indeterminate', 'bar2Buffer']);
 
 const TRANSITION_DURATION = 4; // seconds
-const indeterminate1Keyframe = keyframes`
+const indeterminate1Keyframe = react.keyframes`
   0% {
     left: -35%;
     right: 100%;
@@ -14902,10 +13079,10 @@ const indeterminate1Keyframe = keyframes`
 // This implementation is for supporting both Styled-components v4+ and Pigment CSS.
 // A global animation has to be created here for Styled-components v4+ (https://github.com/styled-components/styled-components/blob/main/packages/styled-components/src/utils/errors.md#12).
 // which can be done by checking typeof indeterminate1Keyframe !== 'string' (at runtime, Pigment CSS transform keyframes`` to a string).
-const indeterminate1Animation = typeof indeterminate1Keyframe !== 'string' ? css`
+const indeterminate1Animation = typeof indeterminate1Keyframe !== 'string' ? react.css`
         animation: ${indeterminate1Keyframe} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
       ` : null;
-const indeterminate2Keyframe = keyframes`
+const indeterminate2Keyframe = react.keyframes`
   0% {
     left: -200%;
     right: 100%;
@@ -14921,10 +13098,10 @@ const indeterminate2Keyframe = keyframes`
     right: -8%;
   }
 `;
-const indeterminate2Animation = typeof indeterminate2Keyframe !== 'string' ? css`
+const indeterminate2Animation = typeof indeterminate2Keyframe !== 'string' ? react.css`
         animation: ${indeterminate2Keyframe} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite;
       ` : null;
-const bufferKeyframe = keyframes`
+const bufferKeyframe = react.keyframes`
   0% {
     opacity: 1;
     background-position: 0 -23px;
@@ -14940,7 +13117,7 @@ const bufferKeyframe = keyframes`
     background-position: -200px -23px;
   }
 `;
-const bufferAnimation = typeof bufferKeyframe !== 'string' ? css`
+const bufferAnimation = typeof bufferKeyframe !== 'string' ? react.css`
         animation: ${bufferKeyframe} 3s infinite linear;
       ` : null;
 const useUtilityClasses$9 = ownerState => {
@@ -17879,7 +16056,7 @@ var FileUploadIcon = createSvgIcon(/*#__PURE__*/jsxRuntimeExports.jsx("path", {
   d: "M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"
 }), 'FileUpload');
 
-var CancelIcon = createSvgIcon(/*#__PURE__*/jsxRuntimeExports.jsx("path", {
+var CancelIcon$1 = createSvgIcon(/*#__PURE__*/jsxRuntimeExports.jsx("path", {
   d: "M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12z"
 }), 'Cancel');
 
@@ -17930,10 +16107,10 @@ const _setImage$1 = async (src, filename) => {
         return {};
     }
 };
-const KILO_BYTES_PER_BYTE$1 = 1024;
+const KILO_BYTES_PER_BYTE = 1024;
 const DEFAULT_MAX_FILE_SIZE_IN_BYTES$2 = 2097152;
-const convertBytesToKB$1 = (bytes) => Math.round(bytes / KILO_BYTES_PER_BYTE$1);
-const convertBytesToMB$1 = (bytes) => Math.round(bytes / (KILO_BYTES_PER_BYTE$1 * KILO_BYTES_PER_BYTE$1));
+const convertBytesToKB = (bytes) => Math.round(bytes / KILO_BYTES_PER_BYTE);
+const convertBytesToMB = (bytes) => Math.round(bytes / (KILO_BYTES_PER_BYTE * KILO_BYTES_PER_BYTE));
 function LinearProgressWithLabel$1(props) {
     return (jsxRuntimeExports.jsxs(material.Box, { sx: { display: "flex", alignItems: "center" }, children: [jsxRuntimeExports.jsx(material.Box, { sx: { width: "100%", mr: 1 }, children: jsxRuntimeExports.jsx(LinearProgress, { variant: "determinate", ...props }) }), jsxRuntimeExports.jsx(material.Box, { sx: { minWidth: 35 }, children: jsxRuntimeExports.jsx(material.Typography, { variant: "body2", sx: { color: "text.secondary" }, children: `${Math.round(props?.value)}%` }) })] }));
 }
@@ -18018,21 +16195,21 @@ const FileUpload$1 = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_
                                     return (jsxRuntimeExports.jsxs(material.Grid, { container: true, spacing: 2, marginTop: 0.2, children: [jsxRuntimeExports.jsxs(material.Grid, { children: [URL.createObjectURL(file) && (jsxRuntimeExports.jsx(material.Badge, { overlap: "circular", anchorOrigin: {
                                                             vertical: "top",
                                                             horizontal: "right",
-                                                        }, badgeContent: jsxRuntimeExports.jsx(CancelIcon, { color: "primary", onClick: () => removeFile(index) }), sx: {
+                                                        }, badgeContent: jsxRuntimeExports.jsx(CancelIcon$1, { color: "primary", onClick: () => removeFile(index) }), sx: {
                                                             cursor: "pointer",
                                                             display: "flex",
                                                         } })), jsxRuntimeExports.jsx(PreviewContainer$1, { children: jsxRuntimeExports.jsxs(material.Box, { children: [isPdfFile && (jsxRuntimeExports.jsx(ImagePreview$1, { src: "https://dsuabgmmtxmj1.cloudfront.net/common/pdf_file_icon.png", alt: `file preview ${index}` })), isExcelFile && (jsxRuntimeExports.jsx(ImagePreview$1, { src: "https://cdn.adeonatech.net/common/ms-excel.png", alt: `file preview ${index}` })), isImageFile && (jsxRuntimeExports.jsx(ImagePreview$1, { src: URL.createObjectURL(file), alt: `file preview ${index}` })), isVideoFile && (jsxRuntimeExports.jsx(VideoPreview$1, { poster: `file preview ${index}`, autoPlay: true, muted: true, children: jsxRuntimeExports.jsx("source", { src: URL.createObjectURL(file), type: file?.type }) })), jsxRuntimeExports.jsxs(FileMetaData$1, { "$isPdfFile": isPdfFile, "$isImageFile": isImageFile, "$isVideoFile": isVideoFile, "$isExcelFile": isExcelFile, children: [jsxRuntimeExports.jsx(material.Typography, { width: 100, color: "white", variant: "subtitle2", style: {
                                                                                 wordWrap: "break-word",
                                                                                 fontWeight: "bold",
                                                                             }, children: file.name.substring(0, 30) +
-                                                                                (file.name.length > 30 ? "..." : "") }), jsxRuntimeExports.jsxs("aside", { children: [jsxRuntimeExports.jsxs(material.Typography, { width: 100, color: "white", variant: "subtitle2", children: [convertBytesToKB$1(file.size), " kb"] }), jsxRuntimeExports.jsxs("aside", { children: [jsxRuntimeExports.jsx(RemoveFileIcon$1, { color: "inherit", size: "small", onClick: () => {
+                                                                                (file.name.length > 30 ? "..." : "") }), jsxRuntimeExports.jsxs("aside", { children: [jsxRuntimeExports.jsxs(material.Typography, { width: 100, color: "white", variant: "subtitle2", children: [convertBytesToKB(file.size), " kb"] }), jsxRuntimeExports.jsxs("aside", { children: [jsxRuntimeExports.jsx(RemoveFileIcon$1, { color: "inherit", size: "small", onClick: () => {
                                                                                                 openFileViewer$1(file);
                                                                                             }, children: jsxRuntimeExports.jsx(VisibilityIcon, {}) }), isImageFile && (jsxRuntimeExports.jsx(RemoveFileIcon$1, { color: "secondary", size: "small", onClick: () => {
                                                                                                 openImageCropper$1(URL.createObjectURL(file), file.name, onCropDone, onCropCancel);
                                                                                             }, children: jsxRuntimeExports.jsx(CropIcon, {}) }))] })] })] })] }) })] }), jsxRuntimeExports.jsx(material.Grid, { size: { xs: 9.5 }, display: "flex", justifyContent: "center", alignItems: "center", children: jsxRuntimeExports.jsxs(material.Grid, { container: true, children: [jsxRuntimeExports.jsx(material.Typography, { variant: "subtitle2", color: theme.palette.primary.dark, children: file.name.substring(0, 30) +
                                                                 (file.name.length > 30 ? "..." : "") }), jsxRuntimeExports.jsxs(material.Box, { sx: { width: "100%" }, children: [progress !== undefined &&
                                                                     progress > 0 &&
-                                                                    progress < 100 && (jsxRuntimeExports.jsx(LinearProgressWithLabel$1, { value: progress })), progress !== undefined && progress == 100 && (jsxRuntimeExports.jsxs(material.Box, { display: "flex", alignItems: "center", justifyContent: "flex-end", children: [jsxRuntimeExports.jsx(DoneAllIcon, { color: "success", fontSize: "small" }), jsxRuntimeExports.jsx(material.Typography, { variant: "body2", color: theme.palette.success.main, fontSize: "small", children: "Uploaded" })] }))] }), jsxRuntimeExports.jsx(material.Grid, { size: { xs: 6 }, children: jsxRuntimeExports.jsxs(material.Typography, { variant: "h6", color: "grey", children: [convertBytesToKB$1(file.size), " kb of", " ", convertBytesToMB$1(maxFileSizeInBytes), " MB", " "] }) }), jsxRuntimeExports.jsxs(material.Grid, { size: { xs: 6 }, display: "flex", justifyContent: "flex-end", alignItems: "flex-end", children: [isImageFile && (jsxRuntimeExports.jsx(material.Typography, { variant: "h6", color: "primary", sx: { cursor: "pointer", marginX: 1 }, onClick: () => {
+                                                                    progress < 100 && (jsxRuntimeExports.jsx(LinearProgressWithLabel$1, { value: progress })), progress !== undefined && progress == 100 && (jsxRuntimeExports.jsxs(material.Box, { display: "flex", alignItems: "center", justifyContent: "flex-end", children: [jsxRuntimeExports.jsx(DoneAllIcon, { color: "success", fontSize: "small" }), jsxRuntimeExports.jsx(material.Typography, { variant: "body2", color: theme.palette.success.main, fontSize: "small", children: "Uploaded" })] }))] }), jsxRuntimeExports.jsx(material.Grid, { size: { xs: 6 }, children: jsxRuntimeExports.jsxs(material.Typography, { variant: "h6", color: "grey", children: [convertBytesToKB(file.size), " kb of", " ", convertBytesToMB(maxFileSizeInBytes), " MB", " "] }) }), jsxRuntimeExports.jsxs(material.Grid, { size: { xs: 6 }, display: "flex", justifyContent: "flex-end", alignItems: "flex-end", children: [isImageFile && (jsxRuntimeExports.jsx(material.Typography, { variant: "h6", color: "primary", sx: { cursor: "pointer", marginX: 1 }, onClick: () => {
                                                                         openImageCropper$1(URL.createObjectURL(file), file.name, onCropDone, onCropCancel);
                                                                     }, children: "Crop" })), !isExcelFile && (jsxRuntimeExports.jsx(material.Typography, { variant: "h6", color: "primary", sx: { cursor: "pointer", marginX: 1 }, onClick: () => {
                                                                         openFileViewer$1(file);
@@ -18142,10 +16319,20 @@ const RemoveFileIcon = material.styled(material.IconButton) `
     transform: scale(1.1);
   }
 `;
+const ViewFileIcon = material.styled(material.IconButton) `
+  color: #48bb78;
+  cursor: pointer;
+  transition: transform 0.2s;
+  
+  &:hover {
+    transform: scale(1.1);
+    background-color: rgba(72, 187, 120, 0.1);
+  }
+`;
 const PreviewContainer = material.styled(material.Box)({
     padding: '4px',
-    width: '80px',
-    height: '80px',
+    width: '60px',
+    height: '60px',
     borderRadius: '8px',
     boxSizing: 'border-box',
     flexShrink: 0,
@@ -18277,7 +16464,7 @@ function FileViewer() {
             "& .MuiPaper-root": {
                 borderRadius: 2,
             },
-        }, children: [jsxRuntimeExports.jsx(material.AppBar, { sx: { position: "relative" }, children: jsxRuntimeExports.jsxs(material.Toolbar, { children: [jsxRuntimeExports.jsx(material.IconButton, { edge: "start", color: "inherit", onClick: closeFileViewer, children: jsxRuntimeExports.jsx(CancelIcon, {}) }), jsxRuntimeExports.jsx(material.Stack, { direction: "row", justifyContent: "flex-end", spacing: 2, sx: { width: "100%" }, children: (typeof file == "object" && file?.type !== "application/pdf") ||
+        }, children: [jsxRuntimeExports.jsx(material.AppBar, { sx: { position: "relative" }, children: jsxRuntimeExports.jsxs(material.Toolbar, { children: [jsxRuntimeExports.jsx(material.IconButton, { edge: "start", color: "inherit", onClick: closeFileViewer, children: jsxRuntimeExports.jsx(CancelIcon$1, {}) }), jsxRuntimeExports.jsx(material.Stack, { direction: "row", justifyContent: "flex-end", spacing: 2, sx: { width: "100%" }, children: (typeof file == "object" && file?.type !== "application/pdf") ||
                                 (typeof file == "string" && file?.split(".")?.pop() !== "pdf") ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [fileUrl && (jsxRuntimeExports.jsx(material.IconButton, { color: "inherit", children: jsxRuntimeExports.jsx("a", { href: fileUrl, target: "_blank", rel: "noopener noreferrer", style: {
                                                 color: "white",
                                                 display: "flex",
@@ -18298,7 +16485,7 @@ function FileViewer() {
                                         }, children: jsxRuntimeExports.jsx(ZoomOutIcon, {}) })] })) : null })] }) }), jsxRuntimeExports.jsx(material.DialogContent, { style: { display: "flex", justifyContent: "center" }, children: (typeof file == "object" && file?.type === "application/pdf") ||
                     (typeof file == "string" &&
                         file &&
-                        file?.split(".")?.pop() === "pdf") ? (jsxRuntimeExports.jsx(material.Box, { style: { height: "100vh", width: "100%" }, children: jsxRuntimeExports.jsx(core.Worker, { workerUrl: "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js", children: fileUrl && jsxRuntimeExports.jsx(core.Viewer, { fileUrl: fileUrl }) }) })) : (jsxRuntimeExports.jsx("img", { style: {
+                        file?.split(".")?.pop() === "pdf") ? (jsxRuntimeExports.jsx(material.Box, { style: { height: "100vh", width: "100%" }, children: jsxRuntimeExports.jsx(core.Worker, { workerUrl: "https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs", children: fileUrl && (jsxRuntimeExports.jsx(core.Viewer, { fileUrl: fileUrl, renderPage: (props) => (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [props.canvasLayer.children, props.annotationLayer.children] })) })) }) })) : (jsxRuntimeExports.jsx("img", { style: {
                         maxHeight: "100%",
                         maxWidth: "100%",
                         transformOrigin: "top left",
@@ -18346,7 +16533,7 @@ const validateFile = (file, maxFileSizeInBytes, accept, existingFiles = []) => {
         errors.push(`File "${file.name}" is already uploaded`);
     }
     if (file.size > maxFileSizeInBytes) {
-        errors.push(`File "${file.name}" exceeds max size of ${convertBytesToMB(maxFileSizeInBytes)} MB`);
+        errors.push(`File "${file.name}" exceeds max size of ${formatFileSize(maxFileSizeInBytes)}`);
     }
     if (!isAcceptedFileType(file, accept)) {
         errors.push(`File "${file.name}" is not an accepted type (${accept})`);
@@ -18369,37 +16556,60 @@ const _setImage = async (src, filename) => {
         return {};
     }
 };
-const KILO_BYTES_PER_BYTE = 1024;
 const DEFAULT_MAX_FILE_SIZE_IN_BYTES$1 = 2097152;
-const convertBytesToKB = (bytes) => Math.round(bytes / KILO_BYTES_PER_BYTE);
-const convertBytesToMB = (bytes) => Math.round(bytes / (KILO_BYTES_PER_BYTE * KILO_BYTES_PER_BYTE));
+const DEFAULT_MAX_FILES_COUNT = 10;
 function LinearProgressWithLabel(props) {
     return (jsxRuntimeExports.jsxs(material.Box, { sx: { display: "flex", alignItems: "center" }, children: [jsxRuntimeExports.jsx(material.Box, { sx: { width: "100%", mr: 1 }, children: jsxRuntimeExports.jsx(LinearProgress, { variant: "determinate", ...props }) }), jsxRuntimeExports.jsx(material.Box, { sx: { minWidth: 35 }, children: jsxRuntimeExports.jsx(material.Typography, { variant: "body2", sx: { color: "text.secondary" }, children: `${Math.round(props?.value)}%` }) })] }));
 }
-const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES$1, progress, onUpload, onRemove, isCropperEnabled = true, ...otherProps }) => {
-    useTheme();
+const FileUpload = ({ label, name, required, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES$1, maxFilesCount = DEFAULT_MAX_FILES_COUNT, progress, onUpload, onRemove, isCropperEnabled = true, isLoading = false, ...otherProps }) => {
+    const theme = useTheme();
     const fileInputField = React.useRef(null);
-    const { setFieldValue, setFieldError } = formik.useFormikContext();
+    const containerRef = React.useRef(null);
+    const { setFieldValue, setFieldError, submitCount } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
     const [fileErrors, setFileErrors] = React.useState([]);
     const [duplicateFiles, setDuplicateFiles] = React.useState([]);
+    const [largeFiles, setLargeFiles] = React.useState([]);
+    const [invalidTypeFiles, setInvalidTypeFiles] = React.useState([]);
     const handleUploadBtnClick = () => {
         fileInputField?.current.click();
     };
+    const currentTotalSize = (field.value || []).reduce((acc, f) => acc + (f.size || 0), 0);
+    const remainingSize = Math.max(0, maxFileSizeInBytes - currentTotalSize);
     const addNewFiles = (newFiles) => {
         const validFiles = [];
         const invalidFiles = [];
         const duplicateFiles = [];
+        let runningTotalSize = currentTotalSize;
+        let runningTotalCount = (field.value || []).length;
         for (const file of Array.from(newFiles)) {
-            const errors = validateFile(file, maxFileSizeInBytes, otherProps.accept, field.value || []);
+            if (otherProps.multiple && runningTotalCount >= maxFilesCount) {
+                setFieldError(name, `Maximum ${maxFilesCount} files allowed`);
+                break;
+            }
+            const remainingBytesForThisFile = maxFileSizeInBytes - runningTotalSize;
+            const errors = validateFile(file, remainingBytesForThisFile, otherProps.accept, field.value || []);
             if (errors.length === 0) {
                 validFiles.push(file);
-            }
-            else if (errors.includes(`File "${file.name}" is already uploaded`)) {
-                duplicateFiles.push(file);
+                runningTotalSize += file.size;
+                runningTotalCount += 1;
             }
             else {
-                invalidFiles.push({ file, errors });
+                const isDuplicate = errors.some(e => e.includes("already uploaded"));
+                const isTooLarge = errors.some(e => e.includes("exceeds max size"));
+                const isInvalidType = errors.some(e => e.includes("not an accepted type"));
+                if (isDuplicate) {
+                    duplicateFiles.push(file);
+                }
+                else if (isTooLarge) {
+                    largeFiles.push(file);
+                }
+                else if (isInvalidType) {
+                    invalidTypeFiles.push(file);
+                }
+                else {
+                    invalidFiles.push({ file, errors });
+                }
             }
         }
         if (invalidFiles.length > 0) {
@@ -18413,9 +16623,15 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
         }
         if (duplicateFiles.length > 0) {
             setDuplicateFiles(duplicateFiles);
-            setTimeout(() => {
-                setDuplicateFiles(prev => prev.filter(f => !duplicateFiles.includes(f)));
-            }, 5000);
+            setTimeout(() => setDuplicateFiles(prev => prev.filter(f => !duplicateFiles.includes(f))), 5000);
+        }
+        if (largeFiles.length > 0) {
+            setLargeFiles(largeFiles);
+            setTimeout(() => setLargeFiles(prev => prev.filter(f => !largeFiles.includes(f))), 5000);
+        }
+        if (invalidTypeFiles.length > 0) {
+            setInvalidTypeFiles(invalidTypeFiles);
+            setTimeout(() => setInvalidTypeFiles(prev => prev.filter(f => !invalidTypeFiles.includes(f))), 5000);
         }
         setFileErrors((prev) => [...prev, ...invalidFiles]);
         const updatedFiles = otherProps.multiple
@@ -18429,6 +16645,12 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
             setFieldValue(name, updatedFiles);
         }
     }, [field.value]);
+    React.useEffect(() => {
+        if (submitCount > 0 && meta.error && containerRef.current) {
+            containerRef.current.focus();
+            containerRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [submitCount]);
     const handleNewFileUpload = (e) => {
         const { files: newFiles } = e.target;
         if (newFiles.length) {
@@ -18444,8 +16666,10 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
     };
     const removeFile = async (fileIndex) => {
         try {
-            if (onRemove)
+            if (onRemove) {
                 await onRemove(fileIndex);
+                return;
+            }
             const removedFile = field.value[fileIndex];
             const updatedErrors = fileErrors.filter((err) => err.file.name !== removedFile.name);
             setFileErrors(updatedErrors);
@@ -18489,14 +16713,20 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
         };
     };
     const onCropCancel = () => { };
-    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs(material.Box, { sx: { width: '100%' }, children: [jsxRuntimeExports.jsx(material.Typography, { variant: "body2", color: "textPrimary", sx: { mb: 1 }, children: label }), jsxRuntimeExports.jsxs(FileUploadContainer, { children: [jsxRuntimeExports.jsx(DragDropText, { children: "Drag and drop your files anywhere or" }), jsxRuntimeExports.jsxs(UploadFileBtn, { type: "button", onClick: handleUploadBtnClick, disabled: otherProps.disabled, children: [jsxRuntimeExports.jsx(FileUploadIcon, {}), jsxRuntimeExports.jsxs("span", { children: ["Select ", otherProps.multiple ? "files" : "a file"] })] }), jsxRuntimeExports.jsx(FormField$1, { type: "file", ref: fileInputField, onChange: handleNewFileUpload, title: "", value: "", ...otherProps })] }), duplicateFiles.length > 0 && (jsxRuntimeExports.jsx(material.Box, { sx: {
-                            mt: 1,
-                            p: 1,
-                            backgroundColor: 'warning.light',
-                            borderRadius: 1,
-                            border: '1px solid',
-                            borderColor: 'warning.main'
-                        }, children: jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", color: "warning.dark", children: [jsxRuntimeExports.jsx("strong", { children: "Duplicate files skipped:" }), " ", duplicateFiles.map(f => f.name).join(', ')] }) })), jsxRuntimeExports.jsx(FilePreviewContainer, { children: jsxRuntimeExports.jsx(PreviewList, { children: field.value?.map((file, index) => {
+    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs(material.Box, { sx: { width: '100%' }, children: [jsxRuntimeExports.jsxs(material.Stack, { direction: "row", justifyContent: "space-between", alignItems: "center", sx: { mb: 1 }, children: [jsxRuntimeExports.jsxs(material.Typography, { variant: "body2", color: "textPrimary", sx: { fontWeight: 600 }, children: [label, " ", required && jsxRuntimeExports.jsx("span", { style: { color: theme.palette.error.main }, children: "*" })] }), otherProps.multiple && (jsxRuntimeExports.jsxs(material.Box, { sx: { display: 'flex', gap: 2, alignItems: 'center' }, children: [jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", sx: { color: 'text.secondary', fontSize: '11px' }, children: ["Files: ", jsxRuntimeExports.jsxs(material.Box, { component: "span", sx: { color: 'primary.main', fontWeight: 700 }, children: [(field.value || []).length, "/", maxFilesCount] })] }), jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", sx: { color: 'text.secondary', fontSize: '11px' }, children: ["Total: ", jsxRuntimeExports.jsx(material.Box, { component: "span", sx: { color: 'primary.main', fontWeight: 700 }, children: formatFileSize(currentTotalSize) })] }), jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", sx: { color: 'text.secondary', fontSize: '11px' }, children: ["Remaining: ", jsxRuntimeExports.jsx(material.Box, { component: "span", sx: { color: remainingSize > 0 ? 'success.main' : 'error.main', fontWeight: 700 }, children: formatFileSize(remainingSize) })] })] }))] }), jsxRuntimeExports.jsxs(FileUploadContainer, { ref: containerRef, tabIndex: -1, style: {
+                            borderColor: (meta.touched && meta.error) ? theme.palette.error.main : undefined,
+                            borderStyle: (meta.touched && meta.error) ? 'solid' : 'dotted',
+                            outline: 'none',
+                            position: 'relative'
+                        }, children: [isLoading ? (jsxRuntimeExports.jsxs(material.Box, { sx: {
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                    minHeight: '100px',
+                                    gap: 1.5
+                                }, children: [jsxRuntimeExports.jsx(material.CircularProgress, { size: 32, thickness: 4, color: "primary" }), jsxRuntimeExports.jsx(material.Typography, { variant: "body2", sx: { fontWeight: 600, color: 'primary.main', textAlign: 'center' }, children: "Fetching existing files..." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(DragDropText, { children: "Drag and drop your files anywhere or" }), jsxRuntimeExports.jsxs(UploadFileBtn, { type: "button", onClick: handleUploadBtnClick, disabled: otherProps.disabled, children: [jsxRuntimeExports.jsx(FileUploadIcon, {}), jsxRuntimeExports.jsxs("span", { children: ["Select ", otherProps.multiple ? "files" : "a file"] })] })] })), jsxRuntimeExports.jsx(FormField$1, { type: "file", ref: fileInputField, onChange: handleNewFileUpload, title: "", value: "", ...otherProps, disabled: otherProps.disabled || isLoading })] }), jsxRuntimeExports.jsxs(material.Stack, { spacing: 1, sx: { mt: 1 }, children: [duplicateFiles.length > 0 && (jsxRuntimeExports.jsx(material.Box, { sx: { p: 1, backgroundColor: 'warning.light', borderRadius: 1, border: '1px solid', borderColor: 'warning.main' }, children: jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", color: "warning.main", sx: { fontWeight: 600 }, children: ["\u26A0\uFE0F ", jsxRuntimeExports.jsx("strong", { children: "Duplicate skipped:" }), " ", duplicateFiles.map(f => f.name).join(', ')] }) })), largeFiles.length > 0 && (jsxRuntimeExports.jsx(material.Box, { sx: { p: 1, backgroundColor: 'warning.light', borderRadius: 1, border: '1px solid', borderColor: 'warning.main' }, children: jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", color: "warning.main", sx: { fontWeight: 600 }, children: ["\uD83D\uDEAB ", jsxRuntimeExports.jsxs("strong", { children: ["Too large (Remaining ", formatFileSize(remainingSize), "):"] }), " ", largeFiles.map(f => f.name).join(', ')] }) })), invalidTypeFiles.length > 0 && (jsxRuntimeExports.jsx(material.Box, { sx: { p: 1, backgroundColor: 'warning.light', borderRadius: 1, border: '1px solid', borderColor: 'warning.main' }, children: jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", color: "warning.main", sx: { fontWeight: 600 }, children: ["\u2139\uFE0F ", jsxRuntimeExports.jsx("strong", { children: "Invalid format:" }), " ", invalidTypeFiles.map(f => f.name).join(', ')] }) }))] }), jsxRuntimeExports.jsx(FilePreviewContainer, { children: jsxRuntimeExports.jsx(PreviewList, { children: field.value?.map((file, index) => {
                                 const allowedTypes = [
                                     "text/csv",
                                     "application/vnd.ms-excel",
@@ -18517,20 +16747,58 @@ const FileUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN
                                         '&:last-child': {
                                             borderBottom: 'none',
                                         },
-                                    }, children: [jsxRuntimeExports.jsx(material.Badge, { overlap: "circular", anchorOrigin: { vertical: "top", horizontal: "right" }, badgeContent: jsxRuntimeExports.jsx(CancelIcon, { color: "error", sx: {
+                                    }, children: [jsxRuntimeExports.jsx(material.Badge, { overlap: "rectangular", anchorOrigin: { vertical: "top", horizontal: "right" }, badgeContent: jsxRuntimeExports.jsx(material.Box, { onClick: () => removeFile(index), sx: {
+                                                    backgroundColor: '#ef4444',
+                                                    border: '2px solid white',
+                                                    borderRadius: '50%',
+                                                    width: 18,
+                                                    height: 18,
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
                                                     cursor: 'pointer',
-                                                    fontSize: 20,
+                                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                                    zIndex: 10,
                                                     '&:hover': { transform: 'scale(1.1)' }
-                                                }, onClick: () => removeFile(index) }), children: jsxRuntimeExports.jsx(PreviewContainer, { children: jsxRuntimeExports.jsxs(material.Box, { children: [isPdfFile && (jsxRuntimeExports.jsx(ImagePreview, { src: "https://dsuabgmmtxmj1.cloudfront.net/common/pdf_file_icon.png", alt: `file preview ${index}` })), isExcelFile && (jsxRuntimeExports.jsx(ImagePreview, { src: "https://cdn.adeonatech.net/common/ms-excel.png", alt: `file preview ${index}` })), isImageFile && (jsxRuntimeExports.jsx(ImagePreview, { src: URL.createObjectURL(file), alt: `file preview ${index}` })), isVideoFile && (jsxRuntimeExports.jsx(VideoPreview, { poster: `file preview ${index}`, autoPlay: true, muted: true, children: jsxRuntimeExports.jsx("source", { src: URL.createObjectURL(file), type: file?.type }) })), jsxRuntimeExports.jsx(FileMetaData, { "$isPdfFile": isPdfFile, "$isImageFile": isImageFile, "$isVideoFile": isVideoFile, "$isExcelFile": isExcelFile, children: jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "white", sx: { fontWeight: 'bold' }, children: file.name.substring(0, 15) + (file.name.length > 15 ? "..." : "") }) })] }) }) }), jsxRuntimeExports.jsxs(material.Box, { sx: { flex: 1, minWidth: 0 }, children: [jsxRuntimeExports.jsx(material.Typography, { variant: "body2", color: "grey.700", noWrap: true, sx: { fontWeight: 600 }, children: file.name }), jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", color: "grey.500", children: [convertBytesToKB(file.size), " KB of ", convertBytesToMB(maxFileSizeInBytes), " MB"] }), progress?.progress !== undefined &&
+                                                }, children: jsxRuntimeExports.jsx(CancelIcon$1, { sx: { color: 'white', fontSize: 13 } }) }), children: jsxRuntimeExports.jsx(PreviewContainer, { children: jsxRuntimeExports.jsxs(material.Box, { children: [isPdfFile && (jsxRuntimeExports.jsx(ImagePreview, { style: { objectFit: 'contain' }, src: "https://dsuabgmmtxmj1.cloudfront.net/common/pdf_file_icon.png", alt: `file preview ${index}` })), isExcelFile && (jsxRuntimeExports.jsx(ImagePreview, { style: { objectFit: 'contain' }, src: "https://cdn.adeonatech.net/common/ms-excel.png", alt: `file preview ${index}` })), isImageFile && (jsxRuntimeExports.jsx(ImagePreview, { src: URL.createObjectURL(file), alt: `file preview ${index}` })), isVideoFile && (jsxRuntimeExports.jsx(VideoPreview, { poster: `file preview ${index}`, autoPlay: true, muted: true, children: jsxRuntimeExports.jsx("source", { src: URL.createObjectURL(file), type: file?.type }) })), jsxRuntimeExports.jsx(FileMetaData, { "$isPdfFile": isPdfFile, "$isImageFile": isImageFile, "$isVideoFile": isVideoFile, "$isExcelFile": isExcelFile, children: jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "white", sx: { fontWeight: 'bold' }, children: file.name.substring(0, 15) + (file.name.length > 15 ? "..." : "") }) })] }) }) }), jsxRuntimeExports.jsxs(material.Box, { sx: { flex: 1, minWidth: 0 }, children: [jsxRuntimeExports.jsx(material.Typography, { variant: "body2", noWrap: true, sx: { fontWeight: 700, color: '#1a202c', fontSize: '14px', mb: 0.2 }, children: file.name }), jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", sx: { color: '#718096', fontWeight: 500 }, children: [formatFileSize(file.size), isImageFile && jsxRuntimeExports.jsx(ImageResolution, { file: file })] }), progress?.progress !== undefined &&
                                                     progress.progress > 0 &&
                                                     progress.progress < 100 &&
                                                     progress.files.includes(file) && (jsxRuntimeExports.jsx(material.Box, { sx: { mt: 1 }, children: jsxRuntimeExports.jsx(LinearProgressWithLabel, { value: progress.progress }) })), progress?.progress === 100 && progress.files.includes(file) && (jsxRuntimeExports.jsxs(material.Box, { display: "flex", alignItems: "center", gap: 0.5, sx: { mt: 1 }, children: [jsxRuntimeExports.jsx(DoneAllIcon, { color: "success", fontSize: "small" }), jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "success.main", children: "Uploaded" })] })), currentFileError && (jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "error", sx: { mt: 0.5, display: 'block' }, children: currentFileError.errors.join(", ") }))] }), jsxRuntimeExports.jsxs(material.Box, { sx: { display: 'flex', gap: 1, flexShrink: 0 }, children: [isImageFile && isCropperEnabled && (jsxRuntimeExports.jsx(RemoveFileIcon, { size: "small", color: "primary", onClick: () => {
                                                         openImageCropper(URL.createObjectURL(file), file.name, onCropDone, onCropCancel);
-                                                    }, title: "Crop", children: jsxRuntimeExports.jsx(CropIcon, { fontSize: "small" }) })), !isExcelFile && (jsxRuntimeExports.jsx(RemoveFileIcon, { size: "small", color: "primary", onClick: () => openFileViewer(file), title: "View", children: jsxRuntimeExports.jsx(VisibilityIcon, { fontSize: "small" }) }))] })] }, `${getFileIdentifier(file)}-${index}`));
+                                                    }, title: "Crop", children: jsxRuntimeExports.jsx(CropIcon, { fontSize: "small" }) })), !isExcelFile && (jsxRuntimeExports.jsx(ViewFileIcon, { size: "small", onClick: () => openFileViewer(file), title: "View", children: jsxRuntimeExports.jsx(VisibilityIcon, { fontSize: "medium" }) }))] })] }, `${getFileIdentifier(file)}-${index}`));
                             }) }) }), meta?.touched && meta?.error && (jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "error", sx: { mt: 1, display: 'block' }, children: meta.error }))] }), jsxRuntimeExports.jsx(ImageCropper, {})] }));
 };
+const formatFileSize = (bytes) => {
+    if (bytes === 0)
+        return "0 Bytes";
+    const isMB = bytes >= 1024 * 1024;
+    if (isMB) {
+        const mb = bytes / (1024 * 1024);
+        return `${parseFloat(mb.toFixed(3))} MB`;
+    }
+    else {
+        const kb = bytes / 1024;
+        return `${Math.round(kb)} KB`;
+    }
+};
+const ImageResolution = ({ file }) => {
+    const [resolution, setResolution] = React.useState("");
+    React.useEffect(() => {
+        if (file?.type?.startsWith("image/")) {
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = () => {
+                setResolution(`${img.naturalWidth} x ${img.naturalHeight}`);
+                URL.revokeObjectURL(img.src);
+            };
+        }
+    }, [file]);
+    if (!resolution)
+        return null;
+    return (jsxRuntimeExports.jsxs(material.Typography, { variant: "caption", sx: { color: "primary.main", fontWeight: "bold", ml: 1 }, children: ["\u2022 ", resolution] }));
+};
 
-const IconSelectWrapper = ({ name, options, ...otherProps }) => {
+const IconSelectWrapper = ({ name, options, loading, ...otherProps }) => {
     const { setFieldValue } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
     const handleChange = (evt) => {
@@ -18544,15 +16812,24 @@ const IconSelectWrapper = ({ name, options, ...otherProps }) => {
         fullWidth: true,
         select: true,
         onChange: handleChange,
+        SelectProps: {
+            renderValue: (selected) => {
+                const selectedOption = options.find((opt) => opt.value === selected);
+                if (!selectedOption)
+                    return selected;
+                const IconComponent = selectedOption.icon;
+                return (jsxRuntimeExports.jsxs(material.Box, { display: "flex", alignItems: "center", style: { color: selectedOption.color }, children: [jsxRuntimeExports.jsx(IconComponent, { fontSize: "small", style: { marginRight: 8, color: selectedOption.color } }), selectedOption.name] }));
+            },
+        },
     };
     if (meta && meta.touched && meta.error) {
         configSelect.error = true;
         configSelect.helperText = meta.error;
     }
-    return (jsxRuntimeExports.jsx(material.TextField, { ...configSelect, children: options.map((item, pos) => {
+    return (jsxRuntimeExports.jsx(material.TextField, { ...configSelect, children: loading ? (jsxRuntimeExports.jsx(material.MenuItem, { disabled: true, children: jsxRuntimeExports.jsxs(material.Box, { display: "flex", alignItems: "center", gap: 1, children: [jsxRuntimeExports.jsx(material.CircularProgress, { size: 16, color: "inherit" }), jsxRuntimeExports.jsx("span", { children: "Loading..." })] }) })) : options.length > 0 ? (options.map((item, pos) => {
             const IconComponent = item.icon;
-            return (jsxRuntimeExports.jsx(material.MenuItem, { value: item.value, children: jsxRuntimeExports.jsxs(material.Typography, { variant: "subtitle2", display: "flex", alignItems: "center", children: [jsxRuntimeExports.jsx(IconComponent, { fontSize: "small", style: { marginRight: 8 } }), item.name] }) }, pos));
-        }) }));
+            return (jsxRuntimeExports.jsx(material.MenuItem, { value: item.value, children: jsxRuntimeExports.jsxs(material.Typography, { component: "div", variant: "subtitle2", display: "flex", alignItems: "center", style: { color: item.color }, children: [jsxRuntimeExports.jsx(IconComponent, { fontSize: "small", style: { marginRight: 8, color: item.color } }), item.name] }) }, pos));
+        })) : (jsxRuntimeExports.jsx(material.MenuItem, { disabled: true, children: "No Data" })) }));
 };
 
 var RadioButtonUncheckedIcon = createSvgIcon(/*#__PURE__*/jsxRuntimeExports.jsx("path", {
@@ -19248,7 +17525,11 @@ const RadioGroupWrapper = ({ name, label, disabled, radioGroup, ...otherProps })
                     } }, index))) }), showError && (jsxRuntimeExports.jsx(material.FormHelperText, { sx: { color: "error.main" }, children: meta.error }))] }));
 };
 
-const SelectWrapper = ({ name, options, customHandleChange, ...otherProps }) => {
+var ImageIcon = createSvgIcon(/*#__PURE__*/jsxRuntimeExports.jsx("path", {
+  d: "M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2M8.5 13.5l2.5 3.01L14.5 12l4.5 6H5z"
+}), 'Image');
+
+const SelectWrapper = ({ name, options, customHandleChange, withImage, loading, ...otherProps }) => {
     const { setFieldValue } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
     const handleChange = (event) => {
@@ -19263,12 +17544,44 @@ const SelectWrapper = ({ name, options, customHandleChange, ...otherProps }) => 
         select: true,
         margin: "dense",
         onChange: customHandleChange || handleChange,
+        SelectProps: {
+            renderValue: (selected) => {
+                const selectedOption = options.find((opt) => opt.value === selected);
+                if (!withImage || !selectedOption) {
+                    return selectedOption ? selectedOption.label : selected;
+                }
+                return (jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center" }, children: [selectedOption.image ? (jsxRuntimeExports.jsx("img", { src: selectedOption.image, alt: selectedOption.label, style: {
+                                width: "25px",
+                                height: "25px",
+                                marginRight: "10px",
+                                borderRadius: "4px",
+                                objectFit: "cover",
+                            } })) : (jsxRuntimeExports.jsx(ImageIcon, { style: {
+                                width: "25px",
+                                height: "25px",
+                                marginRight: "10px",
+                                color: "#bdbdbd",
+                            } })), jsxRuntimeExports.jsx("span", { style: { color: selectedOption.color }, children: selectedOption.label })] }));
+            },
+        },
     };
     if (meta && meta.touched && meta.error) {
         configSelect.error = true;
         configSelect.helperText = meta.error;
     }
-    return (jsxRuntimeExports.jsx(material.TextField, { ...configSelect, children: options.length > 0 ? (options.map((item, pos) => (jsxRuntimeExports.jsx(material.MenuItem, { value: item.value, children: item.label }, pos)))) : (jsxRuntimeExports.jsx(material.MenuItem, { disabled: true, children: "No Data" })) }));
+    return (jsxRuntimeExports.jsx(material.TextField, { ...configSelect, children: loading ? (jsxRuntimeExports.jsx(material.MenuItem, { disabled: true, children: "Loading..." })) : options.length > 0 ? (options.map((item, pos) => (jsxRuntimeExports.jsxs(material.MenuItem, { value: item.value, children: [withImage &&
+                    (item.image ? (jsxRuntimeExports.jsx("img", { src: item.image, alt: item.label, style: {
+                            width: "25px",
+                            height: "25px",
+                            marginRight: "10px",
+                            borderRadius: "4px",
+                            objectFit: "cover",
+                        } })) : (jsxRuntimeExports.jsx(ImageIcon, { style: {
+                            width: "25px",
+                            height: "25px",
+                            marginRight: "10px",
+                            color: "#bdbdbd",
+                        } }))), jsxRuntimeExports.jsx("span", { style: { color: item.color }, children: item.label })] }, pos)))) : (jsxRuntimeExports.jsx(material.MenuItem, { disabled: true, children: "No Data" })) }));
 };
 
 function getSwitchUtilityClass(slot) {
@@ -19673,14 +17986,15 @@ const SwitchWrapper = ({ name, label, ...otherProps }) => {
         const { checked } = evt.target;
         setFieldValue(name, checked);
     };
-    const configCheckbox = {
+    const configSwitch = {
         ...field,
+        color: "primary",
         ...otherProps,
         onChange: handleChange,
         checked: field.value,
     };
     const showError = meta && meta.touched && Boolean(meta.error);
-    return (jsxRuntimeExports.jsxs(material.FormControl, { error: showError, children: [jsxRuntimeExports.jsx(FormGroup, { children: jsxRuntimeExports.jsx(FormControlLabel, { control: jsxRuntimeExports.jsx(Switch, { ...configCheckbox }), label: jsxRuntimeExports.jsx(material.Typography, { variant: "body2", color: "textSecondary", children: label }) }) }), showError && (jsxRuntimeExports.jsx(material.FormHelperText, { sx: { color: "error.main" }, children: meta.error }))] }));
+    return (jsxRuntimeExports.jsxs(material.FormControl, { error: showError, children: [jsxRuntimeExports.jsx(FormGroup, { children: jsxRuntimeExports.jsx(FormControlLabel, { control: jsxRuntimeExports.jsx(Switch, { ...configSwitch }), label: jsxRuntimeExports.jsx(material.Typography, { variant: "body2", color: "textSecondary", children: label }) }) }), showError && (jsxRuntimeExports.jsx(material.FormHelperText, { sx: { color: "error.main" }, children: meta.error }))] }));
 };
 
 const TextFieldWrapper = ({ name, ...otherProps }) => {
@@ -19724,33 +18038,112 @@ const TimePickerWrapper = ({ name, ...otherProps }) => {
     return (jsxRuntimeExports.jsx(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs, children: jsxRuntimeExports.jsx(xDatePickers.TimePicker, { ...configTimePicker }) }));
 };
 
+var CancelIcon = createSvgIcon(/*#__PURE__*/jsxRuntimeExports.jsx("path", {
+  d: "M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM8 9h8v10H8zm7.5-5-1-1h-5l-1 1H5v2h14V4z"
+}), 'DeleteOutline');
+
 var CloudUploadIcon = createSvgIcon(/*#__PURE__*/jsxRuntimeExports.jsx("path", {
   d: "M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96M14 13v4h-4v-4H7l5-5 5 5z"
 }), 'CloudUpload');
 
-const FormField = styled$3.input `
-  cursor: pointer;
-  font-size: 18px;
-  display: block;
-  width: 0;
-  border: none;
-  text-transform: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  &:focus {
-    outline: none;
-  }
-`;
+const UploadContainer = styled(material.Box)(() => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+}));
+const ImageOverlay = styled(material.Box)(() => ({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(0, 0, 0, 0.5)',
+    backdropFilter: 'blur(5px)',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '10%',
+    opacity: 0,
+    visibility: 'hidden',
+    transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+    zIndex: 2,
+}));
+const ImagePreviewWrapper = styled(material.Box)(() => ({
+    position: 'relative',
+    width: '140px',
+    height: '140px',
+    borderRadius: '50%',
+    padding: '6px',
+    border: '2px dashed #e0e0e0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: '20px',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer',
+    '&:hover': {
+        [`& .${ImageOverlay.name || 'image-overlay'}`]: {
+            opacity: 1,
+            visibility: 'visible',
+        },
+    },
+    '@media (max-width: 600px)': {
+        width: '120px',
+        height: '120px',
+    },
+}));
+const FormField = styled('input')(() => ({
+    display: 'none',
+}));
+const ActionIcon = styled(material.IconButton)(() => ({
+    color: '#ffffff !important',
+    background: 'rgba(255, 255, 255, 0.12) !important',
+    backdropFilter: 'blur(10px)',
+    padding: '12% !important',
+    border: '1px solid rgba(255, 255, 255, 0.2) !important',
+    transition: 'all 0.2s ease !important',
+    width: 'clamp(32px, 20%, 38px)',
+    height: 'clamp(32px, 20%, 38px)',
+    '&:hover': {
+        background: 'rgba(255, 255, 255, 0.2) !important',
+        transform: 'scale(1.15)',
+    },
+    '& .MuiSvgIcon-root': {
+        fontSize: '1.1rem',
+    },
+}));
+const RemoveIcon = styled(ActionIcon)(() => ({
+    '&:hover': {
+        background: 'rgba(239, 68, 68, 0.85) !important',
+        borderColor: 'rgba(239, 68, 68, 0.45) !important',
+    },
+}));
+const StyledUploadButton = styled(material.Button)(() => ({
+    borderRadius: '12px !important',
+    padding: '10px 24px !important',
+    textTransform: 'none !important',
+    fontWeight: 600,
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1) !important',
+    transition: 'all 0.3s ease !important',
+    '&:hover': {
+        transform: 'translateY(-2px)',
+        boxShadow: '0 6px 16px rgba(0, 0, 0, 0.15) !important',
+    },
+}));
+const InfoText = styled(material.Typography)(() => ({
+    color: '#718096 !important',
+    fontSize: '0.75rem !important',
+    marginBottom: '20px !important',
+    textAlign: 'center',
+}));
 
 const DEFAULT_MAX_FILE_SIZE_IN_BYTES = 2097152;
-const ItemImageUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES, onUpload, onRemove, ...otherProps }) => {
+const ItemImageUpload = ({ label, name, required, maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES, onUpload, onRemove, isCropperEnabled = true, isLoading = false, ...otherProps }) => {
     const theme = useTheme();
     const fileInputField = React.useRef(null);
-    const { setFieldValue } = formik.useFormikContext();
+    const containerRef = React.useRef(null);
+    const { setFieldValue, submitCount } = formik.useFormikContext();
     const [field, meta] = formik.useField(name);
     const [url, setUrl] = React.useState(null);
     const handleUploadBtnClick = () => {
@@ -19762,14 +18155,14 @@ const ItemImageUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SI
             const file = newFiles[0];
             if (file.size <= maxFileSizeInBytes) {
                 setFieldValue(name, file);
-                setUrl(URL.createObjectURL(file));
                 if (onUpload) {
                     onUpload(file);
                 }
             }
         }
     };
-    const removeFile = () => {
+    const removeFile = (e) => {
+        e.stopPropagation();
         if (onRemove)
             onRemove();
         setFieldValue(name, null);
@@ -19777,33 +18170,66 @@ const ItemImageUpload = ({ label, name, maxFileSizeInBytes = DEFAULT_MAX_FILE_SI
     };
     React.useEffect(() => {
         if (field.value && typeof field.value.name === "string") {
-            setUrl(URL.createObjectURL(field.value));
+            const newUrl = URL.createObjectURL(field.value);
+            setUrl(newUrl);
+            return () => URL.revokeObjectURL(newUrl);
         }
         else {
             setUrl(null);
         }
     }, [field.value]);
-    return (jsxRuntimeExports.jsxs("div", { className: "row mb-4", children: [jsxRuntimeExports.jsxs("div", { className: "col-md-12", children: [jsxRuntimeExports.jsx(material.Typography, { variant: "body1", color: "textSecondary", textAlign: "center", children: label }), jsxRuntimeExports.jsxs(material.Box, { sx: {
-                            mt: 2,
-                            alignItems: "center",
-                            display: "flex",
-                            flexDirection: "column",
-                        }, children: [url && (jsxRuntimeExports.jsx(material.Badge, { overlap: "circular", anchorOrigin: { vertical: "top", horizontal: "right" }, badgeContent: jsxRuntimeExports.jsx(CancelIcon, { onClick: removeFile }), sx: {
-                                    cursor: "pointer",
-                                    color: theme.palette.primary.main,
-                                    mb: -2,
-                                    width: 135,
-                                } })), jsxRuntimeExports.jsx(material.Avatar, { src: url ?? undefined, sx: {
-                                    height: 130,
-                                    mb: 2,
-                                    width: 130,
-                                    border: `5px solid ${theme.palette.primary[200]}`,
-                                    color: theme.palette.primary[200],
-                                } }), jsxRuntimeExports.jsx(material.Typography, { color: "secondary", variant: "caption", textAlign: "center", children: "Select an image file on your computer (2MB max)" })] }), jsxRuntimeExports.jsx(material.Divider, { sx: {
-                            m: 2,
-                            borderBottomWidth: 1,
-                            borderBottomColor: theme.palette.primary.main,
-                        } }), jsxRuntimeExports.jsx(material.Button, { color: "primary", fullWidth: true, variant: "outlined", type: "button", onClick: handleUploadBtnClick, disabled: otherProps.disabled, startIcon: jsxRuntimeExports.jsx(CloudUploadIcon, {}), children: "Upload picture" }), jsxRuntimeExports.jsx(FormField, { type: "file", ref: fileInputField, onChange: handleNewFileUpload, title: "", value: "", ...otherProps })] }), jsxRuntimeExports.jsx("div", { className: "col-md-12", children: meta?.error ? (jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "error", children: meta.error })) : null })] }));
+    React.useEffect(() => {
+        if (submitCount > 0 && meta.error && containerRef.current) {
+            containerRef.current.focus();
+            containerRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [submitCount]);
+    const onCropDone = (imgCroppedArea, image, fileName) => {
+        const canvasEle = document.createElement("canvas");
+        canvasEle.width = imgCroppedArea.width;
+        canvasEle.height = imgCroppedArea.height;
+        const context = canvasEle.getContext("2d");
+        const imageObj1 = new Image();
+        imageObj1.src = image;
+        imageObj1.onload = function () {
+            context?.drawImage(imageObj1, imgCroppedArea.x, imgCroppedArea.y, imgCroppedArea.width, imgCroppedArea.height, 0, 0, imgCroppedArea.width, imgCroppedArea.height);
+            const dataURL = canvasEle.toDataURL();
+            _setImage(dataURL, fileName).then((value) => {
+                setFieldValue(name, value);
+                if (onUpload) {
+                    onUpload(value);
+                }
+                closeImageCropper();
+            });
+        };
+    };
+    const onCropCancel = () => { };
+    return (jsxRuntimeExports.jsxs(UploadContainer, { ref: containerRef, tabIndex: -1, sx: { mb: 4, outline: 'none' }, children: [jsxRuntimeExports.jsxs(material.Typography, { variant: "subtitle1", color: "primary", sx: {
+                    fontWeight: 700,
+                    mb: 3,
+                    textAlign: "center"
+                }, children: [label, " ", required && jsxRuntimeExports.jsx("span", { style: { color: theme.palette.error.main }, children: "*" })] }), jsxRuntimeExports.jsxs(ImagePreviewWrapper, { onClick: handleUploadBtnClick, sx: {
+                    borderColor: (meta.touched && meta.error) ? 'error.main' : '#e0e0e0',
+                    borderStyle: (meta.touched && meta.error) ? 'solid' : 'dashed',
+                    '&:hover': {
+                        borderColor: (meta.touched && meta.error) ? 'error.main' : 'primary.main',
+                    }
+                }, children: [jsxRuntimeExports.jsx(material.Avatar, { src: url ?? undefined, sx: {
+                            width: "100%",
+                            height: "100%",
+                            border: `4px solid #fff`,
+                            boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+                            bgcolor: "#f8f9fa",
+                            color: "#adb5bd"
+                        }, children: isLoading ? (jsxRuntimeExports.jsx(material.Box, { className: "animate-spin", children: jsxRuntimeExports.jsx(material.CircularProgress, { size: 40, color: "primary" }) })) : (!url && jsxRuntimeExports.jsx(CloudUploadIcon, { sx: { fontSize: 40 } })) }), url && (jsxRuntimeExports.jsxs(ImageOverlay, { className: "image-overlay", children: [jsxRuntimeExports.jsx(material.Tooltip, { title: "View Large", children: jsxRuntimeExports.jsx(ActionIcon, { size: "small", onClick: (e) => {
+                                        e.stopPropagation();
+                                        openFileViewer(field.value);
+                                    }, children: jsxRuntimeExports.jsx(VisibilityIcon, { fontSize: "small" }) }) }), isCropperEnabled && (jsxRuntimeExports.jsx(material.Tooltip, { title: "Crop Image", children: jsxRuntimeExports.jsx(ActionIcon, { size: "small", onClick: (e) => {
+                                        e.stopPropagation();
+                                        if (field.value && url) {
+                                            openImageCropper(url, field.value.name, onCropDone, onCropCancel);
+                                        }
+                                    }, children: jsxRuntimeExports.jsx(CropIcon, { fontSize: "small" }) }) })), jsxRuntimeExports.jsx(material.Tooltip, { title: "Remove", children: jsxRuntimeExports.jsx(RemoveIcon, { size: "small", onClick: removeFile, children: jsxRuntimeExports.jsx(CancelIcon, { fontSize: "small" }) }) })] }))] }), jsxRuntimeExports.jsxs(InfoText, { children: ["Select a high-quality JPEG or PNG image.", jsxRuntimeExports.jsx("br", {}), "Maximum file size: ", maxFileSizeInBytes / (1024 * 1024), "MB."] }), jsxRuntimeExports.jsx(StyledUploadButton, { variant: "contained", color: "primary", startIcon: isLoading ? jsxRuntimeExports.jsx(material.Box, { className: "animate-spin", children: jsxRuntimeExports.jsx(material.CircularProgress, { size: 20, color: "primary" }) }) : jsxRuntimeExports.jsx(CloudUploadIcon, {}), onClick: handleUploadBtnClick, disabled: !!otherProps.disabled || isLoading, children: isLoading ? "Loading..." : (url ? "Change Picture" : "Upload Picture") }), jsxRuntimeExports.jsx(FormField, { type: "file", ref: fileInputField, onChange: handleNewFileUpload, accept: "image/*", ...otherProps }), meta?.touched && meta?.error && (jsxRuntimeExports.jsx(material.Typography, { variant: "caption", color: "error", sx: { mt: 1.5, fontWeight: 500 }, children: meta.error })), jsxRuntimeExports.jsx(ImageCropper, {}), jsxRuntimeExports.jsx(FileViewer, {})] }));
 };
 
 exports.AutoCompleteSearchMultipleWrapper = AutoCompleteSearchMultipleWrapper;

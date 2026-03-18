@@ -16,6 +16,7 @@ type AutoCompleteWrapperProps = {
   getOptions: (query: string) => Promise<any>;
   label: string;
   customHandleChange?: (data: any) => void;
+  customHandleInputChange?: (value: string, reason: string) => void;
 } & Partial<AutocompleteProps<any, any, any, any>>;
 
 const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
@@ -25,6 +26,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
   name,
   getOptions,
   customHandleChange,
+  customHandleInputChange,
   ...otherProps
 }) => {
   const { setFieldValue, setFieldTouched } = useFormikContext();
@@ -84,6 +86,7 @@ const AutoCompleteWrapper: React.FC<AutoCompleteWrapperProps> = ({
       setFieldValue(name, { label: value.toString(), value: "" });
       customHandleChange && customHandleChange(value);
     }
+    customHandleInputChange && customHandleInputChange(value, reason);
   };
 
   const configAutocomplete: any = {

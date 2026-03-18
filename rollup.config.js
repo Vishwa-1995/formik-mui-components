@@ -31,6 +31,8 @@ export default {
     "styled-components",
     "react-router-dom",
     "@react-pdf-viewer/core",
+    "@emotion/react",
+    "@emotion/styled",
   ],
   plugins: [
     resolve({

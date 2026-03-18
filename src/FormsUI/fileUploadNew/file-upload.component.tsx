@@ -10,10 +10,11 @@ import {
   PreviewList,
   FileMetaData,
   RemoveFileIcon,
+  ViewFileIcon,
   VideoPreview,
 } from "./file-upload.styles";
 import { useField, useFormikContext } from "formik";
-import { Badge, Box, Typography } from "@mui/material";
+import { Badge, Box, CircularProgress, Stack, Typography } from "@mui/material";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
@@ -42,9 +43,11 @@ interface FileUploadProps {
   onRemove?: (index: number) => void;
   multiple?: boolean;
   disabled?: boolean;
+  required?: boolean;
+  maxFilesCount?: number;
   accept?: string;
   isCropperEnabled?: boolean;
-  // Add any other props you need
+  isLoading?: boolean;
 }
 
 // Helper: Generate a unique identifier for a file
@@ -56,7 +59,7 @@ const getFileIdentifier = (file: File): string => {
 // Helper: Check if file already exists in the array
 const isDuplicateFile = (file: File, existingFiles: File[]): boolean => {
   const fileId = getFileIdentifier(file);
-  return existingFiles.some(existingFile => 
+  return existingFiles.some(existingFile =>
     getFileIdentifier(existingFile) === fileId
   );
 };
@@ -108,9 +111,7 @@ const validateFile = (
   // file size
   if (file.size > maxFileSizeInBytes) {
     errors.push(
-      `File "${file.name}" exceeds max size of ${convertBytesToMB(
-        maxFileSizeInBytes
-      )} MB`
+      `File "${file.name}" exceeds max size of ${formatFileSize(maxFileSizeInBytes)}`
     );
   }
 
@@ -142,11 +143,7 @@ export const _setImage = async (
 
 const KILO_BYTES_PER_BYTE = 1024;
 const DEFAULT_MAX_FILE_SIZE_IN_BYTES = 2097152;
-
-export const convertBytesToKB = (bytes: number) =>
-  Math.round(bytes / KILO_BYTES_PER_BYTE);
-export const convertBytesToMB = (bytes: number) =>
-  Math.round(bytes / (KILO_BYTES_PER_BYTE * KILO_BYTES_PER_BYTE));
+export const DEFAULT_MAX_FILES_COUNT = 10;
 
 function LinearProgressWithLabel(
   props: (JSX.IntrinsicAttributes & LinearProgressProps) | any
@@ -168,45 +165,78 @@ function LinearProgressWithLabel(
 const FileUpload = ({
   label,
   name,
+  required,
   maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
+  maxFilesCount = DEFAULT_MAX_FILES_COUNT,
   progress,
   onUpload,
   onRemove,
   isCropperEnabled = true,
+  isLoading = false,
   ...otherProps
 }: FileUploadProps) => {
   const theme = useTheme();
   const fileInputField: any = useRef(null);
-  const { setFieldValue, setFieldError } = useFormikContext();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { setFieldValue, setFieldError, submitCount } = useFormikContext<any>();
   const [field, meta] = useField(name);
   const [fileErrors, setFileErrors] = useState<
     { file: File; errors: string[] }[]
   >([]);
   const [duplicateFiles, setDuplicateFiles] = useState<File[]>([]);
+  const [largeFiles, setLargeFiles] = useState<File[]>([]);
+  const [invalidTypeFiles, setInvalidTypeFiles] = useState<File[]>([]);
 
   const handleUploadBtnClick = () => {
     fileInputField?.current.click();
   };
 
+  const currentTotalSize = (field.value || []).reduce(
+    (acc: number, f: File) => acc + (f.size || 0),
+    0
+  );
+  const remainingSize = Math.max(0, maxFileSizeInBytes - currentTotalSize);
+
   const addNewFiles = (newFiles: FileList | File[]) => {
     const validFiles: File[] = [];
     const invalidFiles: { file: File; errors: string[] }[] = [];
     const duplicateFiles: File[] = [];
+    let runningTotalSize = currentTotalSize;
+    let runningTotalCount = (field.value || []).length;
 
     for (const file of Array.from(newFiles as any) as File[]) {
+      if (otherProps.multiple && runningTotalCount >= maxFilesCount) {
+        setFieldError(name, `Maximum ${maxFilesCount} files allowed`);
+        break;
+      }
+
+      const remainingBytesForThisFile = maxFileSizeInBytes - runningTotalSize;
       const errors = validateFile(
-        file, 
-        maxFileSizeInBytes, 
-        otherProps.accept, 
+        file,
+        remainingBytesForThisFile,
+        otherProps.accept,
         field.value || []
       );
-      
+
       if (errors.length === 0) {
         validFiles.push(file);
-      } else if (errors.includes(`File "${file.name}" is already uploaded`)) {
-        duplicateFiles.push(file);
+        runningTotalSize += file.size;
+        runningTotalCount += 1;
       } else {
-        invalidFiles.push({ file, errors });
+        // Categorize errors for temporary warnings
+        const isDuplicate = errors.some(e => e.includes("already uploaded"));
+        const isTooLarge = errors.some(e => e.includes("exceeds max size"));
+        const isInvalidType = errors.some(e => e.includes("not an accepted type"));
+
+        if (isDuplicate) {
+          duplicateFiles.push(file);
+        } else if (isTooLarge) {
+          largeFiles.push(file);
+        } else if (isInvalidType) {
+          invalidTypeFiles.push(file);
+        } else {
+          invalidFiles.push({ file, errors });
+        }
       }
     }
 
@@ -220,13 +250,18 @@ const FileUpload = ({
       setFieldError(name, undefined);
     }
 
-    // Show duplicate files warning
+    // Show temporary warnings
     if (duplicateFiles.length > 0) {
       setDuplicateFiles(duplicateFiles);
-      // Auto-clear duplicate warning after 5 seconds
-      setTimeout(() => {
-        setDuplicateFiles(prev => prev.filter(f => !duplicateFiles.includes(f)));
-      }, 5000);
+      setTimeout(() => setDuplicateFiles(prev => prev.filter(f => !duplicateFiles.includes(f))), 5000);
+    }
+    if (largeFiles.length > 0) {
+      setLargeFiles(largeFiles);
+      setTimeout(() => setLargeFiles(prev => prev.filter(f => !largeFiles.includes(f))), 5000);
+    }
+    if (invalidTypeFiles.length > 0) {
+      setInvalidTypeFiles(invalidTypeFiles);
+      setTimeout(() => setInvalidTypeFiles(prev => prev.filter(f => !invalidTypeFiles.includes(f))), 5000);
     }
 
     setFileErrors((prev) => [...prev, ...invalidFiles]);
@@ -246,6 +281,13 @@ const FileUpload = ({
     }
   }, [field.value]);
 
+  useEffect(() => {
+    if (submitCount > 0 && meta.error && containerRef.current) {
+      containerRef.current.focus();
+      containerRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [submitCount]);
+
   const handleNewFileUpload = (e: any) => {
     const { files: newFiles } = e.target;
     if (newFiles.length) {
@@ -254,7 +296,7 @@ const FileUpload = ({
         onUpload(updatedFiles);
       }
       setFieldValue(name, updatedFiles);
-      
+
       // Reset file input to allow selecting same file again after removal
       if (fileInputField.current) {
         fileInputField.current.value = "";
@@ -264,7 +306,7 @@ const FileUpload = ({
 
   const removeFile = async (fileIndex: number) => {
     try {
-      if (onRemove) await onRemove(fileIndex);
+      if (onRemove) { await onRemove(fileIndex); return }
 
       const removedFile = field.value[fileIndex];
 
@@ -340,27 +382,70 @@ const FileUpload = ({
   };
 
   // Handle Cancel Button Click
-  const onCropCancel = () => {};
+  const onCropCancel = () => { };
 
   return (
     <>
       <Box sx={{ width: '100%' }}>
         {/* Label */}
-        <Typography variant="body2" color="textPrimary" sx={{ mb: 1 }}>
-          {label}
-        </Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+          <Typography variant="body2" color="textPrimary" sx={{ fontWeight: 600 }}>
+            {label} {required && <span style={{ color: theme.palette.error.main }}>*</span>}
+          </Typography>
+          {otherProps.multiple && (
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+              <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '11px' }}>
+                Files: <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>{(field.value || []).length}/{maxFilesCount}</Box>
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '11px' }}>
+                Total: <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>{formatFileSize(currentTotalSize)}</Box>
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '11px' }}>
+                Remaining: <Box component="span" sx={{ color: remainingSize > 0 ? 'success.main' : 'error.main', fontWeight: 700 }}>{formatFileSize(remainingSize)}</Box>
+              </Typography>
+            </Box>
+          )}
+        </Stack>
 
         {/* Upload Container */}
-        <FileUploadContainer>
-          <DragDropText>Drag and drop your files anywhere or</DragDropText>
-          <UploadFileBtn
-            type="button"
-            onClick={handleUploadBtnClick}
-            disabled={otherProps.disabled}
-          >
-            <FileUploadIcon />
-            <span>Select {otherProps.multiple ? "files" : "a file"}</span>
-          </UploadFileBtn>
+        <FileUploadContainer
+          ref={containerRef}
+          tabIndex={-1}
+          style={{
+            borderColor: (meta.touched && meta.error) ? theme.palette.error.main : undefined,
+            borderStyle: (meta.touched && meta.error) ? 'solid' : 'dotted',
+            outline: 'none',
+            position: 'relative'
+          }}
+        >
+          {isLoading ? (
+            <Box sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              minHeight: '100px',
+              gap: 1.5
+            }}>
+              <CircularProgress size={32} thickness={4} color="primary" />
+              <Typography variant="body2" sx={{ fontWeight: 600, color: 'primary.main', textAlign: 'center' }}>
+                Fetching existing files...
+              </Typography>
+            </Box>
+          ) : (
+            <>
+              <DragDropText>Drag and drop your files anywhere or</DragDropText>
+              <UploadFileBtn
+                type="button"
+                onClick={handleUploadBtnClick}
+                disabled={otherProps.disabled}
+              >
+                <FileUploadIcon />
+                <span>Select {otherProps.multiple ? "files" : "a file"}</span>
+              </UploadFileBtn>
+            </>
+          )}
           <FormField
             type="file"
             ref={fileInputField}
@@ -368,25 +453,36 @@ const FileUpload = ({
             title=""
             value=""
             {...otherProps}
+            disabled={otherProps.disabled || isLoading}
           />
         </FileUploadContainer>
 
-        {/* Duplicate Files Warning */}
-        {duplicateFiles.length > 0 && (
-          <Box sx={{ 
-            mt: 1, 
-            p: 1, 
-            backgroundColor: 'warning.light', 
-            borderRadius: 1,
-            border: '1px solid',
-            borderColor: 'warning.main'
-          }}>
-            <Typography variant="caption" color="warning.dark">
-              <strong>Duplicate files skipped:</strong>{" "}
-              {duplicateFiles.map(f => f.name).join(', ')}
-            </Typography>
-          </Box>
-        )}
+        {/* Warning Messages (Auto-hide after 5s) */}
+        <Stack spacing={1} sx={{ mt: 1 }}>
+          {duplicateFiles.length > 0 && (
+            <Box sx={{ p: 1, backgroundColor: 'warning.light', borderRadius: 1, border: '1px solid', borderColor: 'warning.main' }}>
+              <Typography variant="caption" color="warning.main" sx={{ fontWeight: 600 }}>
+                ⚠️ <strong>Duplicate skipped:</strong> {duplicateFiles.map(f => f.name).join(', ')}
+              </Typography>
+            </Box>
+          )}
+
+          {largeFiles.length > 0 && (
+            <Box sx={{ p: 1, backgroundColor: 'warning.light', borderRadius: 1, border: '1px solid', borderColor: 'warning.main' }}>
+              <Typography variant="caption" color="warning.main" sx={{ fontWeight: 600 }}>
+                🚫 <strong>Too large (Remaining {formatFileSize(remainingSize)}):</strong> {largeFiles.map(f => f.name).join(', ')}
+              </Typography>
+            </Box>
+          )}
+
+          {invalidTypeFiles.length > 0 && (
+            <Box sx={{ p: 1, backgroundColor: 'warning.light', borderRadius: 1, border: '1px solid', borderColor: 'warning.main' }}>
+              <Typography variant="caption" color="warning.main" sx={{ fontWeight: 600 }}>
+                ℹ️ <strong>Invalid format:</strong> {invalidTypeFiles.map(f => f.name).join(', ')}
+              </Typography>
+            </Box>
+          )}
+        </Stack>
 
         {/* File Preview List */}
         <FilePreviewContainer>
@@ -422,30 +518,42 @@ const FileUpload = ({
                 >
                   {/* Thumbnail */}
                   <Badge
-                    overlap="circular"
+                    overlap="rectangular"
                     anchorOrigin={{ vertical: "top", horizontal: "right" }}
                     badgeContent={
-                      <CancelIcon
-                        color="error"
-                        sx={{ 
+                      <Box
+                        onClick={() => removeFile(index)}
+                        sx={{
+                          backgroundColor: '#ef4444',
+                          border: '2px solid white',
+                          borderRadius: '50%',
+                          width: 18,
+                          height: 18,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                           cursor: 'pointer',
-                          fontSize: 20,
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                          zIndex: 10,
                           '&:hover': { transform: 'scale(1.1)' }
                         }}
-                        onClick={() => removeFile(index)}
-                      />
+                      >
+                        <CancelIcon sx={{ color: 'white', fontSize: 13 }} />
+                      </Box>
                     }
                   >
                     <PreviewContainer>
                       <Box>
                         {isPdfFile && (
                           <ImagePreview
+                            style={{ objectFit: 'contain' }}
                             src="https://dsuabgmmtxmj1.cloudfront.net/common/pdf_file_icon.png"
                             alt={`file preview ${index}`}
                           />
                         )}
                         {isExcelFile && (
                           <ImagePreview
+                            style={{ objectFit: 'contain' }}
                             src="https://cdn.adeonatech.net/common/ms-excel.png"
                             alt={`file preview ${index}`}
                           />
@@ -479,15 +587,17 @@ const FileUpload = ({
                   <Box sx={{ flex: 1, minWidth: 0 }}>
                     <Typography
                       variant="body2"
-                      color="grey.700"
                       noWrap
-                      sx={{ fontWeight: 600 }}
+                      sx={{ fontWeight: 700, color: '#1a202c', fontSize: '14px', mb: 0.2 }}
                     >
                       {file.name}
                     </Typography>
 
-                    <Typography variant="caption" color="grey.500">
-                      {convertBytesToKB(file.size)} KB of {convertBytesToMB(maxFileSizeInBytes)} MB
+                    <Typography variant="caption" sx={{ color: '#718096', fontWeight: 500 }}>
+                      {formatFileSize(file.size)}
+
+                      {/* Add the resolution component here */}
+                      {isImageFile && <ImageResolution file={file} />}
                     </Typography>
 
                     {/* Progress Bar */}
@@ -537,16 +647,15 @@ const FileUpload = ({
                         <CropIcon fontSize="small" />
                       </RemoveFileIcon>
                     )}
-                    
+
                     {!isExcelFile && (
-                      <RemoveFileIcon
+                      <ViewFileIcon
                         size="small"
-                        color="primary"
                         onClick={() => openFileViewer(file)}
                         title="View"
                       >
-                        <VisibilityIcon fontSize="small" />
-                      </RemoveFileIcon>
+                        <VisibilityIcon fontSize="medium" />
+                      </ViewFileIcon>
                     )}
                   </Box>
                 </Box>
@@ -562,9 +671,48 @@ const FileUpload = ({
           </Typography>
         )}
       </Box>
-      
+
       <ImageCropper />
     </>
   );
 };
 export default FileUpload;
+
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return "0 Bytes";
+
+  const isMB = bytes >= 1024 * 1024;
+
+  if (isMB) {
+    // Show MB with up to 3 decimal places
+    const mb = bytes / (1024 * 1024);
+    return `${parseFloat(mb.toFixed(3))} MB`;
+  } else {
+    // Show KB rounded
+    const kb = bytes / 1024;
+    return `${Math.round(kb)} KB`;
+  }
+};
+
+const ImageResolution = ({ file }: { file: File }) => {
+  const [resolution, setResolution] = useState<string>("");
+
+  useEffect(() => {
+    if (file?.type?.startsWith("image/")) {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        setResolution(`${img.naturalWidth} x ${img.naturalHeight}`);
+        URL.revokeObjectURL(img.src); // Clean up memory
+      };
+    }
+  }, [file]);
+
+  if (!resolution) return null;
+
+  return (
+    <Typography variant="caption" sx={{ color: "primary.main", fontWeight: "bold", ml: 1 }}>
+      • {resolution}
+    </Typography>
+  );
+};

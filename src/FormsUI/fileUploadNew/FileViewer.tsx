@@ -145,8 +145,18 @@ function FileViewer() {
             file &&
             file?.split(".")?.pop() === "pdf") ? (
           <Box style={{ height: "100vh", width: "100%" }}>
-            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-              {fileUrl && <Viewer fileUrl={fileUrl} />}
+            <Worker workerUrl="https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs">
+              {fileUrl && (
+                <Viewer
+                  fileUrl={fileUrl}
+                  renderPage={(props: any) => (
+                    <>
+                      {props.canvasLayer.children}
+                      {props.annotationLayer.children}
+                    </>
+                  )}
+                />
+              )}
             </Worker>
           </Box>
         ) : (

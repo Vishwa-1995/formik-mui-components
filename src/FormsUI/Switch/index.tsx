@@ -23,8 +23,9 @@ const SwitchWrapper: React.FC<SwitchWrapperProps> = ({
     setFieldValue(name, checked);
   };
 
-  const configCheckbox: SwitchProps = {
+  const configSwitch: SwitchProps = {
     ...field,
+    color: "primary",
     ...otherProps,
     onChange: handleChange,
     checked: field.value,
@@ -36,7 +37,7 @@ const SwitchWrapper: React.FC<SwitchWrapperProps> = ({
     <FormControl error={showError}>
       <FormGroup>
         <FormControlLabel
-          control={<Switch {...configCheckbox} />}
+          control={<Switch {...configSwitch} />}
           label={
             <Typography variant="body2" color="textSecondary">
               {label}

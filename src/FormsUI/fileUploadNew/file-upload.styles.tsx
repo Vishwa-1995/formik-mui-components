@@ -136,10 +136,21 @@ export const RemoveFileIcon: StyledComponent<IconButtonProps> = styled(IconButto
   }
 `;
 
+export const ViewFileIcon: StyledComponent<IconButtonProps> = styled(IconButton)`
+  color: #48bb78;
+  cursor: pointer;
+  transition: transform 0.2s;
+  
+  &:hover {
+    transform: scale(1.1);
+    background-color: rgba(72, 187, 120, 0.1);
+  }
+`;
+
 export const PreviewContainer: StyledComponent<BoxProps> = styled(Box)({
   padding: '4px',
-  width: '80px',
-  height: '80px',
+  width: '60px',
+  height: '60px',
   borderRadius: '8px',
   boxSizing: 'border-box',
   flexShrink: 0,

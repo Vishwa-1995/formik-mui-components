@@ -5,6 +5,9 @@ interface ItemImageUploadProps extends React.InputHTMLAttributes<HTMLInputElemen
     maxFileSizeInBytes?: number;
     onUpload?: (files: File) => void;
     onRemove?: () => void;
+    isCropperEnabled?: boolean;
+    required?: boolean;
+    isLoading?: boolean;
 }
 declare const ItemImageUpload: React.FC<ItemImageUploadProps>;
 export default ItemImageUpload;

@@ -7,7 +7,7 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TextFieldProps } from "@mui/material/TextField";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 interface DateTimePickerWrapperProps {
   required?: boolean;
@@ -32,6 +32,9 @@ const DateTimePickerWrapper: React.FC<DateTimePickerWrapperProps> = ({
   const configTimePicker = {
     ...field,
     ...otherProps,
+    value: field.value ? dayjs(field.value) : null,
+    minDate: otherProps.minDate ? dayjs(otherProps.minDate) : undefined,
+    maxDate: otherProps.maxDate ? dayjs(otherProps.maxDate) : undefined,
     onChange: handleChange,
   };
 
