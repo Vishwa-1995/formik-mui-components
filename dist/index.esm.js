@@ -7,7 +7,6 @@ import { ThemeContext, keyframes, css } from '@emotion/react';
 import reactCSS from 'reactcss';
 import { SketchPicker } from 'react-color';
 import { LocalizationProvider, DatePicker, DesktopDateTimePicker, MobileDateTimePicker, DateTimePicker, TimePicker } from '@mui/x-date-pickers';
-import defaultDayjs from 'dayjs';
 import styled$2 from 'styled-components';
 import Cropper from 'react-easy-crop';
 import { create } from 'zustand';
@@ -3383,7 +3382,7 @@ function serializeStyles(args, registered, mergedProps) {
 }
 
 /**
- * @mui/styled-engine v7.3.8
+ * @mui/styled-engine v7.3.9
  *
  * @license MIT
  * This source code is licensed under the MIT license found in the
@@ -6096,10 +6095,10 @@ function createThemeWithVars(options = {}, ...args) {
     // assign component variables
     assignNode(palette, ['Alert', 'AppBar', 'Avatar', 'Button', 'Chip', 'FilledInput', 'LinearProgress', 'Skeleton', 'Slider', 'SnackbarContent', 'SpeedDialAction', 'StepConnector', 'StepContent', 'Switch', 'TableCell', 'Tooltip']);
     if (palette.mode === 'light') {
-      setColor(palette.Alert, 'errorColor', colorMix(private_safeDarken, palette.error.light, 0.6));
-      setColor(palette.Alert, 'infoColor', colorMix(private_safeDarken, palette.info.light, 0.6));
-      setColor(palette.Alert, 'successColor', colorMix(private_safeDarken, palette.success.light, 0.6));
-      setColor(palette.Alert, 'warningColor', colorMix(private_safeDarken, palette.warning.light, 0.6));
+      setColor(palette.Alert, 'errorColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-error-light') : palette.error.light, 0.6));
+      setColor(palette.Alert, 'infoColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-info-light') : palette.info.light, 0.6));
+      setColor(palette.Alert, 'successColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-success-light') : palette.success.light, 0.6));
+      setColor(palette.Alert, 'warningColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-warning-light') : palette.warning.light, 0.6));
       setColor(palette.Alert, 'errorFilledBg', setCssVarColor('palette-error-main'));
       setColor(palette.Alert, 'infoFilledBg', setCssVarColor('palette-info-main'));
       setColor(palette.Alert, 'successFilledBg', setCssVarColor('palette-success-main'));
@@ -6108,10 +6107,10 @@ function createThemeWithVars(options = {}, ...args) {
       setColor(palette.Alert, 'infoFilledColor', silent(() => palette.getContrastText(palette.info.main)));
       setColor(palette.Alert, 'successFilledColor', silent(() => palette.getContrastText(palette.success.main)));
       setColor(palette.Alert, 'warningFilledColor', silent(() => palette.getContrastText(palette.warning.main)));
-      setColor(palette.Alert, 'errorStandardBg', colorMix(private_safeLighten, palette.error.light, 0.9));
-      setColor(palette.Alert, 'infoStandardBg', colorMix(private_safeLighten, palette.info.light, 0.9));
-      setColor(palette.Alert, 'successStandardBg', colorMix(private_safeLighten, palette.success.light, 0.9));
-      setColor(palette.Alert, 'warningStandardBg', colorMix(private_safeLighten, palette.warning.light, 0.9));
+      setColor(palette.Alert, 'errorStandardBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-error-light') : palette.error.light, 0.9));
+      setColor(palette.Alert, 'infoStandardBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-info-light') : palette.info.light, 0.9));
+      setColor(palette.Alert, 'successStandardBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-success-light') : palette.success.light, 0.9));
+      setColor(palette.Alert, 'warningStandardBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-warning-light') : palette.warning.light, 0.9));
       setColor(palette.Alert, 'errorIconColor', setCssVarColor('palette-error-main'));
       setColor(palette.Alert, 'infoIconColor', setCssVarColor('palette-info-main'));
       setColor(palette.Alert, 'successIconColor', setCssVarColor('palette-success-main'));
@@ -6126,20 +6125,20 @@ function createThemeWithVars(options = {}, ...args) {
       setColor(palette.FilledInput, 'bg', 'rgba(0, 0, 0, 0.06)');
       setColor(palette.FilledInput, 'hoverBg', 'rgba(0, 0, 0, 0.09)');
       setColor(palette.FilledInput, 'disabledBg', 'rgba(0, 0, 0, 0.12)');
-      setColor(palette.LinearProgress, 'primaryBg', colorMix(private_safeLighten, palette.primary.main, 0.62));
-      setColor(palette.LinearProgress, 'secondaryBg', colorMix(private_safeLighten, palette.secondary.main, 0.62));
-      setColor(palette.LinearProgress, 'errorBg', colorMix(private_safeLighten, palette.error.main, 0.62));
-      setColor(palette.LinearProgress, 'infoBg', colorMix(private_safeLighten, palette.info.main, 0.62));
-      setColor(palette.LinearProgress, 'successBg', colorMix(private_safeLighten, palette.success.main, 0.62));
-      setColor(palette.LinearProgress, 'warningBg', colorMix(private_safeLighten, palette.warning.main, 0.62));
-      setColor(palette.Skeleton, 'bg', colorSpace ? colorMix(private_safeAlpha, palette.text.primary, 0.11) : `rgba(${setCssVarColor('palette-text-primaryChannel')} / 0.11)`);
-      setColor(palette.Slider, 'primaryTrack', colorMix(private_safeLighten, palette.primary.main, 0.62));
-      setColor(palette.Slider, 'secondaryTrack', colorMix(private_safeLighten, palette.secondary.main, 0.62));
-      setColor(palette.Slider, 'errorTrack', colorMix(private_safeLighten, palette.error.main, 0.62));
-      setColor(palette.Slider, 'infoTrack', colorMix(private_safeLighten, palette.info.main, 0.62));
-      setColor(palette.Slider, 'successTrack', colorMix(private_safeLighten, palette.success.main, 0.62));
-      setColor(palette.Slider, 'warningTrack', colorMix(private_safeLighten, palette.warning.main, 0.62));
-      const snackbarContentBackground = colorSpace ? colorMix(private_safeDarken, palette.background.default, 0.6825) // use `0.6825` instead of `0.8` to match the contrast ratio of JS implementation
+      setColor(palette.LinearProgress, 'primaryBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-primary-main') : palette.primary.main, 0.62));
+      setColor(palette.LinearProgress, 'secondaryBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-secondary-main') : palette.secondary.main, 0.62));
+      setColor(palette.LinearProgress, 'errorBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-error-main') : palette.error.main, 0.62));
+      setColor(palette.LinearProgress, 'infoBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-info-main') : palette.info.main, 0.62));
+      setColor(palette.LinearProgress, 'successBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-success-main') : palette.success.main, 0.62));
+      setColor(palette.LinearProgress, 'warningBg', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-warning-light') : palette.warning.main, 0.62));
+      setColor(palette.Skeleton, 'bg', colorSpace ? colorMix(private_safeAlpha, nativeColor ? getCssVar('palette-text-primary') : palette.text.primary, 0.11) : `rgba(${setCssVarColor('palette-text-primaryChannel')} / 0.11)`);
+      setColor(palette.Slider, 'primaryTrack', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-primary-main') : palette.primary.main, 0.62));
+      setColor(palette.Slider, 'secondaryTrack', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-secondary-main') : palette.secondary.main, 0.62));
+      setColor(palette.Slider, 'errorTrack', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-error-main') : palette.error.main, 0.62));
+      setColor(palette.Slider, 'infoTrack', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-info-main') : palette.info.main, 0.62));
+      setColor(palette.Slider, 'successTrack', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-success-main') : palette.success.main, 0.62));
+      setColor(palette.Slider, 'warningTrack', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-warning-main') : palette.warning.main, 0.62));
+      const snackbarContentBackground = colorSpace ? colorMix(private_safeDarken, nativeColor ? getCssVar('palette-background-default') : palette.background.default, 0.6825) // use `0.6825` instead of `0.8` to match the contrast ratio of JS implementation
       : private_safeEmphasize(palette.background.default, 0.8);
       setColor(palette.SnackbarContent, 'bg', snackbarContentBackground);
       setColor(palette.SnackbarContent, 'color', silent(() => colorSpace ? dark.text.primary : palette.getContrastText(snackbarContentBackground)));
@@ -6148,20 +6147,20 @@ function createThemeWithVars(options = {}, ...args) {
       setColor(palette.StepContent, 'border', setCssVarColor('palette-grey-400'));
       setColor(palette.Switch, 'defaultColor', setCssVarColor('palette-common-white'));
       setColor(palette.Switch, 'defaultDisabledColor', setCssVarColor('palette-grey-100'));
-      setColor(palette.Switch, 'primaryDisabledColor', colorMix(private_safeLighten, palette.primary.main, 0.62));
-      setColor(palette.Switch, 'secondaryDisabledColor', colorMix(private_safeLighten, palette.secondary.main, 0.62));
-      setColor(palette.Switch, 'errorDisabledColor', colorMix(private_safeLighten, palette.error.main, 0.62));
-      setColor(palette.Switch, 'infoDisabledColor', colorMix(private_safeLighten, palette.info.main, 0.62));
-      setColor(palette.Switch, 'successDisabledColor', colorMix(private_safeLighten, palette.success.main, 0.62));
-      setColor(palette.Switch, 'warningDisabledColor', colorMix(private_safeLighten, palette.warning.main, 0.62));
-      setColor(palette.TableCell, 'border', colorMix(private_safeLighten, colorMix(private_safeAlpha, palette.divider, 1), 0.88));
-      setColor(palette.Tooltip, 'bg', colorMix(private_safeAlpha, palette.grey[700], 0.92));
+      setColor(palette.Switch, 'primaryDisabledColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-primary-main') : palette.primary.main, 0.62));
+      setColor(palette.Switch, 'secondaryDisabledColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-secondary-main') : palette.secondary.main, 0.62));
+      setColor(palette.Switch, 'errorDisabledColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-error-main') : palette.error.main, 0.62));
+      setColor(palette.Switch, 'infoDisabledColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-info-main') : palette.info.main, 0.62));
+      setColor(palette.Switch, 'successDisabledColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-success-main') : palette.success.main, 0.62));
+      setColor(palette.Switch, 'warningDisabledColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-warning-main') : palette.warning.main, 0.62));
+      setColor(palette.TableCell, 'border', colorMix(private_safeLighten, private_safeAlpha(nativeColor ? getCssVar('palette-divider') : palette.divider, 1), 0.88));
+      setColor(palette.Tooltip, 'bg', colorMix(private_safeAlpha, nativeColor ? getCssVar('palette-grey-700') : palette.grey[700], 0.92));
     }
     if (palette.mode === 'dark') {
-      setColor(palette.Alert, 'errorColor', colorMix(private_safeLighten, palette.error.light, 0.6));
-      setColor(palette.Alert, 'infoColor', colorMix(private_safeLighten, palette.info.light, 0.6));
-      setColor(palette.Alert, 'successColor', colorMix(private_safeLighten, palette.success.light, 0.6));
-      setColor(palette.Alert, 'warningColor', colorMix(private_safeLighten, palette.warning.light, 0.6));
+      setColor(palette.Alert, 'errorColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-error-light') : palette.error.light, 0.6));
+      setColor(palette.Alert, 'infoColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-info-light') : palette.info.light, 0.6));
+      setColor(palette.Alert, 'successColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-success-light') : palette.success.light, 0.6));
+      setColor(palette.Alert, 'warningColor', colorMix(private_safeLighten, nativeColor ? getCssVar('palette-warning-light') : palette.warning.light, 0.6));
       setColor(palette.Alert, 'errorFilledBg', setCssVarColor('palette-error-dark'));
       setColor(palette.Alert, 'infoFilledBg', setCssVarColor('palette-info-dark'));
       setColor(palette.Alert, 'successFilledBg', setCssVarColor('palette-success-dark'));
@@ -6170,10 +6169,10 @@ function createThemeWithVars(options = {}, ...args) {
       setColor(palette.Alert, 'infoFilledColor', silent(() => palette.getContrastText(palette.info.dark)));
       setColor(palette.Alert, 'successFilledColor', silent(() => palette.getContrastText(palette.success.dark)));
       setColor(palette.Alert, 'warningFilledColor', silent(() => palette.getContrastText(palette.warning.dark)));
-      setColor(palette.Alert, 'errorStandardBg', colorMix(private_safeDarken, palette.error.light, 0.9));
-      setColor(palette.Alert, 'infoStandardBg', colorMix(private_safeDarken, palette.info.light, 0.9));
-      setColor(palette.Alert, 'successStandardBg', colorMix(private_safeDarken, palette.success.light, 0.9));
-      setColor(palette.Alert, 'warningStandardBg', colorMix(private_safeDarken, palette.warning.light, 0.9));
+      setColor(palette.Alert, 'errorStandardBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-error-light') : palette.error.light, 0.9));
+      setColor(palette.Alert, 'infoStandardBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-info-light') : palette.info.light, 0.9));
+      setColor(palette.Alert, 'successStandardBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-success-light') : palette.success.light, 0.9));
+      setColor(palette.Alert, 'warningStandardBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-warning-light') : palette.warning.light, 0.9));
       setColor(palette.Alert, 'errorIconColor', setCssVarColor('palette-error-main'));
       setColor(palette.Alert, 'infoIconColor', setCssVarColor('palette-info-main'));
       setColor(palette.Alert, 'successIconColor', setCssVarColor('palette-success-main'));
@@ -6190,20 +6189,20 @@ function createThemeWithVars(options = {}, ...args) {
       setColor(palette.FilledInput, 'bg', 'rgba(255, 255, 255, 0.09)');
       setColor(palette.FilledInput, 'hoverBg', 'rgba(255, 255, 255, 0.13)');
       setColor(palette.FilledInput, 'disabledBg', 'rgba(255, 255, 255, 0.12)');
-      setColor(palette.LinearProgress, 'primaryBg', colorMix(private_safeDarken, palette.primary.main, 0.5));
-      setColor(palette.LinearProgress, 'secondaryBg', colorMix(private_safeDarken, palette.secondary.main, 0.5));
-      setColor(palette.LinearProgress, 'errorBg', colorMix(private_safeDarken, palette.error.main, 0.5));
-      setColor(palette.LinearProgress, 'infoBg', colorMix(private_safeDarken, palette.info.main, 0.5));
-      setColor(palette.LinearProgress, 'successBg', colorMix(private_safeDarken, palette.success.main, 0.5));
-      setColor(palette.LinearProgress, 'warningBg', colorMix(private_safeDarken, palette.warning.main, 0.5));
-      setColor(palette.Skeleton, 'bg', colorSpace ? colorMix(private_safeAlpha, palette.text.primary, 0.13) : `rgba(${setCssVarColor('palette-text-primaryChannel')} / 0.13)`);
-      setColor(palette.Slider, 'primaryTrack', colorMix(private_safeDarken, palette.primary.main, 0.5));
-      setColor(palette.Slider, 'secondaryTrack', colorMix(private_safeDarken, palette.secondary.main, 0.5));
-      setColor(palette.Slider, 'errorTrack', colorMix(private_safeDarken, palette.error.main, 0.5));
-      setColor(palette.Slider, 'infoTrack', colorMix(private_safeDarken, palette.info.main, 0.5));
-      setColor(palette.Slider, 'successTrack', colorMix(private_safeDarken, palette.success.main, 0.5));
-      setColor(palette.Slider, 'warningTrack', colorMix(private_safeDarken, palette.warning.main, 0.5));
-      const snackbarContentBackground = colorSpace ? colorMix(private_safeLighten, palette.background.default, 0.985) // use `0.985` instead of `0.98` to match the contrast ratio of JS implementation
+      setColor(palette.LinearProgress, 'primaryBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-primary-main') : palette.primary.main, 0.5));
+      setColor(palette.LinearProgress, 'secondaryBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-secondary-main') : palette.secondary.main, 0.5));
+      setColor(palette.LinearProgress, 'errorBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-error-main') : palette.error.main, 0.5));
+      setColor(palette.LinearProgress, 'infoBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-info-main') : palette.info.main, 0.5));
+      setColor(palette.LinearProgress, 'successBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-success-main') : palette.success.main, 0.5));
+      setColor(palette.LinearProgress, 'warningBg', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-warning-main') : palette.warning.main, 0.5));
+      setColor(palette.Skeleton, 'bg', colorSpace ? colorMix(private_safeAlpha, nativeColor ? getCssVar('palette-text-primary') : palette.text.primary, 0.13) : `rgba(${setCssVarColor('palette-text-primaryChannel')} / 0.13)`);
+      setColor(palette.Slider, 'primaryTrack', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-primary-main') : palette.primary.main, 0.5));
+      setColor(palette.Slider, 'secondaryTrack', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-secondary-main') : palette.secondary.main, 0.5));
+      setColor(palette.Slider, 'errorTrack', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-error-main') : palette.error.main, 0.5));
+      setColor(palette.Slider, 'infoTrack', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-info-main') : palette.info.main, 0.5));
+      setColor(palette.Slider, 'successTrack', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-success-main') : palette.success.main, 0.5));
+      setColor(palette.Slider, 'warningTrack', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-warning-light') : palette.warning.main, 0.5));
+      const snackbarContentBackground = colorSpace ? colorMix(private_safeLighten, nativeColor ? getCssVar('palette-background-default') : palette.background.default, 0.985) // use `0.985` instead of `0.98` to match the contrast ratio of JS implementation
       : private_safeEmphasize(palette.background.default, 0.98);
       setColor(palette.SnackbarContent, 'bg', snackbarContentBackground);
       setColor(palette.SnackbarContent, 'color', silent(() => colorSpace ? light.text.primary : palette.getContrastText(snackbarContentBackground)));
@@ -6212,14 +6211,14 @@ function createThemeWithVars(options = {}, ...args) {
       setColor(palette.StepContent, 'border', setCssVarColor('palette-grey-600'));
       setColor(palette.Switch, 'defaultColor', setCssVarColor('palette-grey-300'));
       setColor(palette.Switch, 'defaultDisabledColor', setCssVarColor('palette-grey-600'));
-      setColor(palette.Switch, 'primaryDisabledColor', colorMix(private_safeDarken, palette.primary.main, 0.55));
-      setColor(palette.Switch, 'secondaryDisabledColor', colorMix(private_safeDarken, palette.secondary.main, 0.55));
-      setColor(palette.Switch, 'errorDisabledColor', colorMix(private_safeDarken, palette.error.main, 0.55));
-      setColor(palette.Switch, 'infoDisabledColor', colorMix(private_safeDarken, palette.info.main, 0.55));
-      setColor(palette.Switch, 'successDisabledColor', colorMix(private_safeDarken, palette.success.main, 0.55));
-      setColor(palette.Switch, 'warningDisabledColor', colorMix(private_safeDarken, palette.warning.main, 0.55));
-      setColor(palette.TableCell, 'border', colorMix(private_safeDarken, colorMix(private_safeAlpha, palette.divider, 1), 0.68));
-      setColor(palette.Tooltip, 'bg', colorMix(private_safeAlpha, palette.grey[700], 0.92));
+      setColor(palette.Switch, 'primaryDisabledColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-primary-main') : palette.primary.main, 0.55));
+      setColor(palette.Switch, 'secondaryDisabledColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-secondary-main') : palette.secondary.main, 0.55));
+      setColor(palette.Switch, 'errorDisabledColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-error-main') : palette.error.main, 0.55));
+      setColor(palette.Switch, 'infoDisabledColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-info-main') : palette.info.main, 0.55));
+      setColor(palette.Switch, 'successDisabledColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-success-main') : palette.success.main, 0.55));
+      setColor(palette.Switch, 'warningDisabledColor', colorMix(private_safeDarken, nativeColor ? getCssVar('palette-warning-light') : palette.warning.main, 0.55));
+      setColor(palette.TableCell, 'border', colorMix(private_safeDarken, private_safeAlpha(nativeColor ? getCssVar('palette-divider') : palette.divider, 1), 0.68));
+      setColor(palette.Tooltip, 'bg', colorMix(private_safeAlpha, nativeColor ? getCssVar('palette-grey-700') : palette.grey[700], 0.92));
     }
 
     // MUI X - DataGrid needs this token.
@@ -9962,7 +9961,6 @@ const SwitchBase = /*#__PURE__*/React.forwardRef(function SwitchBase(props, ref)
     additionalProps: {
       centerRipple: true,
       focusRipple: !disableFocusRipple,
-      disabled,
       role: undefined,
       tabIndex: null
     }
@@ -10872,6 +10870,391 @@ const ColorPickerWrapper = ({ name, label, ...otherProps }) => {
     return (jsxRuntimeExports.jsxs(Grid, { container: true, spacing: 1, children: [jsxRuntimeExports.jsx(Typography, { variant: "body2", children: label }), jsxRuntimeExports.jsxs(Grid, { children: [jsxRuntimeExports.jsx(Box$1, { style: styles.swatch, onClick: handleClick, children: jsxRuntimeExports.jsx(Box$1, { style: styles.color }) }), pickerState ? (jsxRuntimeExports.jsxs(Box$1, { style: styles.popover, children: [jsxRuntimeExports.jsx(Box$1, { style: styles.cover, onClick: handleClose }), jsxRuntimeExports.jsx(SketchPicker, { color: field.value, onChange: handleChange })] })) : null] }), meta.touched && meta.error && (jsxRuntimeExports.jsx(Typography, { variant: "caption", color: "error", children: meta.error }))] }));
 };
 
+var dayjs_min$1 = {exports: {}};
+
+var dayjs_min = dayjs_min$1.exports;
+var hasRequiredDayjs_min;
+function requireDayjs_min() {
+  if (hasRequiredDayjs_min) return dayjs_min$1.exports;
+  hasRequiredDayjs_min = 1;
+  (function (module, exports$1) {
+    !function (t, e) {
+      module.exports = e() ;
+    }(dayjs_min, function () {
+
+      var t = 1e3,
+        e = 6e4,
+        n = 36e5,
+        r = "millisecond",
+        i = "second",
+        s = "minute",
+        u = "hour",
+        a = "day",
+        o = "week",
+        c = "month",
+        f = "quarter",
+        h = "year",
+        d = "date",
+        l = "Invalid Date",
+        $ = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,
+        y = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,
+        M = {
+          name: "en",
+          weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),
+          months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"),
+          ordinal: function (t) {
+            var e = ["th", "st", "nd", "rd"],
+              n = t % 100;
+            return "[" + t + (e[(n - 20) % 10] || e[n] || e[0]) + "]";
+          }
+        },
+        m = function (t, e, n) {
+          var r = String(t);
+          return !r || r.length >= e ? t : "" + Array(e + 1 - r.length).join(n) + t;
+        },
+        v = {
+          s: m,
+          z: function (t) {
+            var e = -t.utcOffset(),
+              n = Math.abs(e),
+              r = Math.floor(n / 60),
+              i = n % 60;
+            return (e <= 0 ? "+" : "-") + m(r, 2, "0") + ":" + m(i, 2, "0");
+          },
+          m: function t(e, n) {
+            if (e.date() < n.date()) return -t(n, e);
+            var r = 12 * (n.year() - e.year()) + (n.month() - e.month()),
+              i = e.clone().add(r, c),
+              s = n - i < 0,
+              u = e.clone().add(r + (s ? -1 : 1), c);
+            return +(-(r + (n - i) / (s ? i - u : u - i)) || 0);
+          },
+          a: function (t) {
+            return t < 0 ? Math.ceil(t) || 0 : Math.floor(t);
+          },
+          p: function (t) {
+            return {
+              M: c,
+              y: h,
+              w: o,
+              d: a,
+              D: d,
+              h: u,
+              m: s,
+              s: i,
+              ms: r,
+              Q: f
+            }[t] || String(t || "").toLowerCase().replace(/s$/, "");
+          },
+          u: function (t) {
+            return void 0 === t;
+          }
+        },
+        g = "en",
+        D = {};
+      D[g] = M;
+      var p = "$isDayjsObject",
+        S = function (t) {
+          return t instanceof _ || !(!t || !t[p]);
+        },
+        w = function t(e, n, r) {
+          var i;
+          if (!e) return g;
+          if ("string" == typeof e) {
+            var s = e.toLowerCase();
+            D[s] && (i = s), n && (D[s] = n, i = s);
+            var u = e.split("-");
+            if (!i && u.length > 1) return t(u[0]);
+          } else {
+            var a = e.name;
+            D[a] = e, i = a;
+          }
+          return !r && i && (g = i), i || !r && g;
+        },
+        O = function (t, e) {
+          if (S(t)) return t.clone();
+          var n = "object" == typeof e ? e : {};
+          return n.date = t, n.args = arguments, new _(n);
+        },
+        b = v;
+      b.l = w, b.i = S, b.w = function (t, e) {
+        return O(t, {
+          locale: e.$L,
+          utc: e.$u,
+          x: e.$x,
+          $offset: e.$offset
+        });
+      };
+      var _ = function () {
+          function M(t) {
+            this.$L = w(t.locale, null, true), this.parse(t), this.$x = this.$x || t.x || {}, this[p] = true;
+          }
+          var m = M.prototype;
+          return m.parse = function (t) {
+            this.$d = function (t) {
+              var e = t.date,
+                n = t.utc;
+              if (null === e) return new Date(NaN);
+              if (b.u(e)) return new Date();
+              if (e instanceof Date) return new Date(e);
+              if ("string" == typeof e && !/Z$/i.test(e)) {
+                var r = e.match($);
+                if (r) {
+                  var i = r[2] - 1 || 0,
+                    s = (r[7] || "0").substring(0, 3);
+                  return n ? new Date(Date.UTC(r[1], i, r[3] || 1, r[4] || 0, r[5] || 0, r[6] || 0, s)) : new Date(r[1], i, r[3] || 1, r[4] || 0, r[5] || 0, r[6] || 0, s);
+                }
+              }
+              return new Date(e);
+            }(t), this.init();
+          }, m.init = function () {
+            var t = this.$d;
+            this.$y = t.getFullYear(), this.$M = t.getMonth(), this.$D = t.getDate(), this.$W = t.getDay(), this.$H = t.getHours(), this.$m = t.getMinutes(), this.$s = t.getSeconds(), this.$ms = t.getMilliseconds();
+          }, m.$utils = function () {
+            return b;
+          }, m.isValid = function () {
+            return !(this.$d.toString() === l);
+          }, m.isSame = function (t, e) {
+            var n = O(t);
+            return this.startOf(e) <= n && n <= this.endOf(e);
+          }, m.isAfter = function (t, e) {
+            return O(t) < this.startOf(e);
+          }, m.isBefore = function (t, e) {
+            return this.endOf(e) < O(t);
+          }, m.$g = function (t, e, n) {
+            return b.u(t) ? this[e] : this.set(n, t);
+          }, m.unix = function () {
+            return Math.floor(this.valueOf() / 1e3);
+          }, m.valueOf = function () {
+            return this.$d.getTime();
+          }, m.startOf = function (t, e) {
+            var n = this,
+              r = !!b.u(e) || e,
+              f = b.p(t),
+              l = function (t, e) {
+                var i = b.w(n.$u ? Date.UTC(n.$y, e, t) : new Date(n.$y, e, t), n);
+                return r ? i : i.endOf(a);
+              },
+              $ = function (t, e) {
+                return b.w(n.toDate()[t].apply(n.toDate("s"), (r ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(e)), n);
+              },
+              y = this.$W,
+              M = this.$M,
+              m = this.$D,
+              v = "set" + (this.$u ? "UTC" : "");
+            switch (f) {
+              case h:
+                return r ? l(1, 0) : l(31, 11);
+              case c:
+                return r ? l(1, M) : l(0, M + 1);
+              case o:
+                var g = this.$locale().weekStart || 0,
+                  D = (y < g ? y + 7 : y) - g;
+                return l(r ? m - D : m + (6 - D), M);
+              case a:
+              case d:
+                return $(v + "Hours", 0);
+              case u:
+                return $(v + "Minutes", 1);
+              case s:
+                return $(v + "Seconds", 2);
+              case i:
+                return $(v + "Milliseconds", 3);
+              default:
+                return this.clone();
+            }
+          }, m.endOf = function (t) {
+            return this.startOf(t, false);
+          }, m.$set = function (t, e) {
+            var n,
+              o = b.p(t),
+              f = "set" + (this.$u ? "UTC" : ""),
+              l = (n = {}, n[a] = f + "Date", n[d] = f + "Date", n[c] = f + "Month", n[h] = f + "FullYear", n[u] = f + "Hours", n[s] = f + "Minutes", n[i] = f + "Seconds", n[r] = f + "Milliseconds", n)[o],
+              $ = o === a ? this.$D + (e - this.$W) : e;
+            if (o === c || o === h) {
+              var y = this.clone().set(d, 1);
+              y.$d[l]($), y.init(), this.$d = y.set(d, Math.min(this.$D, y.daysInMonth())).$d;
+            } else l && this.$d[l]($);
+            return this.init(), this;
+          }, m.set = function (t, e) {
+            return this.clone().$set(t, e);
+          }, m.get = function (t) {
+            return this[b.p(t)]();
+          }, m.add = function (r, f) {
+            var d,
+              l = this;
+            r = Number(r);
+            var $ = b.p(f),
+              y = function (t) {
+                var e = O(l);
+                return b.w(e.date(e.date() + Math.round(t * r)), l);
+              };
+            if ($ === c) return this.set(c, this.$M + r);
+            if ($ === h) return this.set(h, this.$y + r);
+            if ($ === a) return y(1);
+            if ($ === o) return y(7);
+            var M = (d = {}, d[s] = e, d[u] = n, d[i] = t, d)[$] || 1,
+              m = this.$d.getTime() + r * M;
+            return b.w(m, this);
+          }, m.subtract = function (t, e) {
+            return this.add(-1 * t, e);
+          }, m.format = function (t) {
+            var e = this,
+              n = this.$locale();
+            if (!this.isValid()) return n.invalidDate || l;
+            var r = t || "YYYY-MM-DDTHH:mm:ssZ",
+              i = b.z(this),
+              s = this.$H,
+              u = this.$m,
+              a = this.$M,
+              o = n.weekdays,
+              c = n.months,
+              f = n.meridiem,
+              h = function (t, n, i, s) {
+                return t && (t[n] || t(e, r)) || i[n].slice(0, s);
+              },
+              d = function (t) {
+                return b.s(s % 12 || 12, t, "0");
+              },
+              $ = f || function (t, e, n) {
+                var r = t < 12 ? "AM" : "PM";
+                return n ? r.toLowerCase() : r;
+              };
+            return r.replace(y, function (t, r) {
+              return r || function (t) {
+                switch (t) {
+                  case "YY":
+                    return String(e.$y).slice(-2);
+                  case "YYYY":
+                    return b.s(e.$y, 4, "0");
+                  case "M":
+                    return a + 1;
+                  case "MM":
+                    return b.s(a + 1, 2, "0");
+                  case "MMM":
+                    return h(n.monthsShort, a, c, 3);
+                  case "MMMM":
+                    return h(c, a);
+                  case "D":
+                    return e.$D;
+                  case "DD":
+                    return b.s(e.$D, 2, "0");
+                  case "d":
+                    return String(e.$W);
+                  case "dd":
+                    return h(n.weekdaysMin, e.$W, o, 2);
+                  case "ddd":
+                    return h(n.weekdaysShort, e.$W, o, 3);
+                  case "dddd":
+                    return o[e.$W];
+                  case "H":
+                    return String(s);
+                  case "HH":
+                    return b.s(s, 2, "0");
+                  case "h":
+                    return d(1);
+                  case "hh":
+                    return d(2);
+                  case "a":
+                    return $(s, u, true);
+                  case "A":
+                    return $(s, u, false);
+                  case "m":
+                    return String(u);
+                  case "mm":
+                    return b.s(u, 2, "0");
+                  case "s":
+                    return String(e.$s);
+                  case "ss":
+                    return b.s(e.$s, 2, "0");
+                  case "SSS":
+                    return b.s(e.$ms, 3, "0");
+                  case "Z":
+                    return i;
+                }
+                return null;
+              }(t) || i.replace(":", "");
+            });
+          }, m.utcOffset = function () {
+            return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);
+          }, m.diff = function (r, d, l) {
+            var $,
+              y = this,
+              M = b.p(d),
+              m = O(r),
+              v = (m.utcOffset() - this.utcOffset()) * e,
+              g = this - m,
+              D = function () {
+                return b.m(y, m);
+              };
+            switch (M) {
+              case h:
+                $ = D() / 12;
+                break;
+              case c:
+                $ = D();
+                break;
+              case f:
+                $ = D() / 3;
+                break;
+              case o:
+                $ = (g - v) / 6048e5;
+                break;
+              case a:
+                $ = (g - v) / 864e5;
+                break;
+              case u:
+                $ = g / n;
+                break;
+              case s:
+                $ = g / e;
+                break;
+              case i:
+                $ = g / t;
+                break;
+              default:
+                $ = g;
+            }
+            return l ? $ : b.a($);
+          }, m.daysInMonth = function () {
+            return this.endOf(c).$D;
+          }, m.$locale = function () {
+            return D[this.$L];
+          }, m.locale = function (t, e) {
+            if (!t) return this.$L;
+            var n = this.clone(),
+              r = w(t, e, true);
+            return r && (n.$L = r), n;
+          }, m.clone = function () {
+            return b.w(this.$d, this);
+          }, m.toDate = function () {
+            return new Date(this.valueOf());
+          }, m.toJSON = function () {
+            return this.isValid() ? this.toISOString() : null;
+          }, m.toISOString = function () {
+            return this.$d.toISOString();
+          }, m.toString = function () {
+            return this.$d.toUTCString();
+          }, M;
+        }(),
+        k = _.prototype;
+      return O.prototype = k, [["$ms", r], ["$s", i], ["$m", s], ["$H", u], ["$W", a], ["$M", c], ["$y", h], ["$D", d]].forEach(function (t) {
+        k[t[1]] = function (e) {
+          return this.$g(e, t[0], t[1]);
+        };
+      }), O.extend = function (t, e) {
+        return t.$i || (t(e, _, O), t.$i = true), O;
+      }, O.locale = w, O.isDayjs = S, O.unix = function (t) {
+        return O(1e3 * t);
+      }, O.en = D[g], O.Ls = D, O.p = {}, O;
+    });
+  })(dayjs_min$1);
+  return dayjs_min$1.exports;
+}
+
+var dayjs_minExports = requireDayjs_min();
+var dayjs = /*@__PURE__*/getDefaultExportFromCjs(dayjs_minExports);
+
 var weekOfYear$2 = {exports: {}};
 
 var weekOfYear$1 = weekOfYear$2.exports;
@@ -11217,9 +11600,9 @@ const buildWarning = (message, gravity = 'warning') => {
   };
 };
 
-defaultDayjs.extend(customParseFormatPlugin);
-defaultDayjs.extend(localizedFormatPlugin);
-defaultDayjs.extend(isBetweenPlugin);
+dayjs.extend(customParseFormatPlugin);
+dayjs.extend(localizedFormatPlugin);
+dayjs.extend(isBetweenPlugin);
 const localeNotFoundWarning = buildWarning(['Your locale has not been found.', 'Either the locale key is not a supported one. Locales supported by dayjs are available here: https://github.com/iamkun/dayjs/tree/dev/src/locale', "Or you forget to import the locale from 'dayjs/locale/{localeUsed}'", 'fallback on English locale']);
 const formatTokenMap = {
   // Year
@@ -11389,8 +11772,8 @@ class AdapterDayjs {
       }
       return value.locale(expectedLocale);
     };
-    this.hasUTCPlugin = () => typeof defaultDayjs.utc !== 'undefined';
-    this.hasTimezonePlugin = () => typeof defaultDayjs.tz !== 'undefined';
+    this.hasUTCPlugin = () => typeof dayjs.utc !== 'undefined';
+    this.hasTimezonePlugin = () => typeof dayjs.tz !== 'undefined';
     this.isSame = (value, comparing, comparisonTemplate) => {
       const comparingInValueTimezone = this.setTimezone(comparing, this.getTimezone(value));
       return value.format(comparisonTemplate) === comparingInValueTimezone.format(comparisonTemplate);
@@ -11406,7 +11789,7 @@ class AdapterDayjs {
           }
         case 'system':
           {
-            return defaultDayjs.tz.guess();
+            return dayjs.tz.guess();
           }
         default:
           {
@@ -11421,23 +11804,23 @@ class AdapterDayjs {
         return this.rawDayJsInstance(value);
       }
       if (this.hasUTCPlugin() && this.hasTimezonePlugin()) {
-        const timezone = defaultDayjs.tz.guess();
+        const timezone = dayjs.tz.guess();
 
         // We can't change the system timezone in the tests
         /* istanbul ignore next */
         if (timezone !== 'UTC') {
-          return defaultDayjs.tz(value, timezone);
+          return dayjs.tz(value, timezone);
         }
-        return defaultDayjs(value);
+        return dayjs(value);
       }
-      return defaultDayjs(value);
+      return dayjs(value);
     };
     this.createUTCDate = value => {
       /* istanbul ignore next */
       if (!this.hasUTCPlugin()) {
         throw new Error(MISSING_UTC_PLUGIN);
       }
-      return defaultDayjs.utc(value);
+      return dayjs.utc(value);
     };
     this.createTZDate = (value, timezone) => {
       /* istanbul ignore next */
@@ -11450,10 +11833,10 @@ class AdapterDayjs {
         throw new Error(MISSING_TIMEZONE_PLUGIN);
       }
       const keepLocalTime = value !== undefined && !value.endsWith('Z');
-      return defaultDayjs(value).tz(this.cleanTimezone(timezone), keepLocalTime);
+      return dayjs(value).tz(this.cleanTimezone(timezone), keepLocalTime);
     };
     this.getLocaleFormats = () => {
-      const locales = defaultDayjs.Ls;
+      const locales = dayjs.Ls;
       const locale = this.locale || 'en';
       let localeObject = locales[locale];
       if (localeObject === undefined) {
@@ -11551,7 +11934,7 @@ class AdapterDayjs {
         /* istanbul ignore next */
         throw new Error(MISSING_TIMEZONE_PLUGIN);
       }
-      return defaultDayjs.tz(value, this.cleanTimezone(timezone));
+      return dayjs.tz(value, this.cleanTimezone(timezone));
     };
     this.toJsDate = value => {
       return value.toDate();
@@ -11803,10 +12186,10 @@ class AdapterDayjs {
       return ampm === 'am' ? 'AM' : 'PM';
     };
     this.rawDayJsInstance = instance;
-    this.dayjs = withLocale((_this$rawDayJsInstanc = this.rawDayJsInstance) != null ? _this$rawDayJsInstanc : defaultDayjs, _locale);
+    this.dayjs = withLocale((_this$rawDayJsInstanc = this.rawDayJsInstance) != null ? _this$rawDayJsInstanc : dayjs, _locale);
     this.locale = _locale;
     this.formats = _extends({}, defaultFormats, formats);
-    defaultDayjs.extend(weekOfYear);
+    dayjs.extend(weekOfYear);
   }
 }
 
@@ -11847,9 +12230,9 @@ const DateTimePickerWrapper = ({ required, version = "responsive", name, ...othe
     const configTimePicker = {
         ...field,
         ...otherProps,
-        value: field.value ? defaultDayjs(field.value) : null,
-        minDate: otherProps.minDate ? defaultDayjs(otherProps.minDate) : undefined,
-        maxDate: otherProps.maxDate ? defaultDayjs(otherProps.maxDate) : undefined,
+        value: field.value ? dayjs(field.value) : null,
+        minDate: otherProps.minDate ? dayjs(otherProps.minDate) : undefined,
+        maxDate: otherProps.maxDate ? dayjs(otherProps.maxDate) : undefined,
         onChange: handleChange,
     };
     const handleBlur = (event) => {
