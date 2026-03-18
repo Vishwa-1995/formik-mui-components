@@ -33,6 +33,8 @@ export default {
     "@react-pdf-viewer/core",
     "@emotion/react",
     "@emotion/styled",
+    "dayjs",
+    "pdfjs-dist",
   ],
   plugins: [
     resolve({
