@@ -11,7 +11,7 @@ A collection of lightweight, type-safe, and reusable **Formik + Material UI (MUI
 
 ### Install via npm:
 ```sh
-    npm install formik-mui-components
+    npm install @vishwa95/formik-mui-components
 ```
 ### Or install locally (for development)::
 ```sh
@@ -70,8 +70,8 @@ function MyForm() {
         <TextFieldWrapper name="username" label="Username" fullWidth />
         
         <FileUploadWrapper 
-           name="profilePic" 
-           label="Drag and drop your profile picture" 
+            name="profilePic" 
+            label="Drag and drop your profile picture" 
         />
 
         <Button type="submit" variant="contained" sx={{ mt: 2 }}>
@@ -140,12 +140,12 @@ npm install
 
 ### To install a specific version of the library:
 ```sh
-npm install formik-mui-components@1.0.0
+npm install @vishwa95/formik-mui-components@1.0.0
 ```
 
 To always get the latest version:
 ```sh
-npm install formik-mui-components@latest
+npm install @vishwa95/formik-mui-components@latest
 ```
 
 ## 📝 Contributing
